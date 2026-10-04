@@ -262,6 +262,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
       <div id="day-summary"></div>
     </div>
     <div id="hdr-btns">
+      <button class="hdr-btn" onclick="location.reload()">↺</button>
       <button class="hdr-btn" onclick="openTools()">🌐 Tools</button>
       <button class="hdr-btn" onclick="openSpend()">💰 Spend</button>
     </div>
@@ -398,6 +399,7 @@ const DAYS = [
     flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null }],
     docs:[],
     timeline:[
+      { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Rise of the Resistance LLSP</strong> — 7-day window opens today (HS visit is Dec 21)', map:null, warn:'Disney Lightning Lane Single Pass window opens 7 days out for resort guests. Buy Rise of the Resistance ($~100 for 4) on My Disney Experience app at 7am ET — you\'ll be in-flight; use in-flight WiFi or buy immediately on landing.' },
       { time:'18:50', icon:'✈️', text:'Arrive JFK — immigration, baggage, customs (~1.5–2 hrs)', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
       { time:'~20:30', icon:'🚗', text:'UberXL → Residence Inn Times Square', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
       { time:'~21:00', icon:'🏨', text:'Check in. Recovery evening — formula/grocery delivery pre-arranged', map:null, warn:null }
@@ -415,6 +417,7 @@ const DAYS = [
     ],
     timeline:[
       { time:'~08:30', icon:'🥯', text:'Bagel run — Ess-a-Bagel or H&H before heading out', map:'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=Ess-a-Bagel,New+York,NY&travelmode=walking', warn:null },
+      { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Guardians: Cosmic Rewind LLSP</strong> — 7-day window opens today (EPCOT visit is Dec 22)', map:null, warn:'Buy Guardians Cosmic Rewind ($~80 for 4) on My Disney Experience app at exactly 7am ET — also buy Lightning Lane Multi Pass for EPCOT day (Frozen Ever After, Remy\'s, Test Track, Soarin\'). LLMP can be stacked: once you tap in on one, book the next immediately.' },
       { time:'~09:30', icon:'🎄', text:'Bryant Park Winter Village + 5th Ave windows', map:'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=Bryant+Park,New+York,NY&travelmode=walking', warn:null },
       { time:'~10:15', icon:'🏙️', text:'Rockefeller Center tree', map:'https://www.google.com/maps/dir/?api=1&origin=Bryant+Park,New+York&destination=Rockefeller+Center,New+York,NY&travelmode=walking', warn:null },
       { time:'~10:45', icon:'🌆', text:'<strong>Top of the Rock</strong> — book timed entry 30–45 min after arriving', map:'https://www.google.com/maps/dir/?api=1&origin=Bryant+Park,New+York,NY&destination=Top+of+the+Rock,30+Rockefeller+Plaza,New+York,NY&travelmode=walking', warn:null },
@@ -523,10 +526,10 @@ const DAYS = [
       { label:'Lightning Lane — Hollywood Studios', doc:null }
     ],
     timeline:[
-      { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Rise of the Resistance Single Pass NOW</strong> — sells out in minutes', map:null, warn:'Set alarm for 7:00am. This is Disney\'s most in-demand ride. Buy the moment window opens.' },
-      { time:'~08:30', icon:'🚀', text:'Rise of the Resistance (Single Pass) — use your timed window', map:null, warn:null },
-      { time:'~10:00', icon:'🎢', text:'Slinky Dog Dash + Smugglers Run + Tower of Terror (Multi Pass)', map:null, warn:null },
-      { time:'~08:15', icon:'🚶', text:'Depart Beach Club on foot — ~15 min walk to Hollywood Studios', map:null, warn:null }
+      { time:'07:00 ⚠️', icon:'📱', text:'<strong>First Lightning Lane Multi Pass selection</strong> — book now on My Disney Experience', map:null, warn:'Rise LLSP was purchased on Dec 14 (7-day window). At 7am today: buy LLMP and make your first selection (Slinky Dog or Tower of Terror). Stack another LLMP as soon as you tap into the first.' },
+      { time:'~08:15', icon:'🚶', text:'Depart Beach Club on foot — ~15 min walk to Hollywood Studios', map:null, warn:null },
+      { time:'~08:30', icon:'🚀', text:'Rise of the Resistance — use your LLSP timed window', map:null, warn:null },
+      { time:'~10:00', icon:'🎢', text:'Slinky Dog Dash + Smugglers Run + Tower of Terror (LLMP)', map:null, warn:null }
     ],
     meals:[{ tag:'All meals', text:'Casual in-park dining' }]
   },
@@ -540,7 +543,7 @@ const DAYS = [
       { label:'Lightning Lane — EPCOT', doc:null }
     ],
     timeline:[
-      { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Guardians: Cosmic Rewind Single Pass NOW</strong> — resort guests book at 7am', map:null, warn:'Buy immediately when park opens — very high demand.' },
+      { time:'07:00 ⚠️', icon:'📱', text:'<strong>First Lightning Lane Multi Pass selection</strong> — book now on My Disney Experience', map:null, warn:'Guardians LLSP was purchased on Dec 15 (7-day window). At 7am today: buy LLMP and make your first selection (Frozen Ever After or Remy\'s). Stack another LLMP each time you tap in.' },
       { time:'~08:30', icon:'🌍', text:'EPCOT Early Entry — Frozen Ever After + Remy\'s + Test Track + Soarin\' (Multi Pass)', map:null, warn:null },
       { time:'16:00', icon:'🎄', text:'Magic Kingdom MVMCP entry (bonus time before party)', map:null, warn:null },
       { time:'19:00', icon:'🎅', text:'Mickey\'s Very Merry Christmas Party begins', map:null, warn:null },
@@ -734,6 +737,27 @@ const DAYS = [
     meals:[]
   }
 ];
+
+/* ─────────────────────────────────────────
+   LOCKED / COMMITTED COSTS
+───────────────────────────────────────── */
+const LOCKED_COSTS = [
+  { label:'SQ24/SQ23 — SIN↔JFK (Premium Economy, 5 pax)', cat:'flights',    amt:9403.31 },
+  { label:'AA865 — JFK→DFW (Domestic First, 5 pax)',       cat:'flights',    amt:1988.37 },
+  { label:'AA — MCO→EWR→BTV (Economy, 5 pax)',             cat:'flights',    amt:1380.91 },
+  { label:'Residence Inn Times Square (2 nts)',             cat:'hotels',     amt:1252.56 },
+  { label:'Loews Royal Pacific Resort (2 nts)',             cat:'hotels',     amt:1934.46 },
+  { label:"Disney's Beach Club Resort (4 nts)",             cat:'hotels',     amt:3364.56 },
+  { label:"Smugglers' Notch Resort (4 nts)",                cat:'hotels',     amt:5315.98 },
+  { label:'Boston Marriott Long Wharf (2 nts)',             cat:'hotels',     amt:1017.46 },
+  { label:'Conrad New York Downtown (1 nt)',                cat:'hotels',     amt:759.48  },
+  { label:'Universal 2-Day Tickets (4 pax)',                cat:'activities', amt:1474.77 },
+  { label:'Epic Universe Express Passes (4 pax)',           cat:'activities', amt:1277.96 },
+  { label:"Disney 2-Day Base Tickets (4 pax)",              cat:'activities', amt:1621.86 },
+  { label:"Mickey's Very Merry Christmas Party (4 pax)",   cat:'activities', amt:954.26  },
+  { label:'Hertz 4WD SUV (7 days, BTV→JFK one-way)',       cat:'transport',  amt:988.45  },
+];
+// Note: Worthington Renaissance Fort Worth (2 nts) excluded — cost TBC, work/self split pending
 
 /* ─────────────────────────────────────────
    EXPENSE LOG
@@ -953,6 +977,7 @@ function debounce(fn, ms) {
    TOOLS PANEL
 ───────────────────────────────────────── */
 let fxRate = null;
+let fxUpdated = 0;
 
 async function openTools() {
   document.getElementById('tools-ov').classList.add('open');
@@ -977,17 +1002,20 @@ async function openTools() {
     document.getElementById('wx-loading').textContent = 'Weather unavailable — check connection';
   }
 
-  // FX rate
-  if(!fxRate) {
+  // FX rate — refresh every 5 min
+  if(!fxRate || Date.now() - fxUpdated > 300000) {
+    document.getElementById('fx-rate').textContent = 'Fetching rate…';
     try {
-      const r = await fetch('https://api.frankfurter.app/latest?from=USD&to=SGD');
+      const r = await fetch('https://open.er-api.com/v6/latest/USD');
       const data = await r.json();
       fxRate = data.rates.SGD;
+      fxUpdated = Date.now();
     } catch { fxRate = null; }
   }
   const rateEl = document.getElementById('fx-rate');
+  const updStr = fxUpdated ? ` · ${new Date(fxUpdated).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}` : '';
   rateEl.innerHTML = fxRate
-    ? `1 USD = <span>SGD ${fxRate.toFixed(4)}</span> · live rate`
+    ? `1 USD = <span>SGD ${fxRate.toFixed(4)}</span>${updStr}`
     : 'Rate unavailable — check connection';
 }
 function closeTools(e) {
@@ -1032,13 +1060,35 @@ function calcWeight(dir) {
    SPEND PANEL
 ───────────────────────────────────────── */
 function openSpend() {
+  // ── Committed costs ──────────────────────────────
+  const lockedByCat = {};
+  const lockedTotal = LOCKED_COSTS.reduce((s,e)=>{ lockedByCat[e.cat]=(lockedByCat[e.cat]||0)+e.amt; return s+e.amt; }, 0);
+  const catMeta = {
+    flights:    { label:'Flights',                 color:'#6aabff' },
+    hotels:     { label:'Hotels',                  color:'#4ade80' },
+    activities: { label:'Activities & Tickets',    color:'#b07dff' },
+    transport:  { label:'Ground Transport',        color:'#f59e0b' },
+  };
+
+  let html = '<div class="sum-sec-title">Committed (Booked & Paid)</div>';
+  Object.entries(lockedByCat).forEach(([cat,amt])=>{
+    const m = catMeta[cat]||{label:cat,color:'#7a8baa'};
+    html += `<div class="sum-row">
+      <span class="sum-lbl"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${m.color};margin-right:8px;flex-shrink:0"></span>${m.label}</span>
+      <span class="sum-amt">$${fmt(amt)}</span>
+    </div>`;
+  });
+  html += `<div style="font-size:11px;color:var(--amber);margin:4px 0 6px;padding-left:4px">⚠ Worthington Renaissance (Fort Worth, 2 nts) — cost TBC, excluded</div>`;
+  html += `<div class="sum-total" style="font-size:15px"><span>Committed Total</span><span>$${fmt(lockedTotal)}</span></div>`;
+
+  // ── Variable logged ───────────────────────────────
   const all = loadExp();
   const catT={}, methodT={}, dayT=[];
-  let grand=0;
+  let varTotal=0;
   Object.entries(all).forEach(([dt,items])=>{
     if(!items.length)return;
     const s=items.reduce((a,e)=>a+Number(e.amt),0);
-    grand+=s;
+    varTotal+=s;
     const d=DAYS.find(x=>x.date===dt);
     if(d) dayT.push({label:d.label,total:s});
     items.forEach(e=>{
@@ -1046,25 +1096,30 @@ function openSpend() {
       methodT[e.method]=(methodT[e.method]||0)+Number(e.amt);
     });
   });
-  let html='';
-  if(!grand){
-    html='<div style="color:var(--t3);font-size:13px;text-align:center;padding:20px 0">No expenses logged yet</div>';
+
+  html += '<div class="sum-sec-title" style="margin-top:18px">Variable Logged (Delta)</div>';
+  if(!varTotal){
+    html += '<div style="color:var(--t3);font-size:13px;padding:6px 0 10px">No variable expenses logged yet</div>';
   } else {
-    html+='<div class="sum-sec-title">By Category</div>';
+    html += '<div class="sum-sec-title" style="font-size:9px;margin-top:4px;text-transform:none;letter-spacing:.3px">By Category</div>';
     Object.entries(catT).sort((a,b)=>b[1]-a[1]).forEach(([c,t])=>{
       const m=CAT[c]||CAT.other;
-      html+=`<div class="sum-row"><span class="sum-lbl"><span class="exp-dot ${m.dot}" style="width:8px;height:8px;border-radius:50%;display:inline-block"></span>&nbsp;${m.label}</span><span class="sum-amt">$${fmt(t)}</span></div>`;
+      html+=`<div class="sum-row"><span class="sum-lbl"><span class="exp-dot ${m.dot}" style="width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0"></span>&nbsp;${m.label}</span><span class="sum-amt">$${fmt(t)}</span></div>`;
     });
-    html+='<div class="sum-sec-title">By Payment Method</div>';
+    html += '<div class="sum-sec-title" style="font-size:9px;margin-top:10px;text-transform:none;letter-spacing:.3px">By Payment Method</div>';
     Object.entries(methodT).sort((a,b)=>b[1]-a[1]).forEach(([m,t])=>{
       html+=`<div class="sum-row"><span class="sum-lbl"><span class="exp-pm pm-${m}" style="padding:2px 7px;border-radius:12px;font-size:10px;font-weight:800">${m.toUpperCase()}</span></span><span class="sum-amt">$${fmt(t)}</span></div>`;
     });
     if(dayT.length>1){
-      html+='<div class="sum-sec-title">By Day</div>';
+      html += '<div class="sum-sec-title" style="font-size:9px;margin-top:10px;text-transform:none;letter-spacing:.3px">By Day</div>';
       dayT.forEach(d=>{ html+=`<div class="sum-row"><span class="sum-lbl">${d.label}</span><span class="sum-amt">$${fmt(d.total)}</span></div>`; });
     }
-    html+=`<div class="sum-total"><span>Total</span><span>$${fmt(grand)}</span></div>`;
   }
+  html += `<div class="sum-total" style="font-size:15px"><span>Variable Total</span><span>$${fmt(varTotal)}</span></div>`;
+
+  // ── Grand total ───────────────────────────────────
+  html += `<div class="sum-total" style="font-size:19px;font-weight:900;border-top:2px solid var(--accent);margin-top:6px;padding-top:14px"><span>Grand Total</span><span>$${fmt(lockedTotal+varTotal)}</span></div>`;
+
   document.getElementById('spend-content').innerHTML=html;
   document.getElementById('spend-ov').classList.add('open');
 }
