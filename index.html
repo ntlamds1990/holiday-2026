@@ -102,6 +102,22 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
 .doc-linked   { background: #162a50; color: var(--accent); }
 .doc-unlinked { background: transparent; color: var(--t3); border: 1px dashed var(--t3); }
 
+/* ── LODGING CHECK-IN CARD ── */
+.lodging-ci-card {
+  border-radius: 12px;
+  background: linear-gradient(135deg, #071830 0%, #0d2d60 100%);
+  border: 1px solid rgba(90,140,255,.25);
+  padding: 14px;
+}
+.lodging-ci-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #4a9dff; margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+.lodging-ci-name  { font-size: 17px; font-weight: 800; color: var(--t1); margin-bottom: 3px; line-height: 1.2; }
+.lodging-ci-addr  { font-size: 12px; color: #6b83a6; margin-bottom: 12px; }
+.lodging-ci-btns  { display: flex; gap: 8px; }
+.lodging-ci-btn   { flex: 1; padding: 11px 8px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+.lodging-ci-btn-dir { background: #1e3a6e; color: #7ab3ff; }
+.lodging-ci-btn-doc { background: #0a2018; color: #4ade80; }
+.lodging-ci-btn-tbc { background: transparent; color: var(--t3); border: 1px dashed var(--t3); }
+
 /* ── FLIGHT CARD ── */
 .flight-card { border-radius: 10px; padding: 11px 13px; margin-bottom: 7px; background: linear-gradient(135deg, #0c1f50 0%, #1040a0 100%); }
 .flight-card:last-child { margin-bottom: 0; }
@@ -395,7 +411,7 @@ const DAYS = [
     id:'dec14', date:'2026-12-14', label:'14 Dec', day:'Monday',
     city:'New York City', theme:'nyc',
     summary:'Arrive JFK · Check in Times Square',
-    lodging:{ name:'Residence Inn Times Square', status:'booked', ci:true, co:false, doc:null },
+    lodging:{ name:'Residence Inn Times Square', status:'booked', ci:true, co:false, doc:null, addr:'1033 6th Ave, New York, NY 10018', map:'https://www.google.com/maps/dir/?api=1&destination=Residence+Inn+Times+Square,1033+6th+Ave,New+York,NY+10018' },
     flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null }],
     docs:[],
     timeline:[
@@ -435,7 +451,7 @@ const DAYS = [
     id:'dec16', date:'2026-12-16', label:'16 Dec', day:'Wednesday',
     city:'NYC → Fort Worth', theme:'dfw',
     summary:'Checkout · AA865 JFK→DFW 12:00 · Worthington check-in',
-    lodging:{ name:'Worthington Renaissance Fort Worth', status:'tbc', ci:true, co:false, doc:null },
+    lodging:{ name:'Worthington Renaissance Fort Worth', status:'tbc', ci:true, co:false, doc:null, addr:'200 Main St, Fort Worth, TX 76102', map:'https://www.google.com/maps/dir/?api=1&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth,TX+76102' },
     flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:00 JFK', arr:'15:10 DFW', cabin:'Domestic First', doc:null }],
     docs:[],
     timeline:[
@@ -469,7 +485,7 @@ const DAYS = [
     id:'dec18', date:'2026-12-18', label:'18 Dec', day:'Friday',
     city:'Fort Worth → Orlando', theme:'orlando',
     summary:'Fort Worth Zoo · AA2186 DFW→MCO · Royal Pacific check-in',
-    lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:true, co:false, doc:null },
+    lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:true, co:false, doc:null, addr:'6300 Hollywood Way, Orlando, FL 32819', map:'https://www.google.com/maps/dir/?api=1&destination=Loews+Royal+Pacific+Resort,6300+Hollywood+Way,Orlando,FL+32819' },
     flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Domestic First', doc:null }],
     docs:[],
     timeline:[
@@ -503,7 +519,7 @@ const DAYS = [
     id:'dec20', date:'2026-12-20', label:'20 Dec', day:'Sunday',
     city:'Orlando — Epic Universe', theme:'orlando',
     summary:'Epic Universe · Royal Pacific → Beach Club (evening)',
-    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:true, co:false, doc:null },
+    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:true, co:false, doc:null, addr:'1800 Epcot Resorts Blvd, Orlando, FL 32830', map:'https://www.google.com/maps/dir/?api=1&destination=Disney+Beach+Club+Resort,1800+Epcot+Resorts+Blvd,Orlando,FL+32830' },
     flights:[], docs:[
       { label:'Epic Universe Express Passes', doc:null }
     ],
@@ -574,7 +590,7 @@ const DAYS = [
     id:'dec24', date:'2026-12-24', label:'24 Dec', day:'Thursday',
     city:'Orlando → Vermont', theme:'vermont',
     summary:'MCO→EWR→BTV · SUV pickup · Smugglers\' Notch check-in',
-    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:true, co:false, doc:null },
+    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:true, co:false, doc:null, addr:'4323 VT-108 S, Jeffersonville, VT 05464', map:'https://www.google.com/maps/dir/?api=1&destination=Smugglers+Notch+Resort,Jeffersonville,VT+05464' },
     flights:[
       { num:'AA (MCO–EWR)', airline:'American Airlines', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:null },
       { num:'AA (EWR–BTV)', airline:'American Airlines', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:null }
@@ -648,7 +664,7 @@ const DAYS = [
     id:'dec28', date:'2026-12-28', label:'28 Dec', day:'Monday',
     city:'Vermont → Boston', theme:'boston',
     summary:'Drive: Ben & Jerry\'s · Concord lunch · Boston Long Wharf',
-    lodging:{ name:'Boston Marriott Long Wharf', status:'booked', ci:true, co:false, doc:null },
+    lodging:{ name:'Boston Marriott Long Wharf', status:'booked', ci:true, co:false, doc:null, addr:'296 State St, Boston, MA 02109', map:'https://www.google.com/maps/dir/?api=1&destination=Boston+Marriott+Long+Wharf,296+State+St,Boston,MA+02109' },
     flights:[], docs:[],
     timeline:[
       { time:'~08:30', icon:'🌅', text:'Wake, feed baby, final pack', map:null, warn:null },
@@ -690,7 +706,7 @@ const DAYS = [
     id:'dec30', date:'2026-12-30', label:'30 Dec', day:'Wednesday',
     city:'Boston → NYC', theme:'nyc',
     summary:'Drive: Providence Children\'s Museum · New Haven apizza · Conrad check-in',
-    lodging:{ name:'Conrad New York Downtown', status:'booked', ci:true, co:false, doc:null },
+    lodging:{ name:'Conrad New York Downtown', status:'booked', ci:true, co:false, doc:null, addr:'102 North End Ave, New York, NY 10282', map:'https://www.google.com/maps/dir/?api=1&destination=Conrad+New+York+Downtown,102+North+End+Ave,New+York,NY+10282' },
     flights:[], docs:[],
     timeline:[
       { time:'~09:30', icon:'🍳', text:'Breakfast at Long Wharf before checkout', map:null, warn:null },
@@ -803,20 +819,37 @@ function renderDay(day) {
   // Lodging
   let lodging = '';
   if(day.lodging) {
-    const chip = day.lodging.status==='booked'
-      ? '<span class="chip chip-ok">✓ Booked</span>'
-      : '<span class="chip chip-tbc">⚠ Cost TBC</span>';
-    const ci = day.lodging.ci ? '<span class="chip-ci">Check-in</span>' : '';
-    const co = day.lodging.co ? '<span class="chip-ci">Check-out</span>' : '';
-    const docBtn = day.lodging.doc
-      ? `<a class="doc-btn doc-linked" href="${day.lodging.doc}" target="_blank">📄 Receipt</a>`
-      : '<button class="doc-btn doc-unlinked">📄 Receipt — not linked</button>';
-    lodging = `<div class="sec"><div class="sec-lbl">Lodging</div>
-      <div class="lodging-row">
-        <span class="lodging-name">${day.lodging.name}</span>
-        ${chip}${ci}${co}${docBtn}
-      </div>
-    </div>`;
+    if(day.lodging.ci) {
+      const statusChip = day.lodging.status==='booked'
+        ? '<span class="chip chip-ok">✓ Booked</span>'
+        : '<span class="chip chip-tbc">⚠ Cost TBC</span>';
+      const dirBtn = day.lodging.map
+        ? `<a class="lodging-ci-btn lodging-ci-btn-dir" href="${day.lodging.map}" target="_blank">📍 Directions</a>`
+        : '';
+      const docBtn = day.lodging.doc
+        ? `<a class="lodging-ci-btn lodging-ci-btn-doc" href="${day.lodging.doc}" target="_blank">📄 Open Booking</a>`
+        : '<button class="lodging-ci-btn lodging-ci-btn-tbc">📄 Booking — not linked</button>';
+      lodging = `<div class="sec"><div class="lodging-ci-card">
+        <div class="lodging-ci-label">CHECK IN TODAY ${statusChip}</div>
+        <div class="lodging-ci-name">${day.lodging.name}</div>
+        ${day.lodging.addr ? `<div class="lodging-ci-addr">${day.lodging.addr}</div>` : ''}
+        <div class="lodging-ci-btns">${dirBtn}${docBtn}</div>
+      </div></div>`;
+    } else {
+      const chip = day.lodging.status==='booked'
+        ? '<span class="chip chip-ok">✓ Booked</span>'
+        : '<span class="chip chip-tbc">⚠ Cost TBC</span>';
+      const co = day.lodging.co ? '<span class="chip-ci">Check-out</span>' : '';
+      const docBtn = day.lodging.doc
+        ? `<a class="doc-btn doc-linked" href="${day.lodging.doc}" target="_blank">📄 Receipt</a>`
+        : '<button class="doc-btn doc-unlinked">📄 Receipt — not linked</button>';
+      lodging = `<div class="sec"><div class="sec-lbl">Lodging</div>
+        <div class="lodging-row">
+          <span class="lodging-name">${day.lodging.name}</span>
+          ${chip}${co}${docBtn}
+        </div>
+      </div>`;
+    }
   }
 
   // Flights
