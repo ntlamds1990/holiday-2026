@@ -499,6 +499,7 @@ const DAYS = [
     ],
     meals:[
       { tag:'Breakfast', text:'Hotel before checkout' },
+      { tag:'Lunch', text:'JFK T8 — Shake Shack or Dos Toros Taqueria (domestic flight, no meal service)' },
       { tag:'Dinner', text:'Sundance Square — Mi Cocina / Riscky\'s Barbecue / Bird Café' }
     ]
   },
@@ -515,7 +516,11 @@ const DAYS = [
       { time:'~12:30', icon:'🍖', text:'Lunch — Love Shack or Cattlemen\'s Steakhouse (Stockyards)', map:'https://www.google.com/maps/dir/?api=1&origin=Fort+Worth+Stockyards&destination=Love+Shack+Fort+Worth&travelmode=walking', warn:null },
       { time:'~14:00', icon:'🔬', text:'<strong>Fort Worth Museum of Science and History</strong> (~2.5 hrs, open until 5pm)', map:'https://www.google.com/maps/dir/?api=1&origin=Fort+Worth+Stockyards&destination=Fort+Worth+Museum+of+Science+and+History,1600+Gendy+St,Fort+Worth,TX&travelmode=transit', warn:'Orange Line back to Fort Worth Central Station → Route 4 (every 30 min) to Cultural District. Fallback: single UberXL if energy runs short (~$15–20).' }
     ],
-    meals:[{ tag:'Lunch', text:"Love Shack or Cattlemen's Steakhouse (Stockyards)" }]
+    meals:[
+      { tag:'Breakfast', text:'Hotel' },
+      { tag:'Lunch', text:"Love Shack or Cattlemen's Steakhouse (Stockyards)" },
+      { tag:'Dinner', text:'Reata Restaurant — Texas cuisine, walkable from the Worthington (Sundance Square)' }
+    ]
   },
   {
     id:'dec18', date:'2026-12-18', label:'18 Dec', day:'Friday',
@@ -532,7 +537,11 @@ const DAYS = [
       { time:'~22:00', icon:'✈️', text:'Arrive MCO — straight to hotel, no restaurant', map:null, warn:null },
       { time:'~22:30', icon:'🚗', text:'UberXL MCO → Loews Royal Pacific Resort (~15–20 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Orlando+International+Airport&destination=Loews+Royal+Pacific+Resort,Universal+Orlando&travelmode=driving', warn:null }
     ],
-    meals:[{ tag:'Dinner', text:'Terminal C at DFW before boarding — late arrival, straight to hotel' }]
+    meals:[
+      { tag:'Breakfast', text:'Hotel' },
+      { tag:'Lunch', text:'Bluebonnet Café at Fort Worth Zoo (Texas Wild) — BBQ/burgers, quick service' },
+      { tag:'Dinner', text:'Terminal C at DFW before boarding — late arrival, straight to hotel' }
+    ]
   },
   {
     id:'dec19', date:'2026-12-19', label:'19 Dec', day:'Saturday',
@@ -733,9 +742,10 @@ const DAYS = [
       { time:'~17:00', icon:'⛸️', text:'Frog Pond skating + Parker House cream pie — bonus only if energy allows', map:null, warn:null }
     ],
     meals:[
-      { tag:'Breakfast', text:'Hotel (Marriott Gold — confirm breakfast perk with property)' },
+      { tag:'Breakfast', text:'Hotel (Long Wharf foregoes Gold free breakfast — check what\'s on offer)' },
       { tag:'Lunch', text:'Quincy Market — clam chowder + lobster roll' },
-      { tag:'Snack', text:'North End cannoli (Mike\'s or Modern Pastry)' }
+      { tag:'Dinner', text:'Regina Pizzeria — North End (on the walk back from Children\'s Museum, historic since 1926)' },
+      { tag:'Treat', text:'North End cannoli — Mike\'s or Modern Pastry' }
     ]
   },
   {
@@ -776,7 +786,10 @@ const DAYS = [
       { time:'~18:00', icon:'🚇', text:'Return SUV → free AirTrain to T4 (~4 min, every 5 min, no fare)', map:null, warn:null },
       { time:'22:15', icon:'✈️', text:'<strong>SQ23 departs JFK T4</strong> → Singapore', map:null, warn:null }
     ],
-    meals:[{ tag:'Lunch', text:'Stage Door Deli, 26 Vesey St — pastrami/Reuben + NY cheesecake. All four afternoon stops in the same WTC complex.' }]
+    meals:[
+      { tag:'Breakfast', text:'ATRIO at the Conrad — in-hotel, zero transit before the ferry' },
+      { tag:'Lunch', text:'Stage Door Deli, 26 Vesey St — pastrami/Reuben + NY cheesecake (all four WTC stops in the same complex)' }
+    ]
   },
   {
     id:'jan01', date:'2027-01-01', label:'1 Jan', day:'Friday',
