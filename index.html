@@ -67,7 +67,25 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
   scrollbar-width: none;
 }
 .day-page::-webkit-scrollbar { display: none; }
-.page-inner { padding: 0 0 32px; }
+.page-inner { padding: 0 0 88px; }
+
+/* ── FAB ── */
+#fab { position: fixed; bottom: 22px; right: 16px; z-index: 150; display: flex; flex-direction: column; gap: 10px; }
+.fab-btn {
+  width: 48px; height: 48px; border-radius: 24px; border: 1px solid rgba(255,255,255,.1);
+  background: rgba(10,14,26,.93); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  color: var(--t1); font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 16px rgba(0,0,0,.65);
+}
+.fab-btn:active { opacity: .7; }
+
+/* ── NAV CITY LABELS ── */
+.nav-city-lbl {
+  flex-shrink: 0; font-size: 9px; font-weight: 800; color: #4a6888;
+  text-transform: uppercase; letter-spacing: .8px;
+  padding: 4px 4px 4px 10px; white-space: nowrap; align-self: center;
+}
 
 /* ── HERO ── */
 .hero { height: 120px; position: relative; overflow: hidden; }
@@ -135,6 +153,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
 .flight-btn-bp-linked   { background: rgba(30,58,110,.9); color: #7ab3ff; }
 .flight-btn-bp-unlinked { background: transparent; color: rgba(255,255,255,.3); border: 1px dashed rgba(255,255,255,.2); }
 .flight-btn-ci          { background: rgba(255,255,255,.1); color: rgba(255,255,255,.75); }
+.flight-btn-track       { background: rgba(255,255,255,.07); color: rgba(255,255,255,.55); }
 
 /* ── TIMELINE ── */
 .tl-item { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px; }
@@ -193,7 +212,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
   background: #0f1520; border-radius: 22px 22px 0 0;
   border-top: 1px solid var(--border);
   padding: 0 0 40px; z-index: 201;
-  max-height: 80vh; overflow-y: auto;
+  max-height: 80vh; overflow-y: auto; overflow-x: hidden;
   transform: translateY(100%); transition: transform .28s ease;
 }
 .overlay.open .panel { transform: translateY(0); }
@@ -206,21 +225,23 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
 /* Weather */
 #wx-result { font-size: 24px; font-weight: 900; color: var(--t1); }
 #wx-desc   { font-size: 12px; color: var(--t2); margin-top: 2px; }
-#wx-city   { font-size: 11px; color: var(--t3); margin-top: 1px; }
 #wx-loading { font-size: 12px; color: var(--t3); }
+.wx-fcst-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--t2); margin-top: 5px; }
+.wx-fcst-day { width: 80px; flex-shrink: 0; }
+.wx-fcst-desc { flex: 1; color: var(--t3); font-size: 11px; padding: 0 6px; }
 
 /* Currency */
 #fx-rate { font-size: 12px; color: var(--t2); margin-bottom: 10px; }
 #fx-rate span { color: var(--accent); font-weight: 800; }
-.fx-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.fx-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
 .fx-row:last-child { margin-bottom: 0; }
 .fx-input {
-  flex: 1; background: var(--t3); border: none; border-radius: 8px;
-  padding: 9px 10px; font-size: 15px; font-family: var(--font);
+  flex: 1; min-width: 0; background: var(--t3); border: none; border-radius: 8px;
+  padding: 9px 8px; font-size: 15px; font-family: var(--font);
   color: var(--t1); outline: none;
 }
-.fx-lbl { font-size: 12px; font-weight: 800; color: var(--t2); min-width: 36px; }
-.fx-arrow { font-size: 14px; color: var(--t3); }
+.fx-lbl { font-size: 11px; font-weight: 800; color: var(--t2); flex-shrink: 0; width: 28px; }
+.fx-arrow { font-size: 13px; color: var(--t3); flex-shrink: 0; }
 
 /* Converters */
 .conv-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
@@ -283,8 +304,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
     </div>
     <div id="hdr-btns">
       <button class="hdr-btn" onclick="location.reload()">↺</button>
-      <button class="hdr-btn" onclick="openTools()">🌐 Tools</button>
-      <button class="hdr-btn" onclick="openSpend()">💰 Spend</button>
     </div>
   </div>
   <div id="nav-strip"></div>
@@ -302,8 +321,12 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
     <div class="panel-sec">
       <div class="panel-sec-title">🌤 Weather — <span id="wx-city-label"></span></div>
       <div id="wx-loading">Fetching…</div>
-      <div id="wx-result" style="display:none"></div>
-      <div id="wx-desc"  style="display:none"></div>
+      <div id="wx-now" style="display:none">
+        <div id="wx-result"></div>
+        <div id="wx-desc"></div>
+        <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin:12px 0 4px">3-Day Forecast</div>
+        <div id="wx-forecast"></div>
+      </div>
     </div>
 
     <div class="panel-sec">
@@ -321,12 +344,14 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
     <div class="panel-sec">
       <div class="panel-sec-title">📏 Height</div>
       <div class="conv-row">
-        <input class="conv-input" id="h-ft"  type="number" placeholder="ft"  oninput="calcHeight('imp')">
+        <input class="conv-input" id="h-ft" type="number" placeholder="ft" oninput="calcHeight('imp')">
         <span class="conv-lbl">ft</span>
-        <input class="conv-input" id="h-in"  type="number" placeholder="in"  oninput="calcHeight('imp')">
+        <input class="conv-input" id="h-in" type="number" placeholder="in" oninput="calcHeight('imp')">
         <span class="conv-lbl">in</span>
-        <span class="conv-eq">=</span>
-        <input class="conv-input" id="h-cm"  type="number" placeholder="cm"  oninput="calcHeight('met')">
+      </div>
+      <div class="conv-row" style="margin-top:4px">
+        <span class="conv-eq" style="flex-shrink:0;width:16px">=</span>
+        <input class="conv-input" id="h-cm" type="number" placeholder="cm" oninput="calcHeight('met')">
         <span class="conv-lbl">cm</span>
       </div>
     </div>
@@ -388,6 +413,12 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
   </div>
 </div>
 
+<!-- FAB -->
+<div id="fab">
+  <button class="fab-btn" onclick="openSpend()">💰</button>
+  <button class="fab-btn" onclick="openTools()">🌐</button>
+</div>
+
 <script>
 /* ─────────────────────────────────────────
    IMAGES
@@ -416,7 +447,7 @@ const DAYS = [
     city:'New York City', theme:'nyc',
     summary:'Arrive JFK · Check in Times Square',
     lodging:{ name:'Residence Inn Times Square', status:'booked', ci:true, co:false, doc:null, addr:'1033 6th Ave, New York, NY 10018', map:'https://www.google.com/maps/dir/?api=1&destination=Residence+Inn+Times+Square,1033+6th+Ave,New+York,NY+10018' },
-    flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null, depTerm:'SIN T3', arrTerm:'JFK T4', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/' }],
+    flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null, depTerm:'SIN T3', arrTerm:'JFK T4', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/', track:'https://www.flightradar24.com/SQ24' }],
     docs:[],
     timeline:[
       { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Rise of the Resistance LLSP</strong> — 7-day window opens today (HS visit is Dec 21)', map:null, warn:'Disney Lightning Lane Single Pass window opens 7 days out for resort guests. Buy Rise of the Resistance ($~100 for 4) on My Disney Experience app at 7am ET — you\'ll be in-flight; use in-flight WiFi or buy immediately on landing.' },
@@ -456,7 +487,7 @@ const DAYS = [
     city:'NYC → Fort Worth', theme:'dfw',
     summary:'Checkout · AA865 JFK→DFW 12:00 · Worthington check-in',
     lodging:{ name:'Worthington Renaissance Fort Worth', status:'tbc', ci:true, co:false, doc:null, addr:'200 Main St, Fort Worth, TX 76102', map:'https://www.google.com/maps/dir/?api=1&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth,TX+76102' },
-    flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:00 JFK', arr:'15:10 DFW', cabin:'Domestic First', doc:null, depTerm:'JFK T8', arrTerm:'DFW C', checkin:'https://www.aa.com/reservation/view/find-your-reservation' }],
+    flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:00 JFK', arr:'15:10 DFW', cabin:'Domestic First', doc:null, depTerm:'JFK T8', arrTerm:'DFW C', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:'https://www.flightradar24.com/AA865' }],
     docs:[],
     timeline:[
       { time:'~08:30', icon:'🏨', text:'Hotel checkout', map:null, warn:null },
@@ -490,7 +521,7 @@ const DAYS = [
     city:'Fort Worth → Orlando', theme:'orlando',
     summary:'Fort Worth Zoo · AA2186 DFW→MCO · Royal Pacific check-in',
     lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:true, co:false, doc:null, addr:'6300 Hollywood Way, Orlando, FL 32819', map:'https://www.google.com/maps/dir/?api=1&destination=Loews+Royal+Pacific+Resort,6300+Hollywood+Way,Orlando,FL+32819' },
-    flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Domestic First', doc:null, depTerm:'DFW C', arrTerm:'MCO B', checkin:'https://www.aa.com/reservation/view/find-your-reservation' }],
+    flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Domestic First', doc:null, depTerm:'DFW C', arrTerm:'MCO B', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:'https://www.flightradar24.com/AA2186' }],
     docs:[],
     timeline:[
       { time:'~09:00', icon:'💼', text:'<strong>Nicholas working</strong>', map:null, warn:null },
@@ -596,8 +627,8 @@ const DAYS = [
     summary:'MCO→EWR→BTV · SUV pickup · Smugglers\' Notch check-in',
     lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:true, co:false, doc:null, addr:'4323 VT-108 S, Jeffersonville, VT 05464', map:'https://www.google.com/maps/dir/?api=1&destination=Smugglers+Notch+Resort,Jeffersonville,VT+05464' },
     flights:[
-      { num:'AA (MCO–EWR)', airline:'American Airlines', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:null, depTerm:'MCO B', arrTerm:'EWR C', checkin:'https://www.aa.com/reservation/view/find-your-reservation' },
-      { num:'AA (EWR–BTV)', airline:'American Airlines', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:null, depTerm:'EWR C', arrTerm:'BTV', checkin:'https://www.aa.com/reservation/view/find-your-reservation' }
+      { num:'AA (MCO–EWR)', airline:'American Airlines', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:null, depTerm:'MCO B', arrTerm:'EWR C', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:null },
+      { num:'AA (EWR–BTV)', airline:'American Airlines', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:null, depTerm:'EWR C', arrTerm:'BTV', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:null }
     ],
     docs:[
       { label:'Hertz 4WD SUV — BTV pickup', doc:null }
@@ -730,7 +761,7 @@ const DAYS = [
     city:'New York City — Departure', theme:'nyc',
     summary:'Statue of Liberty · 9/11 Memorial · OWO · SQ23 22:15',
     lodging:{ name:'Conrad New York Downtown', status:'booked', ci:false, co:true, doc:null },
-    flights:[{ num:'SQ23', airline:'Singapore Airlines', from:'JFK', to:'SIN', dep:'22:15 JFK', arr:'05:30+2 SIN', cabin:'Premium Economy', doc:null, depTerm:'JFK T4', arrTerm:'SIN T3', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/' }],
+    flights:[{ num:'SQ23', airline:'Singapore Airlines', from:'JFK', to:'SIN', dep:'22:15 JFK', arr:'05:30+2 SIN', cabin:'Premium Economy', doc:null, depTerm:'JFK T4', arrTerm:'SIN T3', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/', track:'https://www.flightradar24.com/SQ23' }],
     docs:[
       { label:'Statue of Liberty ferry — timed entry', doc:null },
       { label:'One World Observatory — timed entry', doc:null }
@@ -864,7 +895,10 @@ function renderDay(day) {
         ? `<a class="flight-btn flight-btn-bp-linked" href="${f.doc}" target="_blank">🎫 Boarding Pass</a>`
         : '<button class="flight-btn flight-btn-bp-unlinked">🎫 Boarding Pass</button>';
       const ciBtn = f.checkin
-        ? `<a class="flight-btn flight-btn-ci" href="${f.checkin}" target="_blank">↗ Check In Online</a>`
+        ? `<a class="flight-btn flight-btn-ci" href="${f.checkin}" target="_blank">↗ Check In</a>`
+        : '';
+      const trackBtn = f.track
+        ? `<a class="flight-btn flight-btn-track" href="${f.track}" target="_blank">📡 Track</a>`
         : '';
       const termRow = `<div class="flight-terminal-row"><span>${f.depTerm||''} → ${f.arrTerm||''}</span><span>${f.cabin}</span></div>`;
       return `<div class="flight-card">
@@ -879,7 +913,7 @@ function renderDay(day) {
         </div>
         <div class="flight-times"><span>${f.dep}</span><span>${f.arr}</span></div>
         ${termRow}
-        <div class="flight-btns">${bpBtn}${ciBtn}</div>
+        <div class="flight-btns">${bpBtn}${ciBtn}${trackBtn}</div>
       </div>`;
     }).join('');
     flights = `<div class="sec">${cards}</div>`;
@@ -954,11 +988,19 @@ let currentPage = 0;
 
 function buildNav() {
   const strip = document.getElementById('nav-strip');
+  const THEME_LABEL = { nyc:'NYC', dfw:'DFW', orlando:'Orlando', disney:'Disney', vermont:'Vermont', boston:'Boston' };
+  let lastTheme = null;
   strip.innerHTML = DAYS.map((d,i) => {
+    let out = '';
+    if(d.theme !== lastTheme) {
+      out += `<span class="nav-city-lbl">${THEME_LABEL[d.theme]||d.theme}</span>`;
+      lastTheme = d.theme;
+    }
     let cls = 'nav-pill';
     if(d.date === TODAY) cls += ' today';
     else if(d.date < TODAY) cls += ' past';
-    return `<button class="${cls}" id="pill-${i}" onclick="goTo(${i})">${d.label}</button>`;
+    out += `<button class="${cls}" id="pill-${i}" onclick="goTo(${i})">${d.label}</button>`;
+    return out;
   }).join('');
 }
 
@@ -1022,6 +1064,7 @@ let fxRate = null;
 let fxUpdated = 0;
 
 async function openTools() {
+  document.querySelector('#tools-ov .panel').style.transform = '';
   document.getElementById('tools-ov').classList.add('open');
   const day = DAYS[currentPage];
   const city = WEATHER_CITY[day.theme] || 'New York City';
@@ -1029,17 +1072,23 @@ async function openTools() {
 
   // Weather
   document.getElementById('wx-loading').style.display = 'block';
-  document.getElementById('wx-result').style.display = 'none';
-  document.getElementById('wx-desc').style.display = 'none';
+  document.getElementById('wx-now').style.display = 'none';
   try {
     const r = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
     const data = await r.json();
     const c = data.current_condition[0];
     document.getElementById('wx-result').textContent = `${c.temp_C}°C`;
     document.getElementById('wx-desc').textContent = c.weatherDesc[0].value;
+    const days = ['Today','Tomorrow','Day 3'];
+    document.getElementById('wx-forecast').innerHTML = data.weather.slice(0,3).map((w,i) =>
+      `<div class="wx-fcst-row">
+        <span class="wx-fcst-day">${days[i]}</span>
+        <span class="wx-fcst-desc">${w.hourly[4]?.weatherDesc?.[0]?.value||''}</span>
+        <span>↑${w.maxtempC}° ↓${w.mintempC}°</span>
+      </div>`
+    ).join('');
     document.getElementById('wx-loading').style.display = 'none';
-    document.getElementById('wx-result').style.display = 'block';
-    document.getElementById('wx-desc').style.display = 'block';
+    document.getElementById('wx-now').style.display = 'block';
   } catch {
     document.getElementById('wx-loading').textContent = 'Weather unavailable — check connection';
   }
@@ -1102,6 +1151,7 @@ function calcWeight(dir) {
    SPEND PANEL
 ───────────────────────────────────────── */
 function openSpend() {
+  document.querySelector('#spend-ov .panel').style.transform = '';
   // ── Committed costs ──────────────────────────────
   const lockedByCat = {};
   const lockedTotal = LOCKED_COSTS.reduce((s,e)=>{ lockedByCat[e.cat]=(lockedByCat[e.cat]||0)+e.amt; return s+e.amt; }, 0);
@@ -1211,6 +1261,35 @@ function refreshExpSection(dt) {
 }
 
 /* ─────────────────────────────────────────
+   SWIPE-TO-DISMISS PANELS
+───────────────────────────────────────── */
+function addSwipeToDismiss(ovId, closeFn) {
+  const ov = document.getElementById(ovId);
+  const panel = ov.querySelector('.panel');
+  let startY = 0;
+  panel.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+    panel.style.transition = 'none';
+  }, { passive: true });
+  panel.addEventListener('touchmove', e => {
+    const dy = Math.max(0, e.touches[0].clientY - startY);
+    panel.style.transform = `translateY(${dy}px)`;
+  }, { passive: true });
+  panel.addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - startY;
+    if(dy > 80) {
+      panel.style.transition = 'transform .25s ease';
+      panel.style.transform = 'translateY(100%)';
+      setTimeout(() => { ov.classList.remove('open'); panel.style.transform = ''; panel.style.transition = ''; }, 260);
+    } else {
+      panel.style.transition = 'transform .2s ease';
+      panel.style.transform = 'translateY(0)';
+      setTimeout(() => { panel.style.transform = ''; panel.style.transition = ''; }, 220);
+    }
+  });
+}
+
+/* ─────────────────────────────────────────
    INIT
 ───────────────────────────────────────── */
 function init() {
@@ -1218,6 +1297,8 @@ function init() {
   buildPages();
   setContainerHeight();
   window.addEventListener('resize', setContainerHeight);
+  addSwipeToDismiss('tools-ov', closeTools);
+  addSwipeToDismiss('spend-ov', closeSpend);
 
   const container = document.getElementById('pages');
   container.addEventListener('scroll', debounce(() => {
