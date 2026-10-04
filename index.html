@@ -845,7 +845,7 @@ const saveExp  = d  => localStorage.setItem(SK, JSON.stringify(d));
 const getDayExp = dt => loadExp()[dt] || [];
 const addExp = (dt, item) => { const d=loadExp(); if(!d[dt])d[dt]=[]; d[dt].push({...item, id:Date.now()}); saveExp(d); };
 const delExp = (dt, id) => { const d=loadExp(); if(d[dt])d[dt]=d[dt].filter(e=>e.id!==id); saveExp(d); };
-const fmt = n => (+n).toFixed(2);
+const fmt = n => (+n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 
 function expListHTML(dt) {
   const items = getDayExp(dt);
@@ -1169,8 +1169,15 @@ function calcWeight(dir) {
 /* ─────────────────────────────────────────
    SPEND PANEL
 ───────────────────────────────────────── */
-function openSpend() {
+async function openSpend() {
   document.querySelector('#spend-ov .panel').style.transform = '';
+  if(!fxRate || Date.now() - fxUpdated > 300000) {
+    try {
+      const r = await fetch('https://open.er-api.com/v6/latest/USD');
+      const d = await r.json();
+      fxRate = d.rates.SGD; fxUpdated = Date.now();
+    } catch { fxRate = null; }
+  }
   // ── Committed costs ──────────────────────────────
   const lockedByCat = {};
   const lockedTotal = LOCKED_COSTS.reduce((s,e)=>{ lockedByCat[e.cat]=(lockedByCat[e.cat]||0)+e.amt; return s+e.amt; }, 0);
@@ -1229,7 +1236,11 @@ function openSpend() {
   html += `<div class="sum-total" style="font-size:15px"><span>Variable Total</span><span>$${fmt(varTotal)}</span></div>`;
 
   // ── Grand total ───────────────────────────────────
-  html += `<div class="sum-total" style="font-size:19px;font-weight:900;border-top:2px solid var(--accent);margin-top:6px;padding-top:14px"><span>Grand Total</span><span>$${fmt(lockedTotal+varTotal)}</span></div>`;
+  const grandUSD = lockedTotal + varTotal;
+  const sgdLine = fxRate
+    ? `<div style="font-size:11px;color:var(--t2);text-align:right;margin-top:3px">≈ SGD ${fmt(grandUSD * fxRate)}</div>`
+    : '';
+  html += `<div class="sum-total" style="font-size:19px;font-weight:900;border-top:2px solid var(--accent);margin-top:6px;padding-top:14px"><span>Grand Total</span><span>$${fmt(grandUSD)}</span></div>${sgdLine}`;
 
   document.getElementById('spend-content').innerHTML=html;
   document.getElementById('spend-ov').classList.add('open');
