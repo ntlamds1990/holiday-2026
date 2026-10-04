@@ -129,8 +129,12 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
 .flight-mid { flex: 1; text-align: center; }
 .flight-arrow { font-size: 11px; color: rgba(255,255,255,.35); display: block; }
 .flight-times { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,.55); margin-top: 5px; }
-.flight-meta { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
-.flight-cabin { font-size: 10px; color: rgba(255,255,255,.45); }
+.flight-terminal-row { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,.4); margin-top: 4px; margin-bottom: 9px; }
+.flight-btns { display: flex; gap: 8px; }
+.flight-btn  { flex: 1; padding: 9px 8px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+.flight-btn-bp-linked   { background: rgba(30,58,110,.9); color: #7ab3ff; }
+.flight-btn-bp-unlinked { background: transparent; color: rgba(255,255,255,.3); border: 1px dashed rgba(255,255,255,.2); }
+.flight-btn-ci          { background: rgba(255,255,255,.1); color: rgba(255,255,255,.75); }
 
 /* ── TIMELINE ── */
 .tl-item { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px; }
@@ -412,7 +416,7 @@ const DAYS = [
     city:'New York City', theme:'nyc',
     summary:'Arrive JFK · Check in Times Square',
     lodging:{ name:'Residence Inn Times Square', status:'booked', ci:true, co:false, doc:null, addr:'1033 6th Ave, New York, NY 10018', map:'https://www.google.com/maps/dir/?api=1&destination=Residence+Inn+Times+Square,1033+6th+Ave,New+York,NY+10018' },
-    flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null }],
+    flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null, depTerm:'SIN T3', arrTerm:'JFK T4', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/' }],
     docs:[],
     timeline:[
       { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Rise of the Resistance LLSP</strong> — 7-day window opens today (HS visit is Dec 21)', map:null, warn:'Disney Lightning Lane Single Pass window opens 7 days out for resort guests. Buy Rise of the Resistance ($~100 for 4) on My Disney Experience app at 7am ET — you\'ll be in-flight; use in-flight WiFi or buy immediately on landing.' },
@@ -452,7 +456,7 @@ const DAYS = [
     city:'NYC → Fort Worth', theme:'dfw',
     summary:'Checkout · AA865 JFK→DFW 12:00 · Worthington check-in',
     lodging:{ name:'Worthington Renaissance Fort Worth', status:'tbc', ci:true, co:false, doc:null, addr:'200 Main St, Fort Worth, TX 76102', map:'https://www.google.com/maps/dir/?api=1&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth,TX+76102' },
-    flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:00 JFK', arr:'15:10 DFW', cabin:'Domestic First', doc:null }],
+    flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:00 JFK', arr:'15:10 DFW', cabin:'Domestic First', doc:null, depTerm:'JFK T8', arrTerm:'DFW C', checkin:'https://www.aa.com/reservation/view/find-your-reservation' }],
     docs:[],
     timeline:[
       { time:'~08:30', icon:'🏨', text:'Hotel checkout', map:null, warn:null },
@@ -486,7 +490,7 @@ const DAYS = [
     city:'Fort Worth → Orlando', theme:'orlando',
     summary:'Fort Worth Zoo · AA2186 DFW→MCO · Royal Pacific check-in',
     lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:true, co:false, doc:null, addr:'6300 Hollywood Way, Orlando, FL 32819', map:'https://www.google.com/maps/dir/?api=1&destination=Loews+Royal+Pacific+Resort,6300+Hollywood+Way,Orlando,FL+32819' },
-    flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Domestic First', doc:null }],
+    flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Domestic First', doc:null, depTerm:'DFW C', arrTerm:'MCO B', checkin:'https://www.aa.com/reservation/view/find-your-reservation' }],
     docs:[],
     timeline:[
       { time:'~09:00', icon:'💼', text:'<strong>Nicholas working</strong>', map:null, warn:null },
@@ -592,8 +596,8 @@ const DAYS = [
     summary:'MCO→EWR→BTV · SUV pickup · Smugglers\' Notch check-in',
     lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:true, co:false, doc:null, addr:'4323 VT-108 S, Jeffersonville, VT 05464', map:'https://www.google.com/maps/dir/?api=1&destination=Smugglers+Notch+Resort,Jeffersonville,VT+05464' },
     flights:[
-      { num:'AA (MCO–EWR)', airline:'American Airlines', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:null },
-      { num:'AA (EWR–BTV)', airline:'American Airlines', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:null }
+      { num:'AA (MCO–EWR)', airline:'American Airlines', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:null, depTerm:'MCO B', arrTerm:'EWR C', checkin:'https://www.aa.com/reservation/view/find-your-reservation' },
+      { num:'AA (EWR–BTV)', airline:'American Airlines', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:null, depTerm:'EWR C', arrTerm:'BTV', checkin:'https://www.aa.com/reservation/view/find-your-reservation' }
     ],
     docs:[
       { label:'Hertz 4WD SUV — BTV pickup', doc:null }
@@ -726,7 +730,7 @@ const DAYS = [
     city:'New York City — Departure', theme:'nyc',
     summary:'Statue of Liberty · 9/11 Memorial · OWO · SQ23 22:15',
     lodging:{ name:'Conrad New York Downtown', status:'booked', ci:false, co:true, doc:null },
-    flights:[{ num:'SQ23', airline:'Singapore Airlines', from:'JFK', to:'SIN', dep:'22:15 JFK', arr:'05:30+2 SIN', cabin:'Premium Economy', doc:null }],
+    flights:[{ num:'SQ23', airline:'Singapore Airlines', from:'JFK', to:'SIN', dep:'22:15 JFK', arr:'05:30+2 SIN', cabin:'Premium Economy', doc:null, depTerm:'JFK T4', arrTerm:'SIN T3', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/' }],
     docs:[
       { label:'Statue of Liberty ferry — timed entry', doc:null },
       { label:'One World Observatory — timed entry', doc:null }
@@ -856,9 +860,13 @@ function renderDay(day) {
   let flights = '';
   if(day.flights && day.flights.length) {
     const cards = day.flights.map(f => {
-      const docBtn = f.doc
-        ? `<a class="doc-btn doc-linked" href="${f.doc}" target="_blank">🎫 Boarding pass</a>`
-        : '<button class="doc-btn doc-unlinked">🎫 Boarding pass — not linked</button>';
+      const bpBtn = f.doc
+        ? `<a class="flight-btn flight-btn-bp-linked" href="${f.doc}" target="_blank">🎫 Boarding Pass</a>`
+        : '<button class="flight-btn flight-btn-bp-unlinked">🎫 Boarding Pass</button>';
+      const ciBtn = f.checkin
+        ? `<a class="flight-btn flight-btn-ci" href="${f.checkin}" target="_blank">↗ Check In Online</a>`
+        : '';
+      const termRow = `<div class="flight-terminal-row"><span>${f.depTerm||''} → ${f.arrTerm||''}</span><span>${f.cabin}</span></div>`;
       return `<div class="flight-card">
         <div class="flight-top">
           <span class="flight-num">${f.num} · ${f.airline}</span>
@@ -870,7 +878,8 @@ function renderDay(day) {
           <span class="flight-iata">${f.to}</span>
         </div>
         <div class="flight-times"><span>${f.dep}</span><span>${f.arr}</span></div>
-        <div class="flight-meta"><span class="flight-cabin">${f.cabin}</span>${docBtn}</div>
+        ${termRow}
+        <div class="flight-btns">${bpBtn}${ciBtn}</div>
       </div>`;
     }).join('');
     flights = `<div class="sec">${cards}</div>`;
