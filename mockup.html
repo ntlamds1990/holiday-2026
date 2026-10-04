@@ -3,318 +3,317 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mockup v2 — Refined Colours + Image Banners</title>
+<title>Mockup v3 — Fixed Images + Dark Theme</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; background: #f0f2f5; padding: 16px 12px 40px; }
+body { font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; background: #e8eaed; padding: 16px 12px 48px; }
 
 h1 { font-size: 15px; font-weight: 800; color: #111; margin: 0 0 4px; }
-.page-note { font-size: 12px; color: #888; margin-bottom: 6px; }
+.page-note { font-size: 12px; color: #888; margin-bottom: 6px; line-height: 1.5; }
 h2 { font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: .8px; margin: 28px 0 10px; border-top: 1px solid #ddd; padding-top: 16px; }
+.rec-badge { display: inline-block; background: #16a34a; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; margin-left: 8px; vertical-align: middle; }
 
 /* ── HERO ── */
 .hero {
   height: 120px; border-radius: 14px 14px 0 0;
   position: relative; overflow: hidden;
 }
-/* gradient layer always present */
-.hero-grad {
+.hero-grad { position: absolute; inset: 0; background-size: cover; }
+.hero-img  { position: absolute; inset: 0; background-size: cover; background-position: center 40%; opacity: .35; }
+
+/* Light fade — fades to white */
+.hero-fade-light {
   position: absolute; inset: 0;
-  background-size: cover; background-position: center 40%;
+  background: linear-gradient(to bottom, transparent 20%, rgba(255,255,255,.97) 100%);
 }
-/* image layer — sits on top of gradient, slightly transparent */
-.hero-img {
+/* Dark fade — fades to the dark card colour */
+.hero-fade-dark {
   position: absolute; inset: 0;
-  background-size: cover; background-position: center 40%;
-  opacity: 0.55;
-  transition: opacity .2s;
+  background: linear-gradient(to bottom, transparent 20%, #131620 100%);
 }
-/* fade to white at bottom for text readability */
-.hero-fade {
-  position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 25%, rgba(255,255,255,.97) 100%);
-}
+
 .hero-text {
   position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
   padding: 8px 14px 10px;
 }
-.hero-date { font-size: 18px; font-weight: 900; color: #111; line-height: 1.15; }
-.hero-city { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .7px; }
-.today-tag { display: inline-block; background: #e53e3e; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; letter-spacing: .5px; margin-left: 6px; vertical-align: middle; }
+.date-light { font-size: 18px; font-weight: 900; color: #111; line-height: 1.15; }
+.date-dark  { font-size: 18px; font-weight: 900; color: #f0f0f0; line-height: 1.15; }
+.city-light { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .7px; }
+.city-dark  { font-size: 11px; font-weight: 700; color: #8899bb; text-transform: uppercase; letter-spacing: .7px; }
+.today-tag  { display: inline-block; background: #e53e3e; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; letter-spacing: .5px; margin-left: 6px; vertical-align: middle; }
 
-.card-stub {
+/* ── CARD STUBS ── */
+.stub-light {
   background: #fff; border-radius: 0 0 14px 14px;
-  padding: 10px 14px 12px; font-size: 12px; color: #bbb;
-  box-shadow: 0 3px 14px rgba(0,0,0,.08); margin-bottom: 0;
+  padding: 11px 14px 14px; font-size: 12px; line-height: 1.7;
+  box-shadow: 0 3px 14px rgba(0,0,0,.08);
 }
-
-/* ── PAIR LAYOUT ── */
-.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
-.pair-label { font-size: 11px; font-weight: 700; margin-bottom: 5px; }
-.label-grad { color: #555; }
-.label-img  { color: #0066cc; }
-
-@media (max-width: 420px) {
-  .pair { grid-template-columns: 1fr; }
+.stub-dark {
+  background: #131620; border-radius: 0 0 14px 14px;
+  padding: 11px 14px 14px; font-size: 12px; line-height: 1.7;
+  box-shadow: 0 3px 14px rgba(0,0,0,.25);
 }
+.stub-row { display: flex; gap: 8px; align-items: center; padding: 3px 0; border-bottom: 1px solid rgba(0,0,0,.06); }
+.stub-row:last-child { border-bottom: none; }
+.stub-row-dark { display: flex; gap: 8px; align-items: center; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+.stub-row-dark:last-child { border-bottom: none; }
+.stub-icon { font-size: 13px; width: 18px; text-align: center; }
+.stub-text-light { font-size: 12px; color: #333; flex: 1; }
+.stub-text-dark  { font-size: 12px; color: #b0b8cc; flex: 1; }
+.stub-time-light { font-size: 11px; color: #aaa; font-weight: 700; min-width: 40px; }
+.stub-time-dark  { font-size: 11px; color: #556; font-weight: 700; min-width: 40px; }
+.stub-map-light { font-size: 10px; color: #0066cc; font-weight: 700; }
+.stub-map-dark  { font-size: 10px; color: #5599ff; font-weight: 700; }
 
-/* ═══════════════════════════════════
-   GRADIENT DEFINITIONS (brighter)
-═══════════════════════════════════ */
+/* Section label */
+.sec-label-light { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #ccc; margin-bottom: 8px; }
+.sec-label-dark  { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #334; margin-bottom: 8px; }
 
-/* NYC — Yankees navy, more vivid blue */
+/* Expense stub */
+.exp-stub-light { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+.exp-stub-dark  { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+.exp-total-light { font-size: 13px; font-weight: 800; color: #111; }
+.exp-total-dark  { font-size: 13px; font-weight: 800; color: #f0f0f0; }
+.add-btn-light { background: #111; color: #fff; border: none; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; }
+.add-btn-dark  { background: #2a3555; color: #7ab3ff; border: none; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; }
+
+/* Booked chip */
+.chip-booked-light { background: #dcfce7; color: #15803d; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.chip-booked-dark  { background: #0f3022; color: #4ade80; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.doc-btn-light { background: #e8f0fe; color: #0066cc; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: none; }
+.doc-btn-dark  { background: #1a2540; color: #5599ff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: none; }
+.doc-btn-unlinked-light { background: #f5f5f5; color: #bbb; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: 1px dashed #ddd; }
+.doc-btn-unlinked-dark  { background: transparent; color: #334; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: 1px dashed #334; }
+
+/* Gradients */
 .g-nyc { background: linear-gradient(150deg, #0a1e3d 0%, #0d3880 55%, #1a6bc4 100%); }
-
-/* Fort Worth — Texas sky, vivid burnt orange + deep sky blue */
 .g-dfw { background: linear-gradient(150deg, #0f2744 0%, #c75000 55%, #f0853c 100%); }
-
-/* Universal — Sunset thrill, punchy magenta → hot orange */
 .g-orl { background: linear-gradient(150deg, #3d0030 0%, #c2156a 48%, #ff6b2b 100%); }
-
-/* Disney — Cinderella, true sky blue, light and airy */
 .g-dis { background: linear-gradient(150deg, #0d3a7a 0%, #1976d2 48%, #90caf9 100%); }
-
-/* Vermont Ski — fresh powder, vivid ice blue → bright white-blue */
 .g-vt  { background: linear-gradient(150deg, #0b2545 0%, #1b7abf 48%, #b8e0f7 100%); }
-
-/* Boston — Red Sox, rich navy → vivid red */
 .g-bos { background: linear-gradient(150deg, #08142b 0%, #0d2d6e 45%, #d42b2b 100%); }
 
-/* ═══════════════════════════════════
-   UNSPLASH IMAGE URLS
-   (gradient shows if image fails to load)
-═══════════════════════════════════ */
-/* Images chosen for mood, not literal landmarks */
+/* Layout */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.col-label { font-size: 11px; font-weight: 700; margin-bottom: 5px; }
+.lbl-light { color: #555; }
+.lbl-dark  { color: #5599ff; }
+
+@media (max-width: 440px) { .pair { grid-template-columns: 1fr; } }
+
+/* Dark page bg for dark section */
+.dark-section { background: #0d1117; border-radius: 16px; padding: 16px; margin: -4px -4px 0; }
 </style>
 </head>
 <body>
 
-<h1>Mockup v2 — Refined Colours + Image Option</h1>
-<p class="page-note">Left = gradient only &nbsp;·&nbsp; Right = same gradient + Unsplash image overlay &nbsp;·&nbsp; Tell me which you prefer, and if the image mood feels right for each city.</p>
-<p class="page-note" style="color:#e53e3e">Images load from Unsplash CDN — need WiFi/data to appear. Gradient always shows as fallback.</p>
+<h1>Mockup v3 — Images Fixed + Dark Theme</h1>
+<p class="page-note">Images at 35% opacity throughout. Scroll to Part 2 for dark theme. Images load from Unsplash — need data connection.</p>
 
-<!-- ── NYC ── -->
-<h2>New York City (14–15 Dec, 30–31 Dec) — Yankees navy, vivid</h2>
-<div class="pair">
+<!-- ════════════════════════════════ -->
+<h2>Part 1 — All Cities, Images at 35% (Light theme)</h2>
+
+<!-- NYC -->
+<p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:700">NEW YORK CITY</p>
+<div style="margin-bottom:14px">
+  <div class="hero">
+    <div class="hero-grad g-nyc"></div>
+    <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=700&q=80&auto=format')"></div>
+    <div class="hero-fade-light"></div>
+    <div class="hero-text">
+      <div class="date-light">15 Dec — Tuesday <span class="today-tag">Today</span></div>
+      <div class="city-light">New York City</div>
+    </div>
+  </div>
+  <div class="stub-light">
+    <div class="sec-label-light">Lodging</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:13px;font-weight:700;color:#111">Residence Inn Times Square</span>
+      <span class="chip-booked-light">✓ Booked</span>
+      <button class="doc-btn-unlinked-light">📄 Receipt — not linked</button>
+    </div>
+    <div class="sec-label-light">Plan</div>
+    <div class="stub-row"><span class="stub-time-light">09:30</span><span class="stub-icon">🎄</span><span class="stub-text-light">Bryant Park Winter Village</span><span class="stub-map-light">📍 Maps</span></div>
+    <div class="stub-row"><span class="stub-time-light">10:45</span><span class="stub-icon">🌆</span><span class="stub-text-light">Top of the Rock — timed entry</span><span class="stub-map-light">📍 Maps</span></div>
+    <div class="stub-row"><span class="stub-time-light">13:00</span><span class="stub-icon">🦕</span><span class="stub-text-light">American Museum of Natural History</span><span class="stub-map-light">📍 Maps</span></div>
+    <div class="stub-row"><span class="stub-time-light">19:00</span><span class="stub-icon">🍽️</span><span class="stub-text-light">Tavern on the Green — dinner</span><span class="stub-map-light">📍 Maps</span></div>
+    <div class="exp-stub-light"><span class="exp-total-light">No expenses logged</span><button class="add-btn-light">+ Add</button></div>
+  </div>
+</div>
+
+<!-- Fort Worth -->
+<p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:700">FORT WORTH</p>
+<div style="margin-bottom:14px">
+  <div class="hero">
+    <div class="hero-grad g-dfw"></div>
+    <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80&auto=format')"></div>
+    <div class="hero-fade-light"></div>
+    <div class="hero-text">
+      <div class="date-light">17 Dec — Thursday</div>
+      <div class="city-light">Fort Worth</div>
+    </div>
+  </div>
+  <div class="stub-light" style="color:#bbb;font-size:12px;padding:10px 14px">Stockyards cattle drive · Nicholas working · Love Shack lunch</div>
+</div>
+
+<!-- Universal -->
+<p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:700">ORLANDO — UNIVERSAL</p>
+<div style="margin-bottom:14px">
+  <div class="hero">
+    <div class="hero-grad g-orl"></div>
+    <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1568819317551-ec884c4b5de1?w=700&q=80&auto=format')"></div>
+    <div class="hero-fade-light"></div>
+    <div class="hero-text">
+      <div class="date-light">19 Dec — Saturday</div>
+      <div class="city-light">Orlando — Universal</div>
+    </div>
+  </div>
+  <div class="stub-light" style="color:#bbb;font-size:12px;padding:10px 14px">USF + Islands of Adventure · Express Unlimited · Royal Pacific</div>
+</div>
+
+<!-- Disney -->
+<p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:700">ORLANDO — DISNEY</p>
+<div style="margin-bottom:14px">
+  <div class="hero">
+    <div class="hero-grad g-dis"></div>
+    <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1577493340887-b7bfff550145?w=700&q=80&auto=format')"></div>
+    <div class="hero-fade-light"></div>
+    <div class="hero-text">
+      <div class="date-light">21 Dec — Monday</div>
+      <div class="city-light">Orlando — Disney</div>
+    </div>
+  </div>
+  <div class="stub-light" style="color:#bbb;font-size:12px;padding:10px 14px">Hollywood Studios · Beach Club Resort · Lightning Lane</div>
+</div>
+
+<!-- Vermont -->
+<p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:700">VERMONT — SKI</p>
+<div style="margin-bottom:14px">
+  <div class="hero">
+    <div class="hero-grad g-vt"></div>
+    <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1551524559-8af4e6624178?w=700&q=80&auto=format')"></div>
+    <div class="hero-fade-light"></div>
+    <div class="hero-text">
+      <div class="date-light">25 Dec — Friday</div>
+      <div class="city-light">Vermont — Ski</div>
+    </div>
+  </div>
+  <div class="stub-light" style="color:#bbb;font-size:12px;padding:10px 14px">Smugglers' Notch · Christmas Day · Ski camp — Evan &amp; Elena</div>
+</div>
+
+<!-- Boston -->
+<p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:700">BOSTON</p>
+<div style="margin-bottom:14px">
+  <div class="hero">
+    <div class="hero-grad g-bos"></div>
+    <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1587474260584-136574528ed5?w=700&q=80&auto=format')"></div>
+    <div class="hero-fade-light"></div>
+    <div class="hero-text">
+      <div class="date-light">29 Dec — Tuesday</div>
+      <div class="city-light">Boston</div>
+    </div>
+  </div>
+  <div class="stub-light" style="color:#bbb;font-size:12px;padding:10px 14px">New England Aquarium · Quincy Market · Children's Museum</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<h2>Part 2 — Dark Theme <span class="rec-badge">Worth exploring</span></h2>
+<p class="page-note">Same card, same colours — but the card body is dark. Left = light (current). Right = dark. Note how the gradient blends into the card differently.</p>
+
+<div class="pair" style="margin-bottom:20px">
+  <!-- LIGHT -->
   <div>
-    <div class="pair-label label-grad">Gradient only</div>
+    <div class="col-label lbl-light">Light (current)</div>
     <div class="hero">
       <div class="hero-grad g-nyc"></div>
-      <div class="hero-fade"></div>
+      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=700&q=80&auto=format')"></div>
+      <div class="hero-fade-light"></div>
       <div class="hero-text">
-        <div class="hero-date">15 Dec — Tuesday <span class="today-tag">Today</span></div>
-        <div class="hero-city">New York City</div>
+        <div class="date-light">15 Dec — Tuesday <span class="today-tag">Today</span></div>
+        <div class="city-light">New York City</div>
       </div>
     </div>
-    <div class="card-stub">Bryant Park · Top of the Rock · AMNH · Tavern on the Green</div>
+    <div class="stub-light">
+      <div class="sec-label-light">Lodging</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="font-size:12px;font-weight:700;color:#111">Residence Inn Times Square</span>
+        <span class="chip-booked-light">✓ Booked</span>
+        <button class="doc-btn-light">📄 Receipt</button>
+      </div>
+      <div class="sec-label-light">Plan</div>
+      <div class="stub-row"><span class="stub-time-light">09:30</span><span class="stub-icon">🎄</span><span class="stub-text-light">Bryant Park</span><span class="stub-map-light">📍</span></div>
+      <div class="stub-row"><span class="stub-time-light">10:45</span><span class="stub-icon">🌆</span><span class="stub-text-light">Top of the Rock</span><span class="stub-map-light">📍</span></div>
+      <div class="stub-row"><span class="stub-time-light">13:00</span><span class="stub-icon">🦕</span><span class="stub-text-light">AMNH</span><span class="stub-map-light">📍</span></div>
+      <div class="stub-row"><span class="stub-time-light">19:00</span><span class="stub-icon">🍽️</span><span class="stub-text-light">Tavern on the Green</span><span class="stub-map-light">📍</span></div>
+      <div class="exp-stub-light" style="margin-top:8px"><span class="exp-total-light">$24.50 logged</span><button class="add-btn-light">+ Add</button></div>
+    </div>
   </div>
+
+  <!-- DARK -->
   <div>
-    <div class="pair-label label-img">+ Unsplash image</div>
+    <div class="col-label lbl-dark">Dark theme</div>
     <div class="hero">
       <div class="hero-grad g-nyc"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80&auto=format')"></div>
-      <div class="hero-fade"></div>
+      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=700&q=80&auto=format')"></div>
+      <div class="hero-fade-dark"></div>
       <div class="hero-text">
-        <div class="hero-date">15 Dec — Tuesday <span class="today-tag">Today</span></div>
-        <div class="hero-city">New York City</div>
+        <div class="date-dark">15 Dec — Tuesday <span class="today-tag">Today</span></div>
+        <div class="city-dark">New York City</div>
       </div>
     </div>
-    <div class="card-stub">Bryant Park · Top of the Rock · AMNH · Tavern on the Green</div>
+    <div class="stub-dark">
+      <div class="sec-label-dark">Lodging</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="font-size:12px;font-weight:700;color:#f0f0f0">Residence Inn Times Square</span>
+        <span class="chip-booked-dark">✓ Booked</span>
+        <button class="doc-btn-dark">📄 Receipt</button>
+      </div>
+      <div class="sec-label-dark">Plan</div>
+      <div class="stub-row-dark"><span class="stub-time-dark">09:30</span><span class="stub-icon">🎄</span><span class="stub-text-dark">Bryant Park</span><span class="stub-map-dark">📍</span></div>
+      <div class="stub-row-dark"><span class="stub-time-dark">10:45</span><span class="stub-icon">🌆</span><span class="stub-text-dark">Top of the Rock</span><span class="stub-map-dark">📍</span></div>
+      <div class="stub-row-dark"><span class="stub-time-dark">13:00</span><span class="stub-icon">🦕</span><span class="stub-text-dark">AMNH</span><span class="stub-map-dark">📍</span></div>
+      <div class="stub-row-dark"><span class="stub-time-dark">19:00</span><span class="stub-icon">🍽️</span><span class="stub-text-dark">Tavern on the Green</span><span class="stub-map-dark">📍</span></div>
+      <div class="exp-stub-dark" style="margin-top:8px"><span class="exp-total-dark">$24.50 logged</span><button class="add-btn-dark">+ Add</button></div>
+    </div>
   </div>
 </div>
 
-<!-- ── FORT WORTH ── -->
-<h2>Fort Worth / Dallas (16–18 Dec) — Texas sky, vivid burnt orange</h2>
+<!-- Dark theme — Vermont -->
+<p class="page-note" style="margin-bottom:8px">Dark theme also works well for lighter gradients like Vermont — the image pops more against the dark card.</p>
 <div class="pair">
   <div>
-    <div class="pair-label label-grad">Gradient only</div>
-    <div class="hero">
-      <div class="hero-grad g-dfw"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">17 Dec — Thursday</div>
-        <div class="hero-city">Fort Worth</div>
-      </div>
-    </div>
-    <div class="card-stub">Stockyards cattle drive · Nicholas working</div>
-  </div>
-  <div>
-    <div class="pair-label label-img">+ Unsplash image</div>
-    <div class="hero">
-      <div class="hero-grad g-dfw"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1570166009405-1b4e2d2dae67?w=600&q=80&auto=format')"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">17 Dec — Thursday</div>
-        <div class="hero-city">Fort Worth</div>
-      </div>
-    </div>
-    <div class="card-stub">Stockyards cattle drive · Nicholas working</div>
-  </div>
-</div>
-
-<!-- ── UNIVERSAL ── -->
-<h2>Orlando — Universal (18–20 Dec) — Sunset thrill, punchy</h2>
-<div class="pair">
-  <div>
-    <div class="pair-label label-grad">Gradient only</div>
-    <div class="hero">
-      <div class="hero-grad g-orl"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">19 Dec — Saturday</div>
-        <div class="hero-city">Orlando — Universal</div>
-      </div>
-    </div>
-    <div class="card-stub">USF + Islands of Adventure · Royal Pacific</div>
-  </div>
-  <div>
-    <div class="pair-label label-img">+ Unsplash image</div>
-    <div class="hero">
-      <div class="hero-grad g-orl"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1525498128493-380d1990a112?w=600&q=80&auto=format')"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">19 Dec — Saturday</div>
-        <div class="hero-city">Orlando — Universal</div>
-      </div>
-    </div>
-    <div class="card-stub">USF + Islands of Adventure · Royal Pacific</div>
-  </div>
-</div>
-
-<!-- ── DISNEY ── -->
-<h2>Orlando — Disney (20–24 Dec) — Cinderella sky blue, light &amp; airy</h2>
-<div class="pair">
-  <div>
-    <div class="pair-label label-grad">Gradient only</div>
-    <div class="hero">
-      <div class="hero-grad g-dis"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">21 Dec — Monday</div>
-        <div class="hero-city">Orlando — Disney</div>
-      </div>
-    </div>
-    <div class="card-stub">Hollywood Studios · Beach Club Resort</div>
-  </div>
-  <div>
-    <div class="pair-label label-img">+ Unsplash image</div>
-    <div class="hero">
-      <div class="hero-grad g-dis"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1605870445919-838d190e8e1b?w=600&q=80&auto=format')"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">21 Dec — Monday</div>
-        <div class="hero-city">Orlando — Disney</div>
-      </div>
-    </div>
-    <div class="card-stub">Hollywood Studios · Beach Club Resort</div>
-  </div>
-</div>
-
-<!-- ── VERMONT ── -->
-<h2>Vermont — Ski (24–28 Dec) — Fresh powder, vivid ice blue</h2>
-<div class="pair">
-  <div>
-    <div class="pair-label label-grad">Gradient only</div>
+    <div class="col-label lbl-light">Vermont — Light</div>
     <div class="hero">
       <div class="hero-grad g-vt"></div>
-      <div class="hero-fade"></div>
+      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1551524559-8af4e6624178?w=700&q=80&auto=format')"></div>
+      <div class="hero-fade-light"></div>
       <div class="hero-text">
-        <div class="hero-date">25 Dec — Friday</div>
-        <div class="hero-city">Vermont — Ski</div>
+        <div class="date-light">25 Dec — Friday</div>
+        <div class="city-light">Vermont — Ski</div>
       </div>
     </div>
-    <div class="card-stub">Smugglers' Notch · Christmas Day · Ski camp</div>
+    <div class="stub-light">
+      <div class="stub-row"><span class="stub-time-light">AM</span><span class="stub-icon">⛷️</span><span class="stub-text-light">Ski camp — Evan &amp; Elena</span></div>
+      <div class="stub-row"><span class="stub-time-light">Day</span><span class="stub-icon">🎿</span><span class="stub-text-light">Parents alternate slopes + baby</span></div>
+      <div class="stub-row"><span class="stub-time-light">Eve</span><span class="stub-icon">🎄</span><span class="stub-text-light">Christmas dinner — TBD</span></div>
+    </div>
   </div>
   <div>
-    <div class="pair-label label-img">+ Unsplash image</div>
+    <div class="col-label lbl-dark">Vermont — Dark</div>
     <div class="hero">
       <div class="hero-grad g-vt"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1551524559-8af4e6624178?w=600&q=80&auto=format')"></div>
-      <div class="hero-fade"></div>
+      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1551524559-8af4e6624178?w=700&q=80&auto=format')"></div>
+      <div class="hero-fade-dark"></div>
       <div class="hero-text">
-        <div class="hero-date">25 Dec — Friday</div>
-        <div class="hero-city">Vermont — Ski</div>
+        <div class="date-dark">25 Dec — Friday</div>
+        <div class="city-dark">Vermont — Ski</div>
       </div>
     </div>
-    <div class="card-stub">Smugglers' Notch · Christmas Day · Ski camp</div>
-  </div>
-</div>
-
-<!-- ── BOSTON ── -->
-<h2>Boston (28–30 Dec) — Red Sox navy/red, rich</h2>
-<div class="pair">
-  <div>
-    <div class="pair-label label-grad">Gradient only</div>
-    <div class="hero">
-      <div class="hero-grad g-bos"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">29 Dec — Tuesday</div>
-        <div class="hero-city">Boston</div>
-      </div>
+    <div class="stub-dark">
+      <div class="stub-row-dark"><span class="stub-time-dark">AM</span><span class="stub-icon">⛷️</span><span class="stub-text-dark">Ski camp — Evan &amp; Elena</span></div>
+      <div class="stub-row-dark"><span class="stub-time-dark">Day</span><span class="stub-icon">🎿</span><span class="stub-text-dark">Parents alternate slopes + baby</span></div>
+      <div class="stub-row-dark"><span class="stub-time-dark">Eve</span><span class="stub-icon">🎄</span><span class="stub-text-dark">Christmas dinner — TBD</span></div>
     </div>
-    <div class="card-stub">Aquarium · Quincy Market · Children's Museum</div>
-  </div>
-  <div>
-    <div class="pair-label label-img">+ Unsplash image</div>
-    <div class="hero">
-      <div class="hero-grad g-bos"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1569388037243-dfa034100ae0?w=600&q=80&auto=format')"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">29 Dec — Tuesday</div>
-        <div class="hero-city">Boston</div>
-      </div>
-    </div>
-    <div class="card-stub">Aquarium · Quincy Market · Children's Museum</div>
-  </div>
-</div>
-
-<!-- ── IMAGE OPACITY OPTIONS ── -->
-<h2>Image opacity — which level feels right? (using NYC as example)</h2>
-<p style="font-size:12px;color:#888;margin-bottom:12px">The image sits on top of the gradient. Too faint = loses the photo. Too strong = hard to read the date.</p>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-  <div>
-    <div class="pair-label" style="color:#555">Subtle — 35%</div>
-    <div class="hero">
-      <div class="hero-grad g-nyc"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80&auto=format');opacity:.35"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">14 Dec — Monday</div>
-        <div class="hero-city">New York City</div>
-      </div>
-    </div>
-    <div class="card-stub">Arrive JFK</div>
-  </div>
-  <div>
-    <div class="pair-label" style="color:#0066cc">Balanced — 55%</div>
-    <div class="hero">
-      <div class="hero-grad g-nyc"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80&auto=format');opacity:.55"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">14 Dec — Monday</div>
-        <div class="hero-city">New York City</div>
-      </div>
-    </div>
-    <div class="card-stub">Arrive JFK</div>
-  </div>
-  <div>
-    <div class="pair-label" style="color:#9333ea">Bold — 75%</div>
-    <div class="hero">
-      <div class="hero-grad g-nyc"></div>
-      <div class="hero-img" style="background-image:url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80&auto=format');opacity:.75"></div>
-      <div class="hero-fade"></div>
-      <div class="hero-text">
-        <div class="hero-date">14 Dec — Monday</div>
-        <div class="hero-city">New York City</div>
-      </div>
-    </div>
-    <div class="card-stub">Arrive JFK</div>
   </div>
 </div>
 
