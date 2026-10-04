@@ -812,22 +812,29 @@ const DAYS = [
    LOCKED / COMMITTED COSTS
 ───────────────────────────────────────── */
 const LOCKED_COSTS = [
-  { label:'SQ24/SQ23 — SIN↔JFK (Premium Economy, 5 pax)', cat:'flights',    amt:9403.31 },
-  { label:'AA865 — JFK→DFW (Domestic First, 5 pax)',       cat:'flights',    amt:1988.37 },
-  { label:'AA — MCO→EWR→BTV (Economy, 5 pax)',             cat:'flights',    amt:1380.91 },
-  { label:'Residence Inn Times Square (2 nts)',             cat:'hotels',     amt:1252.56 },
-  { label:'Loews Royal Pacific Resort (2 nts)',             cat:'hotels',     amt:1934.46 },
-  { label:"Disney's Beach Club Resort (4 nts)",             cat:'hotels',     amt:3364.56 },
-  { label:"Smugglers' Notch Resort (4 nts)",                cat:'hotels',     amt:5315.98 },
-  { label:'Boston Marriott Long Wharf (2 nts)',             cat:'hotels',     amt:1017.46 },
-  { label:'Conrad New York Downtown (1 nt)',                cat:'hotels',     amt:759.48  },
-  { label:'Universal 2-Day Tickets (4 pax)',                cat:'activities', amt:1474.77 },
-  { label:'Epic Universe Express Passes (4 pax)',           cat:'activities', amt:1277.96 },
-  { label:"Disney 2-Day Base Tickets (4 pax)",              cat:'activities', amt:1621.86 },
-  { label:"Mickey's Very Merry Christmas Party (4 pax)",   cat:'activities', amt:954.26  },
-  { label:'Hertz 4WD SUV (7 days, BTV→JFK one-way)',       cat:'transport',  amt:988.45  },
+  { label:'SQ24/SQ23 — SIN↔JFK (Premium Economy, 5 pax)', cat:'flights',    amt:9403.31, date:'2026-12-14' },
+  { label:'AA865 — JFK→DFW (Domestic First, 5 pax)',       cat:'flights',    amt:1988.37, date:'2026-12-16' },
+  { label:'AA — MCO→EWR→BTV (Economy, 5 pax)',             cat:'flights',    amt:1380.91, date:'2026-12-24' },
+  { label:'Residence Inn Times Square (2 nts)',             cat:'hotels',     amt:1252.56, date:'2026-12-14' },
+  { label:'Loews Royal Pacific Resort (2 nts)',             cat:'hotels',     amt:1934.46, date:'2026-12-18' },
+  { label:"Disney's Beach Club Resort (4 nts)",             cat:'hotels',     amt:3364.56, date:'2026-12-20' },
+  { label:"Smugglers' Notch Resort (4 nts)",                cat:'hotels',     amt:5315.98, date:'2026-12-24' },
+  { label:'Boston Marriott Long Wharf (2 nts)',             cat:'hotels',     amt:1017.46, date:'2026-12-28' },
+  { label:'Conrad New York Downtown (1 nt)',                cat:'hotels',     amt:759.48,  date:'2026-12-30' },
+  { label:'Universal 2-Day Tickets (4 pax)',                cat:'activities', amt:1474.77, date:'2026-12-19' },
+  { label:'Epic Universe Express Passes (4 pax)',           cat:'activities', amt:1277.96, date:'2026-12-20' },
+  { label:"Disney 2-Day Base Tickets (4 pax)",              cat:'activities', amt:1621.86, date:'2026-12-21' },
+  { label:"Mickey's Very Merry Christmas Party (4 pax)",   cat:'activities', amt:954.26,  date:'2026-12-22' },
+  { label:'Hertz 4WD SUV (7 days, BTV→JFK one-way)',       cat:'transport',  amt:988.45,  date:'2026-12-24' },
 ];
 // Note: Worthington Renaissance Fort Worth (2 nts) excluded — cost TBC, work/self split pending
+
+const CAT_META = {
+  flights:    { label:'Flights',              color:'#6aabff' },
+  hotels:     { label:'Hotels',              color:'#4ade80' },
+  activities: { label:'Activities & Tickets', color:'#b07dff' },
+  transport:  { label:'Ground Transport',     color:'#f59e0b' },
+};
 
 /* ─────────────────────────────────────────
    EXPENSE LOG
@@ -971,6 +978,27 @@ function renderDay(day) {
     docs = `<div class="sec"><div class="sec-lbl">Documents</div>${rows}</div>`;
   }
 
+  // Pre-paid costs for this day
+  const dayLocked = LOCKED_COSTS.filter(c=>c.date===day.date);
+  let prepaid = '';
+  if(dayLocked.length) {
+    const dayLockedTotal = dayLocked.reduce((s,e)=>s+e.amt,0);
+    const prows = dayLocked.map(c=>{
+      const m = CAT_META[c.cat]||{color:'#7a8baa'};
+      return `<div class="sum-row" style="font-size:12px">
+        <span class="sum-lbl" style="font-size:12px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${m.color};margin-right:8px;flex-shrink:0"></span>${c.label}</span>
+        <span class="sum-amt" style="font-size:12px">$${fmt(c.amt)}</span>
+      </div>`;
+    }).join('');
+    prepaid = `<div class="sec">
+      <div class="sec-lbl">Pre-paid</div>
+      ${prows}
+      <div style="display:flex;justify-content:space-between;padding:8px 0 0;font-size:13px;font-weight:900;color:var(--t1);border-top:1px solid var(--border);margin-top:2px">
+        <span>Today's committed</span><span>$${fmt(dayLockedTotal)}</span>
+      </div>
+    </div>`;
+  }
+
   // Expenses
   const dayTotal = getDayExp(day.date).reduce((s,e)=>s+Number(e.amt),0);
   const totalLabel = dayTotal>0 ? `$${fmt(dayTotal)} logged` : 'No expenses logged';
@@ -995,7 +1023,7 @@ function renderDay(day) {
     </div>
     ${lodging}${flights}
     <div class="sec"><div class="sec-lbl">Plan</div>${tl}</div>
-    ${meals}${docs}${expSec}
+    ${meals}${docs}${prepaid}${expSec}
   </div>`;
 }
 
@@ -1179,24 +1207,26 @@ async function openSpend() {
     } catch { fxRate = null; }
   }
   // ── Committed costs ──────────────────────────────
-  const lockedByCat = {};
-  const lockedTotal = LOCKED_COSTS.reduce((s,e)=>{ lockedByCat[e.cat]=(lockedByCat[e.cat]||0)+e.amt; return s+e.amt; }, 0);
-  const catMeta = {
-    flights:    { label:'Flights',                 color:'#6aabff' },
-    hotels:     { label:'Hotels',                  color:'#4ade80' },
-    activities: { label:'Activities & Tickets',    color:'#b07dff' },
-    transport:  { label:'Ground Transport',        color:'#f59e0b' },
-  };
+  const lockedTotal = LOCKED_COSTS.reduce((s,e)=>s+e.amt, 0);
+  const grouped = {};
+  LOCKED_COSTS.forEach(e=>{ if(!grouped[e.cat])grouped[e.cat]=[]; grouped[e.cat].push(e); });
 
   let html = '<div class="sum-sec-title">Committed (Booked & Paid)</div>';
-  Object.entries(lockedByCat).forEach(([cat,amt])=>{
-    const m = catMeta[cat]||{label:cat,color:'#7a8baa'};
-    html += `<div class="sum-row">
+  Object.entries(grouped).forEach(([cat,items])=>{
+    const m = CAT_META[cat]||{label:cat,color:'#7a8baa'};
+    const subtotal = items.reduce((s,e)=>s+e.amt,0);
+    html += `<div class="sum-row" style="padding-bottom:4px">
       <span class="sum-lbl"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${m.color};margin-right:8px;flex-shrink:0"></span>${m.label}</span>
-      <span class="sum-amt">$${fmt(amt)}</span>
+      <span class="sum-amt">$${fmt(subtotal)}</span>
     </div>`;
+    items.forEach(item=>{
+      html += `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0 3px 20px;border-bottom:1px solid var(--border)">
+        <span style="font-size:11px;color:var(--t2);flex:1;padding-right:8px">${item.label}</span>
+        <span style="font-size:11px;font-weight:800;color:var(--t1);flex-shrink:0">$${fmt(item.amt)}</span>
+      </div>`;
+    });
   });
-  html += `<div style="font-size:11px;color:var(--amber);margin:4px 0 6px;padding-left:4px">⚠ Worthington Renaissance (Fort Worth, 2 nts) — cost TBC, excluded</div>`;
+  html += `<div style="font-size:11px;color:var(--amber);margin:6px 0 4px;padding-left:4px">⚠ Worthington Renaissance (Fort Worth, 2 nts) — cost TBC, excluded</div>`;
   html += `<div class="sum-total" style="font-size:15px"><span>Committed Total</span><span>$${fmt(lockedTotal)}</span></div>`;
 
   // ── Variable logged ───────────────────────────────
