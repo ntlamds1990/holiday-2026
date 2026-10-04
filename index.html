@@ -2,277 +2,347 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Family Trip 2026 — Nicholas & Family</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Family Trip 2026</title>
 <style>
 :root {
-  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif;
-  --r: 14px;
+  --bg:       #0d1017;
+  --card:     #131620;
+  --border:   rgba(255,255,255,.07);
+  --t1:       #e8eaf0;
+  --t2:       #7a8baa;
+  --t3:       #2e3d54;
+  --accent:   #5599ff;
+  --green:    #4ade80;
+  --gbg:      #0a2018;
+  --amber:    #fbbf24;
+  --abg:      #1c1400;
+  --font:     -apple-system, BlinkMacSystemFont, 'SF Pro Text', Arial, sans-serif;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); background: #f0f2f5; color: #111; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); font-family: var(--font); color: var(--t1); -webkit-font-smoothing: antialiased; }
 
-/* ── Header / Nav ── */
-#trip-header {
-  position: sticky; top: 0; z-index: 100;
-  background: #fff; border-bottom: 1px solid #e8e9ec;
-  box-shadow: 0 1px 8px rgba(0,0,0,.06);
-  padding: 12px 16px 0;
+/* ── HEADER ── */
+#hdr {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,12,20,.92); backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
-#header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-#trip-title { font-size: 14px; font-weight: 800; color: #111; }
-#trip-meta { font-size: 11px; color: #888; margin-top: 1px; }
-#summary-btn {
-  background: #111; color: #fff; border: none; border-radius: 20px;
-  padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
+#hdr-top { display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 16px 6px; }
+#hdr-left {}
+#countdown { font-size: 13px; font-weight: 800; color: var(--t1); line-height: 1.2; }
+#day-summary { font-size: 11px; color: var(--t2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100vw - 90px); }
+#hdr-btns { display: flex; gap: 8px; flex-shrink: 0; margin-top: 1px; }
+.hdr-btn {
+  background: var(--t3); border: none; border-radius: 20px;
+  color: var(--t2); font-size: 11px; font-weight: 700; padding: 5px 11px;
+  cursor: pointer; white-space: nowrap;
 }
-#day-nav {
-  display: flex; gap: 6px; overflow-x: auto; padding-bottom: 12px;
-  scrollbar-width: none; -webkit-overflow-scrolling: touch;
-}
-#day-nav::-webkit-scrollbar { display: none; }
-.day-pill {
-  flex-shrink: 0; padding: 5px 11px; border-radius: 20px; border: none;
+.hdr-btn:active { opacity: .7; }
+#nav-strip { display: flex; gap: 5px; overflow-x: auto; padding: 0 16px 10px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+#nav-strip::-webkit-scrollbar { display: none; }
+.nav-pill {
+  flex-shrink: 0; padding: 4px 10px; border-radius: 20px; border: none;
   font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap;
-  background: #f0f2f5; color: #666; transition: background .15s;
+  background: var(--t3); color: var(--t2); transition: background .15s, color .15s;
 }
-.day-pill.today { background: #111; color: #fff; }
-.day-pill.past { opacity: .45; }
-.day-pill:not(.today):not(.past):hover { background: #e0e2e5; }
+.nav-pill.active  { background: #1e3a6e; color: #7ab3ff; }
+.nav-pill.today   { background: #1e3a6e; color: #7ab3ff; outline: 1.5px solid #3a6abf; }
+.nav-pill.past    { opacity: .35; }
 
-/* ── Main ── */
-#days-container { padding: 14px; max-width: 620px; margin: 0 auto; }
+/* ── SWIPE CONTAINER ── */
+#pages {
+  display: flex; overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+}
+#pages::-webkit-scrollbar { display: none; }
+.day-page {
+  flex-shrink: 0; width: 100vw;
+  scroll-snap-align: start;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.day-page::-webkit-scrollbar { display: none; }
+.page-inner { padding: 0 0 32px; }
 
-/* ── Day Card ── */
-.day-card {
-  border-radius: var(--r); overflow: hidden;
-  margin-bottom: 14px; box-shadow: 0 2px 14px rgba(0,0,0,.07);
-  background: #fff;
-}
-.day-hero {
-  height: 110px; background-size: cover; background-position: center;
-  position: relative;
-}
-.day-hero::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.18) 0%, rgba(255,255,255,1) 100%);
-}
-.day-hero-text {
-  position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
-  padding: 10px 16px 6px;
-}
-.day-date-label { font-size: 19px; font-weight: 900; color: #111; line-height: 1.1; }
-.day-location-label { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .7px; }
-.today-tag {
-  display: inline-block; background: #e53e3e; color: #fff;
-  font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 20px;
-  text-transform: uppercase; letter-spacing: .5px; margin-left: 6px; vertical-align: middle;
-}
+/* ── HERO ── */
+.hero { height: 120px; position: relative; overflow: hidden; }
+.hero-grad { position: absolute; inset: 0; }
+.hero-img  { position: absolute; inset: 0; background-size: cover; background-position: center 40%; opacity: .35; }
+.hero-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 15%, #131620 100%); }
+.hero-text { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding: 8px 16px 10px; }
+.hero-date { font-size: 20px; font-weight: 900; color: var(--t1); line-height: 1.15; }
+.hero-city { font-size: 10px; font-weight: 700; color: var(--t2); text-transform: uppercase; letter-spacing: .8px; margin-top: 1px; }
+.today-pill { display: inline-block; background: #e53e3e; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; letter-spacing: .4px; margin-left: 7px; vertical-align: middle; }
 
-/* ── Card Section ── */
-.card-section {
-  padding: 12px 16px;
-  border-top: 1px solid #f2f2f2;
-  background: #fff;
-}
-.section-label {
-  font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-  color: #bbb; margin-bottom: 9px;
-}
+/* City gradients */
+.g-nyc     { background: linear-gradient(150deg, #0a1e3d 0%, #0d3880 55%, #1a6bc4 100%); }
+.g-dfw     { background: linear-gradient(150deg, #0f2744 0%, #c75000 55%, #f0853c 100%); }
+.g-orlando { background: linear-gradient(150deg, #3d0030 0%, #c2156a 48%, #ff6b2b 100%); }
+.g-disney  { background: linear-gradient(150deg, #0d3a7a 0%, #1976d2 48%, #90caf9 100%); }
+.g-vermont { background: linear-gradient(150deg, #0b2545 0%, #1b7abf 48%, #b8e0f7 100%); }
+.g-boston  { background: linear-gradient(150deg, #08142b 0%, #0d2d6e 45%, #d42b2b 100%); }
 
-/* ── Lodging pill ── */
-.lodging-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.lodging-name { font-size: 13px; font-weight: 700; color: #111; }
-.status-chip {
-  font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
-}
-.chip-booked { background: #dcfce7; color: #15803d; }
-.chip-tbc { background: #fef9c3; color: #92400e; }
-.doc-link {
-  font-size: 11px; color: #0066cc; text-decoration: none; font-weight: 600;
-  background: #e8f0fe; padding: 2px 8px; border-radius: 20px;
-}
-.checkin-tag { font-size: 10px; color: #6b7280; font-weight: 600; }
+/* ── CARD SECTION ── */
+.sec { padding: 12px 16px; border-top: 1px solid var(--border); }
+.sec-lbl { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); margin-bottom: 9px; }
 
-/* ── Flight card ── */
-.flight-card {
-  border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;
-  background: linear-gradient(135deg, #0f1729 0%, #1e3a6e 100%);
-  color: #fff;
-}
+/* ── LODGING ── */
+.lodging-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.lodging-name { font-size: 13px; font-weight: 700; color: var(--t1); }
+.chip { font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+.chip-ok  { background: var(--gbg); color: var(--green); }
+.chip-tbc { background: var(--abg); color: var(--amber); }
+.chip-ci  { color: var(--t3); font-size: 10px; font-weight: 700; }
+.doc-btn { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; border: none; cursor: pointer; }
+.doc-linked   { background: #162a50; color: var(--accent); }
+.doc-unlinked { background: transparent; color: var(--t3); border: 1px dashed var(--t3); }
+
+/* ── FLIGHT CARD ── */
+.flight-card { border-radius: 10px; padding: 11px 13px; margin-bottom: 7px; background: linear-gradient(135deg, #0c1f50 0%, #1040a0 100%); }
 .flight-card:last-child { margin-bottom: 0; }
-.flight-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.flight-num { font-size: 11px; font-weight: 800; opacity: .65; letter-spacing: 1px; }
-.flight-status-chip { font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 20px; background: #22c55e; color: #fff; }
-.flight-route { display: flex; align-items: center; gap: 6px; }
-.flight-iata { font-size: 24px; font-weight: 900; letter-spacing: -1px; }
+.flight-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.flight-num { font-size: 10px; font-weight: 800; color: rgba(255,255,255,.5); letter-spacing: 1px; }
+.flight-ok-chip { background: #166534; color: var(--green); font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+.flight-route { display: flex; align-items: center; }
+.flight-iata { font-size: 26px; font-weight: 900; color: #fff; letter-spacing: -1px; }
 .flight-mid { flex: 1; text-align: center; }
-.flight-arrow { font-size: 12px; opacity: .5; display: block; }
-.flight-duration { font-size: 9px; opacity: .5; }
-.flight-times { display: flex; justify-content: space-between; font-size: 11px; opacity: .7; margin-top: 6px; }
-.flight-cabin { font-size: 10px; opacity: .55; margin-top: 4px; }
+.flight-arrow { font-size: 11px; color: rgba(255,255,255,.35); display: block; }
+.flight-times { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,.55); margin-top: 5px; }
+.flight-meta { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.flight-cabin { font-size: 10px; color: rgba(255,255,255,.45); }
 
-/* ── Timeline ── */
-.timeline-item {
-  display: flex; gap: 8px; align-items: flex-start;
-  margin-bottom: 9px;
-}
-.timeline-item:last-child { margin-bottom: 0; }
-.tl-time { font-size: 11px; font-weight: 700; color: #aaa; min-width: 42px; padding-top: 1px; flex-shrink: 0; }
+/* ── TIMELINE ── */
+.tl-item { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-time { font-size: 10px; font-weight: 800; color: var(--t3); min-width: 44px; padding-top: 2px; flex-shrink: 0; }
 .tl-icon { font-size: 13px; min-width: 18px; text-align: center; flex-shrink: 0; margin-top: 1px; }
 .tl-body { flex: 1; }
-.tl-text { font-size: 13px; line-height: 1.45; color: #222; }
-.tl-map { display: inline-block; font-size: 10px; color: #0066cc; text-decoration: none; font-weight: 600; margin-top: 2px; }
+.tl-text { font-size: 13px; line-height: 1.45; color: var(--t2); }
+.tl-text strong { color: var(--t1); font-weight: 700; }
+.tl-map { display: inline-block; font-size: 10px; color: var(--accent); text-decoration: none; font-weight: 700; margin-top: 3px; }
+.tl-note { font-size: 11px; color: var(--t3); margin-top: 3px; line-height: 1.4; }
+.tl-warn { font-size: 11px; color: var(--amber); margin-top: 3px; }
 
-/* ── Meals ── */
-.meal-item { font-size: 13px; color: #333; margin-bottom: 6px; line-height: 1.4; }
-.meal-item:last-child { margin-bottom: 0; }
-.meal-tag { font-size: 10px; font-weight: 700; color: #888; margin-right: 4px; }
+/* ── MEALS ── */
+.meal-row { font-size: 13px; color: var(--t2); margin-bottom: 5px; line-height: 1.4; }
+.meal-row:last-child { margin-bottom: 0; }
+.meal-tag { font-size: 10px; font-weight: 800; color: var(--t3); margin-right: 5px; text-transform: uppercase; }
 
-/* ── Expense log ── */
-.expense-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.expense-day-total { font-size: 13px; font-weight: 800; color: #111; }
-.add-btn {
-  background: #111; color: #fff; border: none; border-radius: 20px;
-  padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer;
-}
-.expense-empty { font-size: 12px; color: #ccc; font-style: italic; }
-.expense-item {
-  display: flex; align-items: center; gap: 6px; padding: 6px 0;
-  border-bottom: 1px solid #f5f5f5;
-}
-.expense-item:last-child { border-bottom: none; }
-.exp-cat { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.exp-desc { flex: 1; font-size: 13px; color: #222; }
-.exp-method { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; flex-shrink: 0; }
-.exp-amt { font-size: 13px; font-weight: 800; color: #111; flex-shrink: 0; }
-.exp-del { background: none; border: none; color: #ddd; cursor: pointer; font-size: 15px; padding: 0 2px; flex-shrink: 0; }
-.exp-del:hover { color: #e53e3e; }
+/* ── DOCUMENTS ── */
+.doc-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); }
+.doc-row:last-child { border-bottom: none; }
+.doc-label { font-size: 12px; font-weight: 600; color: var(--t2); }
 
-/* Category colours */
-.cat-food    { background: #f59e0b; } .method-food    { background: #fef3c7; color: #92400e; }
-.cat-transport { background: #3b82f6; } .method-transport { background: #dbeafe; color: #1e40af; }
-.cat-activities { background: #8b5cf6; } .method-activities { background: #f3e8ff; color: #6b21a8; }
-.cat-shopping  { background: #ec4899; } .method-shopping  { background: #fce7f3; color: #9d174d; }
-.cat-other   { background: #94a3b8; } .method-other   { background: #f1f5f9; color: #475569; }
+/* ── EXPENSE ── */
+.exp-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.exp-total { font-size: 13px; font-weight: 800; color: var(--t1); }
+.add-exp-btn { background: #1e2d4a; color: var(--accent); border: none; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.exp-empty { font-size: 12px; color: var(--t3); font-style: italic; }
+.exp-item { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.exp-item:last-child { border-bottom: none; }
+.exp-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.exp-desc { flex: 1; font-size: 13px; color: var(--t1); }
+.exp-pm { font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 12px; flex-shrink: 0; }
+.exp-amt { font-size: 13px; font-weight: 800; color: var(--t1); flex-shrink: 0; }
+.exp-del { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 15px; padding: 0 3px; flex-shrink: 0; }
+.exp-del:active { color: #e53e3e; }
 
-/* Payment method chips */
-.pm-uob   { background: #dbeafe; color: #1e40af; }
-.pm-dbs   { background: #dcfce7; color: #166534; }
-.pm-cash  { background: #fef9c3; color: #854d0e; }
-.pm-amex  { background: #ede9fe; color: #5b21b6; }
-.pm-visa  { background: #fff7ed; color: #c2410c; }
-.pm-other { background: #f1f5f9; color: #475569; }
+.d-food       { background: #f59e0b; } .pm-food       { background: #2a1a00; color: #f59e0b; }
+.d-transport  { background: #3b82f6; } .pm-transport  { background: #0d1f40; color: #6aabff; }
+.d-activities { background: #8b5cf6; } .pm-activities { background: #1a0d35; color: #b07dff; }
+.d-shopping   { background: #ec4899; } .pm-shopping   { background: #2a0820; color: #f479c0; }
+.d-other      { background: #64748b; } .pm-other      { background: #151c28; color: #7a8baa; }
 
-/* ── City hero gradients ── */
-.hero-nyc     { background: linear-gradient(135deg, #0f1729, #1a3a6e, #2d5282); }
-.hero-dfw     { background: linear-gradient(135deg, #3d1a06, #7c3b0e, #c26a2d); }
-.hero-orlando { background: linear-gradient(135deg, #1a0533, #3d1580, #6d28d9); }
-.hero-disney  { background: linear-gradient(135deg, #001a3d, #0050a0, #0080d0); }
-.hero-vermont { background: linear-gradient(135deg, #0a200a, #1a4d1a, #3a7a3a); }
-.hero-boston  { background: linear-gradient(135deg, #0a1228, #7a1020, #b91c1c); }
+.pm-uob   { background: #0d1f40; color: #6aabff; }
+.pm-dbs   { background: var(--gbg); color: var(--green); }
+.pm-cash  { background: var(--abg); color: var(--amber); }
+.pm-amex  { background: #1a0d35; color: #b07dff; }
+.pm-visa  { background: #1a0f00; color: #f59e0b; }
+.pm-other { background: #151c28; color: var(--t2); }
 
-/* ── Summary panel ── */
-#summary-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.4); z-index: 400;
-}
-#summary-overlay.open { display: block; }
-#summary-panel {
+/* ── SLIDE-UP PANELS ── */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; }
+.overlay.open { display: block; }
+.panel {
   position: fixed; bottom: 0; left: 0; right: 0;
-  background: #fff; border-radius: 20px 20px 0 0;
-  padding: 20px 20px 40px; z-index: 401;
-  max-height: 70vh; overflow-y: auto;
+  background: #0f1520; border-radius: 22px 22px 0 0;
+  border-top: 1px solid var(--border);
+  padding: 0 0 40px; z-index: 201;
+  max-height: 80vh; overflow-y: auto;
   transform: translateY(100%); transition: transform .28s ease;
 }
-#summary-overlay.open #summary-panel { transform: translateY(0); }
-.panel-handle { width: 40px; height: 4px; background: #e0e0e0; border-radius: 2px; margin: 0 auto 16px; }
-.panel-title { font-size: 17px; font-weight: 900; margin-bottom: 16px; }
-.sum-section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: #aaa; margin: 16px 0 8px; }
-.sum-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
-.sum-row:last-child { border-bottom: none; }
-.sum-label { color: #555; display: flex; align-items: center; gap: 8px; }
-.sum-amt { font-weight: 800; color: #111; }
-.sum-total-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 16px; font-weight: 900; border-top: 2px solid #111; margin-top: 8px; }
+.overlay.open .panel { transform: translateY(0); }
+.panel-handle { width: 36px; height: 4px; background: var(--t3); border-radius: 2px; margin: 14px auto 0; }
+.panel-title { font-size: 16px; font-weight: 900; color: var(--t1); padding: 14px 20px 0; }
+.panel-sec { padding: 14px 20px; border-bottom: 1px solid var(--border); }
+.panel-sec:last-child { border-bottom: none; }
+.panel-sec-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--t3); margin-bottom: 10px; }
 
-/* ── Add Expense Modal ── */
-#modal-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.5); z-index: 500; align-items: flex-end;
+/* Weather */
+#wx-result { font-size: 24px; font-weight: 900; color: var(--t1); }
+#wx-desc   { font-size: 12px; color: var(--t2); margin-top: 2px; }
+#wx-city   { font-size: 11px; color: var(--t3); margin-top: 1px; }
+#wx-loading { font-size: 12px; color: var(--t3); }
+
+/* Currency */
+#fx-rate { font-size: 12px; color: var(--t2); margin-bottom: 10px; }
+#fx-rate span { color: var(--accent); font-weight: 800; }
+.fx-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.fx-row:last-child { margin-bottom: 0; }
+.fx-input {
+  flex: 1; background: var(--t3); border: none; border-radius: 8px;
+  padding: 9px 10px; font-size: 15px; font-family: var(--font);
+  color: var(--t1); outline: none;
 }
-#modal-overlay.open { display: flex; }
-#expense-modal {
-  background: #fff; width: 100%; border-radius: 20px 20px 0 0;
-  padding: 24px 20px 40px;
+.fx-lbl { font-size: 12px; font-weight: 800; color: var(--t2); min-width: 36px; }
+.fx-arrow { font-size: 14px; color: var(--t3); }
+
+/* Converters */
+.conv-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.conv-row:last-child { margin-bottom: 0; }
+.conv-input {
+  flex: 1; background: var(--t3); border: none; border-radius: 8px;
+  padding: 9px 10px; font-size: 15px; font-family: var(--font);
+  color: var(--t1); outline: none; min-width: 0;
 }
-#modal-day-label { font-size: 12px; color: #999; font-weight: 600; margin-bottom: 4px; }
-#modal-title { font-size: 17px; font-weight: 900; margin-bottom: 20px; }
-.field { margin-bottom: 14px; }
-.field label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: #aaa; margin-bottom: 5px; }
+.conv-lbl { font-size: 12px; font-weight: 700; color: var(--t2); flex-shrink: 0; }
+.conv-eq  { font-size: 13px; color: var(--t3); }
+
+/* Spend summary */
+.sum-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.sum-row:last-child { border-bottom: none; }
+.sum-lbl  { color: var(--t2); display: flex; align-items: center; gap: 8px; }
+.sum-amt  { font-weight: 800; color: var(--t1); }
+.sum-total { display: flex; justify-content: space-between; padding: 14px 0 0; font-size: 17px; font-weight: 900; border-top: 2px solid var(--border); margin-top: 6px; }
+.sum-sec-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--t3); margin: 14px 0 6px; }
+
+/* ── EXPENSE MODAL ── */
+#modal-wrap { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 300; align-items: flex-end; }
+#modal-wrap.open { display: flex; }
+#modal {
+  background: #0f1520; width: 100%; border-radius: 22px 22px 0 0;
+  border-top: 1px solid var(--border);
+  padding: 20px 20px 44px;
+}
+#modal-day { font-size: 11px; color: var(--t3); font-weight: 700; margin-bottom: 3px; }
+#modal-title { font-size: 17px; font-weight: 900; color: var(--t1); margin-bottom: 18px; }
+.field { margin-bottom: 13px; }
+.field label { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--t3); margin-bottom: 5px; }
 .field input, .field select {
-  width: 100%; padding: 11px 12px; border: 1.5px solid #e8e8e8; border-radius: 10px;
-  font-size: 15px; font-family: var(--font); outline: none; background: #fff;
-  transition: border-color .15s;
+  width: 100%; padding: 11px 12px; background: var(--t3); border: 1.5px solid transparent;
+  border-radius: 10px; font-size: 15px; font-family: var(--font); color: var(--t1); outline: none;
+  transition: border-color .15s; -webkit-appearance: none;
 }
-.field input:focus, .field select:focus { border-color: #111; }
-.modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-.btn-cancel {
-  flex: 1; padding: 13px; border: 1.5px solid #e8e8e8; border-radius: 12px;
-  background: #fff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font);
-}
-.btn-save {
-  flex: 2; padding: 13px; border: none; border-radius: 12px;
-  background: #111; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: var(--font);
-}
+.field input:focus, .field select:focus { border-color: var(--accent); }
+.field select option { background: #1a2030; }
+.modal-btns { display: flex; gap: 10px; margin-top: 18px; }
+.btn-cancel { flex: 1; padding: 13px; border: 1px solid var(--t3); border-radius: 12px; background: transparent; font-size: 15px; font-weight: 700; cursor: pointer; font-family: var(--font); color: var(--t2); }
+.btn-save   { flex: 2; padding: 13px; border: none; border-radius: 12px; background: #1e3a6e; color: #7ab3ff; font-size: 15px; font-weight: 800; cursor: pointer; font-family: var(--font); }
 
 @media (min-width: 600px) {
-  #modal-overlay { align-items: center; }
-  #expense-modal { border-radius: 20px; max-width: 440px; margin: 0 auto; }
-  #summary-panel { max-width: 480px; left: 50%; right: auto; transform: translateX(-50%) translateY(100%); }
-  #summary-overlay.open #summary-panel { transform: translateX(-50%) translateY(0); }
+  #modal-wrap { align-items: center; }
+  #modal { border-radius: 20px; max-width: 440px; margin: 0 auto; }
+  .overlay .panel { max-width: 480px; left: 50%; right: auto; transform: translateX(-50%) translateY(100%); }
+  .overlay.open .panel { transform: translateX(-50%) translateY(0); }
 }
 </style>
 </head>
 <body>
-<div id="app">
-  <div id="trip-header">
-    <div id="header-top">
-      <div>
-        <div id="trip-title">Family Trip 2026 — Nicholas &amp; Family</div>
-        <div id="trip-meta">14 Dec 2026 – 1 Jan 2027 &nbsp;·&nbsp; 5 travellers</div>
-      </div>
-      <button id="summary-btn" onclick="openSummary()">💰 Spend</button>
+
+<!-- HEADER -->
+<div id="hdr">
+  <div id="hdr-top">
+    <div id="hdr-left">
+      <div id="countdown">Loading…</div>
+      <div id="day-summary"></div>
     </div>
-    <div id="day-nav"></div>
+    <div id="hdr-btns">
+      <button class="hdr-btn" onclick="openTools()">🌐 Tools</button>
+      <button class="hdr-btn" onclick="openSpend()">💰 Spend</button>
+    </div>
   </div>
-  <div id="days-container"></div>
+  <div id="nav-strip"></div>
 </div>
 
-<!-- Summary Panel -->
-<div id="summary-overlay" onclick="closeSummary(event)">
-  <div id="summary-panel">
+<!-- PAGES -->
+<div id="pages"></div>
+
+<!-- TOOLS PANEL -->
+<div class="overlay" id="tools-ov" onclick="closeTools(event)">
+  <div class="panel">
     <div class="panel-handle"></div>
-    <div class="panel-title">Trip Spend Log</div>
-    <div id="summary-content"></div>
+    <div class="panel-title">Tools</div>
+
+    <div class="panel-sec">
+      <div class="panel-sec-title">🌤 Weather — <span id="wx-city-label"></span></div>
+      <div id="wx-loading">Fetching…</div>
+      <div id="wx-result" style="display:none"></div>
+      <div id="wx-desc"  style="display:none"></div>
+    </div>
+
+    <div class="panel-sec">
+      <div class="panel-sec-title">💱 Currency</div>
+      <div id="fx-rate">Loading rate…</div>
+      <div class="fx-row">
+        <input class="fx-input" id="fx-usd" type="number" placeholder="USD" oninput="calcFx('usd')">
+        <span class="fx-lbl">USD</span>
+        <span class="fx-arrow">⇄</span>
+        <input class="fx-input" id="fx-sgd" type="number" placeholder="SGD" oninput="calcFx('sgd')">
+        <span class="fx-lbl">SGD</span>
+      </div>
+    </div>
+
+    <div class="panel-sec">
+      <div class="panel-sec-title">📏 Height</div>
+      <div class="conv-row">
+        <input class="conv-input" id="h-ft"  type="number" placeholder="ft"  oninput="calcHeight('imp')">
+        <span class="conv-lbl">ft</span>
+        <input class="conv-input" id="h-in"  type="number" placeholder="in"  oninput="calcHeight('imp')">
+        <span class="conv-lbl">in</span>
+        <span class="conv-eq">=</span>
+        <input class="conv-input" id="h-cm"  type="number" placeholder="cm"  oninput="calcHeight('met')">
+        <span class="conv-lbl">cm</span>
+      </div>
+    </div>
+
+    <div class="panel-sec">
+      <div class="panel-sec-title">⚖️ Weight</div>
+      <div class="conv-row">
+        <input class="conv-input" id="w-lbs" type="number" placeholder="lbs" oninput="calcWeight('imp')">
+        <span class="conv-lbl">lbs</span>
+        <span class="conv-eq">=</span>
+        <input class="conv-input" id="w-kg"  type="number" placeholder="kg"  oninput="calcWeight('met')">
+        <span class="conv-lbl">kg</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Add Expense Modal -->
-<div id="modal-overlay" onclick="closeModal(event)">
-  <div id="expense-modal">
-    <div id="modal-day-label"></div>
+<!-- SPEND PANEL -->
+<div class="overlay" id="spend-ov" onclick="closeSpend(event)">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <div class="panel-title">Trip Spend</div>
+    <div class="panel-sec" id="spend-content">
+      <div style="color:var(--t3);font-size:13px;text-align:center;padding:20px 0">No expenses logged yet</div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPENSE MODAL -->
+<div id="modal-wrap" onclick="closeModal(event)">
+  <div id="modal">
+    <div id="modal-day"></div>
     <div id="modal-title">Add Expense</div>
-    <div class="field">
-      <label>Description</label>
-      <input id="exp-desc" type="text" placeholder="e.g. Coffee at JFK" autocomplete="off">
-    </div>
-    <div class="field">
-      <label>Amount (USD)</label>
-      <input id="exp-amt" type="number" step="0.01" min="0" placeholder="0.00">
-    </div>
-    <div class="field">
-      <label>Category</label>
-      <select id="exp-cat">
+    <div class="field"><label>Description</label><input id="e-desc" type="text" placeholder="e.g. Coffee at JFK" autocomplete="off"></div>
+    <div class="field"><label>Amount (USD)</label><input id="e-amt" type="number" step="0.01" min="0" placeholder="0.00"></div>
+    <div class="field"><label>Category</label>
+      <select id="e-cat">
         <option value="food">🍽️ Food &amp; Drink</option>
         <option value="transport">🚗 Transport</option>
         <option value="activities">🎢 Activities</option>
@@ -280,9 +350,8 @@ body { font-family: var(--font); background: #f0f2f5; color: #111; -webkit-font-
         <option value="other">📌 Other</option>
       </select>
     </div>
-    <div class="field">
-      <label>Payment Method</label>
-      <select id="exp-method">
+    <div class="field"><label>Payment Method</label>
+      <select id="e-method">
         <option value="uob">UOB</option>
         <option value="dbs">DBS</option>
         <option value="cash">Cash (USD)</option>
@@ -293,707 +362,787 @@ body { font-family: var(--font); background: #f0f2f5; color: #111; -webkit-font-
     </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-save" onclick="saveExpense()">Add</button>
+      <button class="btn-save"   onclick="saveExpense()">Add</button>
     </div>
   </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-//  CITY IMAGES  (add Unsplash URLs here later)
-// ─────────────────────────────────────────────
-const CITY_IMAGES = {
-  nyc:     '',
-  dfw:     '',
-  orlando: '',
-  disney:  '',
-  vermont: '',
-  boston:  ''
+/* ─────────────────────────────────────────
+   IMAGES
+───────────────────────────────────────── */
+const IMG = {
+  nyc:     'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=75&auto=format&fit=crop',
+  dfw:     'https://images.unsplash.com/photo-1533581464688-632317676a87?w=800&q=75&auto=format&fit=crop',
+  orlando: 'https://images.unsplash.com/photo-1547675960-7634cf1b0856?w=800&q=75&auto=format&fit=crop',
+  disney:  'https://images.unsplash.com/photo-1577493340887-b7bfff550145?w=800&q=75&auto=format&fit=crop',
+  vermont: 'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800&q=75&auto=format&fit=crop',
+  boston:  'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&q=75&auto=format&fit=crop'
 };
 
-// ─────────────────────────────────────────────
-//  TRIP DATA
-// ─────────────────────────────────────────────
+const WEATHER_CITY = {
+  nyc: 'New York City', dfw: 'Fort Worth Texas',
+  orlando: 'Orlando Florida', disney: 'Orlando Florida',
+  vermont: 'Jeffersonville Vermont', boston: 'Boston Massachusetts'
+};
+
+/* ─────────────────────────────────────────
+   TRIP DATA
+───────────────────────────────────────── */
 const DAYS = [
   {
-    id: 'dec14', date: '2026-12-14', label: '14 Dec', day: 'Monday',
-    city: 'New York City', theme: 'nyc',
-    lodging: { name: "Residence Inn Times Square", status: 'booked', checkIn: true, checkOut: false, doc: null },
-    flights: [{
-      num: 'SQ24', airline: 'Singapore Airlines', from: 'SIN', to: 'JFK',
-      dep: '12:10 SIN (13 Dec)', arr: '18:50 JFK (14 Dec)',
-      cabin: 'Premium Economy', status: 'booked', doc: null
-    }],
-    timeline: [
-      { time: '18:50', icon: '✈️', text: 'Arrive JFK — immigration, baggage, customs (allow 1.5–2 hrs)', map: null },
-      { time: '~20:30', icon: '🚗', text: 'UberXL → Residence Inn Times Square (~45–60 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport,Queens,NY&destination=Residence+Inn+Times+Square,New+York,NY&travelmode=driving' },
-      { time: 'Evening', icon: '🏨', text: 'Check in. Recovery evening — grocery/formula delivery pre-arranged', map: null }
+    id:'dec14', date:'2026-12-14', label:'14 Dec', day:'Monday',
+    city:'New York City', theme:'nyc',
+    summary:'Arrive JFK · Check in Times Square',
+    lodging:{ name:'Residence Inn Times Square', status:'booked', ci:true, co:false, doc:null },
+    flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null }],
+    docs:[],
+    timeline:[
+      { time:'18:50', icon:'✈️', text:'Arrive JFK — immigration, baggage, customs (~1.5–2 hrs)', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
+      { time:'~20:30', icon:'🚗', text:'UberXL → Residence Inn Times Square', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
+      { time:'Evening', icon:'🏨', text:'Check in. Recovery evening — formula/grocery delivery pre-arranged', map:null, warn:null }
     ],
-    meals: [
-      { tag: 'Dinner', text: 'Room delivery or hotel restaurant — keep it easy' }
-    ],
-    note: null
+    meals:[{ tag:'Dinner', text:'Room delivery — keep it easy after 18+ hr journey' }]
   },
   {
-    id: 'dec15', date: '2026-12-15', label: '15 Dec', day: 'Tuesday',
-    city: 'New York City', theme: 'nyc',
-    lodging: { name: "Residence Inn Times Square", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'Morning', icon: '🥯', text: 'Bagel run — Ess-a-Bagel or H&H (before heading out)', map: 'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=Ess-a-Bagel,New+York,NY&travelmode=walking' },
-      { time: '~09:30', icon: '🎄', text: 'Bryant Park Winter Village — free, walk through', map: 'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=Bryant+Park,New+York,NY&travelmode=walking' },
-      { time: '~10:15', icon: '🏙️', text: '5th Ave windows → Rockefeller Center tree', map: 'https://www.google.com/maps/dir/?api=1&origin=Bryant+Park,New+York,NY&destination=Rockefeller+Center,New+York,NY&travelmode=walking' },
-      { time: '~10:45', icon: '🌆', text: 'Top of the Rock — book timed entry ~30–45 min after arriving', map: 'https://www.rockefellercenter.com/attractions/top-of-the-rock-observation-deck/' },
-      { time: '~12:30', icon: '🍕', text: 'Quick NY pizza slice (keep pace before AMNH)', map: null },
-      { time: '~13:00', icon: '🦕', text: 'American Museum of Natural History (~3 hrs)', map: 'https://www.google.com/maps/dir/?api=1&origin=Rockefeller+Center,New+York,NY&destination=American+Museum+of+Natural+History,New+York,NY&travelmode=transit' },
-      { time: '~17:30', icon: '🚕', text: 'Taxi back to hotel', map: null },
-      { time: '~19:00', icon: '🍽️', text: 'Dinner — Tavern on the Green (reservation opens 15 Oct)', map: 'https://www.google.com/maps/dir/?api=1&origin=American+Museum+of+Natural+History,New+York&destination=Tavern+on+the+Green,New+York,NY&travelmode=walking' }
+    id:'dec15', date:'2026-12-15', label:'15 Dec', day:'Tuesday',
+    city:'New York City', theme:'nyc',
+    summary:'Bryant Park · Top of the Rock · AMNH · Tavern on the Green',
+    lodging:{ name:'Residence Inn Times Square', status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[
+      { label:'Top of the Rock — timed entry', doc:null },
+      { label:'AMNH tickets', doc:null }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Bagel run (Ess-a-Bagel or H&H) before Bryant Park' },
-      { tag: 'Lunch', text: 'Quick NY pizza slice — not a sit-down' },
-      { tag: 'Dinner', text: 'Tavern on the Green — reservation opens 15 Oct 2026 ⚠️' }
+    timeline:[
+      { time:'Morning', icon:'🥯', text:'Bagel run — Ess-a-Bagel or H&H before heading out', map:'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=Ess-a-Bagel,New+York,NY&travelmode=walking', warn:null },
+      { time:'~09:30', icon:'🎄', text:'Bryant Park Winter Village + 5th Ave windows', map:'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=Bryant+Park,New+York,NY&travelmode=walking', warn:null },
+      { time:'~10:15', icon:'🏙️', text:'Rockefeller Center tree', map:'https://www.google.com/maps/dir/?api=1&origin=Bryant+Park,New+York&destination=Rockefeller+Center,New+York,NY&travelmode=walking', warn:null },
+      { time:'~10:45', icon:'🌆', text:'<strong>Top of the Rock</strong> — book timed entry 30–45 min after arriving', map:'https://www.rockefellercenter.com/attractions/top-of-the-rock-observation-deck/', warn:null },
+      { time:'~12:30', icon:'🍕', text:'Quick NY pizza slice — keep pace, not a sit-down', map:null, warn:null },
+      { time:'~13:00', icon:'🦕', text:'<strong>American Museum of Natural History</strong> (~3 hrs)', map:'https://www.google.com/maps/dir/?api=1&origin=Rockefeller+Center,New+York&destination=American+Museum+of+Natural+History,New+York,NY&travelmode=transit', warn:null },
+      { time:'~19:00', icon:'🍽️', text:'<strong>Tavern on the Green</strong> — dinner reservation', map:'https://www.google.com/maps/dir/?api=1&origin=American+Museum+of+Natural+History,New+York&destination=Tavern+on+the+Green,New+York,NY&travelmode=walking', warn:'Reservation opens 15 Oct 2026 — book then' }
     ],
-    note: null
+    meals:[
+      { tag:'Breakfast', text:'Bagels — Ess-a-Bagel or H&H' },
+      { tag:'Lunch', text:'Quick NY pizza slice (en route to AMNH)' },
+      { tag:'Dinner', text:'Tavern on the Green (reservation opens 15 Oct)' }
+    ]
   },
   {
-    id: 'dec16', date: '2026-12-16', label: '16 Dec', day: 'Wednesday',
-    city: 'NYC → Fort Worth', theme: 'dfw',
-    lodging: { name: "Worthington Renaissance Fort Worth", status: 'tbc', checkIn: true, checkOut: false, doc: null },
-    flights: [{
-      num: 'AA865', airline: 'American Airlines', from: 'JFK', to: 'DFW',
-      dep: '12:00 JFK', arr: '15:10 DFW',
-      cabin: 'Domestic First', status: 'booked', doc: null
-    }],
-    timeline: [
-      { time: '~08:30', icon: '🏨', text: 'Hotel checkout', map: null },
-      { time: '~08:30', icon: '🚗', text: 'UberXL → JFK (~45–60 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=JFK+International+Airport&travelmode=driving' },
-      { time: '12:00', icon: '✈️', text: 'AA865 departs JFK', map: null },
-      { time: '15:10', icon: '✈️', text: 'Arrive DFW', map: null },
-      { time: '~15:45', icon: '🚗', text: 'Rideshare DFW → Worthington Renaissance (~25 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Dallas+Fort+Worth+International+Airport&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth,TX&travelmode=driving' },
-      { time: 'Evening', icon: '🌆', text: 'Sundance Square — walkable from hotel', map: 'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Sundance+Square,Fort+Worth,TX&travelmode=walking' }
+    id:'dec16', date:'2026-12-16', label:'16 Dec', day:'Wednesday',
+    city:'NYC → Fort Worth', theme:'dfw',
+    summary:'Checkout · AA865 JFK→DFW 12:00 · Worthington check-in',
+    lodging:{ name:'Worthington Renaissance Fort Worth', status:'tbc', ci:true, co:false, doc:null },
+    flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:00 JFK', arr:'15:10 DFW', cabin:'Domestic First', doc:null }],
+    docs:[],
+    timeline:[
+      { time:'~08:30', icon:'🏨', text:'Hotel checkout', map:null, warn:null },
+      { time:'~08:30', icon:'🚗', text:'UberXL → JFK (~45–60 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=JFK+International+Airport&travelmode=driving', warn:null },
+      { time:'12:00', icon:'✈️', text:'AA865 departs JFK', map:null, warn:null },
+      { time:'15:10', icon:'✈️', text:'Arrive DFW', map:null, warn:null },
+      { time:'~15:45', icon:'🚗', text:'Rideshare DFW → Worthington Renaissance (~25 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Dallas+Fort+Worth+International+Airport&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth&travelmode=driving', warn:null },
+      { time:'Evening', icon:'🌆', text:'Sundance Square — walkable from hotel', map:'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Sundance+Square,Fort+Worth,TX&travelmode=walking', warn:null }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Hotel before checkout' },
-      { tag: 'Dinner', text: 'Sundance Square options: Mi Cocina / Riscky\'s Barbecue / Bird Café' }
-    ],
-    note: null
+    meals:[
+      { tag:'Breakfast', text:'Hotel before checkout' },
+      { tag:'Dinner', text:'Sundance Square — Mi Cocina / Riscky\'s Barbecue / Bird Café' }
+    ]
   },
   {
-    id: 'dec17', date: '2026-12-17', label: '17 Dec', day: 'Thursday',
-    city: 'Fort Worth', theme: 'dfw',
-    lodging: { name: "Worthington Renaissance Fort Worth", status: 'tbc', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'All day', icon: '💼', text: 'Nicholas working', map: null },
-      { time: '11:30', icon: '🐄', text: 'Fort Worth Stockyards cattle drive (Cheryl + kids) — free, public', map: 'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Fort+Worth+Stockyards,Fort+Worth,TX&travelmode=driving' },
-      { time: 'Afternoon', icon: '🛍️', text: 'Stockyards Station browsing', map: null },
-      { time: 'Optional', icon: '🧊', text: 'Gaylord Texan ICE!/tubing day trip (late PM, ~20–25 min each way)', map: 'https://www.google.com/maps/dir/?api=1&origin=Fort+Worth+Stockyards&destination=Gaylord+Texan+Resort,Grapevine,TX&travelmode=driving' }
+    id:'dec17', date:'2026-12-17', label:'17 Dec', day:'Thursday',
+    city:'Fort Worth', theme:'dfw',
+    summary:'Stockyards cattle drive · Fort Worth (Nicholas working)',
+    lodging:{ name:'Worthington Renaissance Fort Worth', status:'tbc', ci:false, co:false, doc:null },
+    flights:[], docs:[],
+    timeline:[
+      { time:'All day', icon:'💼', text:'<strong>Nicholas working</strong>', map:null, warn:null },
+      { time:'11:30', icon:'🐄', text:'Fort Worth Stockyards cattle drive — Cheryl + kids (free, public)', map:'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Fort+Worth+Stockyards,Fort+Worth,TX&travelmode=driving', warn:null },
+      { time:'Afternoon', icon:'🛍️', text:'Stockyards Station browsing', map:null, warn:null },
+      { time:'Optional', icon:'🧊', text:'Gaylord Texan ICE!/tubing day trip — late PM (~20–25 min each way)', map:'https://www.google.com/maps/dir/?api=1&origin=Fort+Worth+Stockyards&destination=Gaylord+Texan+Resort,Grapevine,TX&travelmode=driving', warn:null }
     ],
-    meals: [
-      { tag: 'Lunch', text: "Love Shack or Cattlemen's Steakhouse (Stockyards)" }
-    ],
-    note: null
+    meals:[{ tag:'Lunch', text:"Love Shack or Cattlemen's Steakhouse (Stockyards)" }]
   },
   {
-    id: 'dec18', date: '2026-12-18', label: '18 Dec', day: 'Friday',
-    city: 'Fort Worth → Orlando', theme: 'orlando',
-    lodging: { name: "Loews Royal Pacific Resort", status: 'booked', checkIn: true, checkOut: false, doc: null },
-    flights: [{
-      num: 'AA2186', airline: 'American Airlines', from: 'DFW', to: 'MCO',
-      dep: '~18:45 DFW', arr: '~22:00 MCO',
-      cabin: 'Domestic First', status: 'booked', doc: null
-    }],
-    timeline: [
-      { time: 'AM', icon: '💼', text: 'Nicholas working', map: null },
-      { time: 'AM', icon: '🦒', text: 'Fort Worth Zoo — Cheryl + kids', map: 'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Fort+Worth+Zoo,Fort+Worth,TX&travelmode=driving' },
-      { time: '~16:00', icon: '🧳', text: 'Pack, checkout, rideshare to DFW', map: 'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Dallas+Fort+Worth+International+Airport&travelmode=driving' },
-      { time: '~18:45', icon: '✈️', text: 'AA2186 departs DFW — dinner at Terminal C before boarding', map: null },
-      { time: '~22:00', icon: '✈️', text: 'Arrive MCO — straight to hotel, no restaurant', map: null },
-      { time: '~22:30', icon: '🚗', text: 'UberXL MCO → Loews Royal Pacific Resort (~15–20 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Orlando+International+Airport&destination=Loews+Royal+Pacific+Resort,Universal+Orlando&travelmode=driving' }
+    id:'dec18', date:'2026-12-18', label:'18 Dec', day:'Friday',
+    city:'Fort Worth → Orlando', theme:'orlando',
+    summary:'Fort Worth Zoo · AA2186 DFW→MCO · Royal Pacific check-in',
+    lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:true, co:false, doc:null },
+    flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Domestic First', doc:null }],
+    docs:[],
+    timeline:[
+      { time:'AM', icon:'💼', text:'<strong>Nicholas working</strong>', map:null, warn:null },
+      { time:'AM', icon:'🦒', text:'Fort Worth Zoo — Cheryl + kids', map:'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Fort+Worth+Zoo,Fort+Worth,TX&travelmode=driving', warn:null },
+      { time:'~16:00', icon:'🧳', text:'Pack + checkout, rideshare to DFW', map:'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Dallas+Fort+Worth+International+Airport&travelmode=driving', warn:null },
+      { time:'~18:45', icon:'✈️', text:'AA2186 departs DFW', map:null, warn:null },
+      { time:'~22:00', icon:'✈️', text:'Arrive MCO — straight to hotel, no restaurant', map:null, warn:null },
+      { time:'~22:30', icon:'🚗', text:'UberXL MCO → Loews Royal Pacific Resort (~15–20 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Orlando+International+Airport&destination=Loews+Royal+Pacific+Resort,Universal+Orlando&travelmode=driving', warn:null }
     ],
-    meals: [
-      { tag: 'Dinner', text: 'DFW Terminal C before boarding — no restaurant at late MCO arrival' }
-    ],
-    note: null
+    meals:[{ tag:'Dinner', text:'Terminal C at DFW before boarding — late arrival, straight to hotel' }]
   },
   {
-    id: 'dec19', date: '2026-12-19', label: '19 Dec', day: 'Saturday',
-    city: 'Orlando — Universal', theme: 'orlando',
-    lodging: { name: "Loews Royal Pacific Resort", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'Rope-drop', icon: '🎢', text: 'IOA — Hagrid\'s Motorbikes FIRST (Express won\'t cover this — go early)', map: null },
-      { time: 'IOA', icon: '🎢', text: 'VelociCoaster, Forbidden Journey, Spider-Man — all via Express Unlimited', map: null },
-      { time: 'Mid-AM', icon: '🚂', text: 'Hogwarts Express → USF', map: null },
-      { time: 'USF', icon: '🎢', text: 'Gringotts, Revenge of the Mummy, Minion Mayhem — all via Express Unlimited', map: null },
-      { time: 'Transport', icon: '🛶', text: 'Walk or water taxi from Royal Pacific — no transfer needed', map: null }
+    id:'dec19', date:'2026-12-19', label:'19 Dec', day:'Saturday',
+    city:'Orlando — Universal', theme:'orlando',
+    summary:'USF + Islands of Adventure · Express Unlimited included',
+    lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[
+      { label:'Universal 2-Day Ticket', doc:null }
     ],
-    meals: [
-      { tag: 'All meals', text: 'Casual in-park dining' }
+    timeline:[
+      { time:'Rope-drop', icon:'🎢', text:'<strong>IOA — Hagrid\'s Motorbikes FIRST</strong> (Express won\'t cover — go early)', map:null, warn:null },
+      { time:'IOA', icon:'🎢', text:'VelociCoaster → Forbidden Journey → Spider-Man (all Express Unlimited)', map:null, warn:null },
+      { time:'Mid-AM', icon:'🚂', text:'Hogwarts Express → Universal Studios Florida', map:null, warn:null },
+      { time:'USF', icon:'🎢', text:'Gringotts → Revenge of the Mummy → Minion Mayhem (all Express Unlimited)', map:null, warn:null },
+      { time:'Transport', icon:'🛶', text:'Walk or water taxi from Royal Pacific — no transfer needed', map:null, warn:null }
     ],
-    note: 'Express Unlimited (both parks) included free with Royal Pacific stay.'
+    meals:[{ tag:'All meals', text:'Casual in-park dining' }]
   },
   {
-    id: 'dec20', date: '2026-12-20', label: '20 Dec', day: 'Sunday',
-    city: 'Orlando — Epic Universe', theme: 'orlando',
-    lodging: { name: "Disney's Beach Club Resort", status: 'booked', checkIn: true, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'Early Park', icon: '⭐', text: 'Epic Universe Early Park Admission (1 hr, incl. Royal Pacific) — Super Nintendo World FIRST', map: null },
-      { time: 'EPA', icon: '🎮', text: 'Mario Kart: Bowser\'s Challenge + Donkey Kong Country — best fit for Evan & Elena', map: null },
-      { time: 'Main day', icon: '🎢', text: 'Epic Universe — Express required here (pre-purchased, not hotel-included)', map: null },
-      { time: 'Transport', icon: '🚌', text: 'Dedicated shuttle bus to Epic Universe (~10–20 min) — NOT walk/water taxi', map: null },
-      { time: 'Evening', icon: '🏨', text: 'Checkout Royal Pacific, UberXL → Disney\'s Beach Club Resort (~20–30 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Loews+Royal+Pacific+Resort,Universal+Orlando&destination=Disney+Beach+Club+Resort,Orlando,FL&travelmode=driving' }
+    id:'dec20', date:'2026-12-20', label:'20 Dec', day:'Sunday',
+    city:'Orlando — Epic Universe', theme:'orlando',
+    summary:'Epic Universe · Royal Pacific → Beach Club (evening)',
+    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:true, co:false, doc:null },
+    flights:[], docs:[
+      { label:'Epic Universe Express Passes', doc:null }
     ],
-    meals: [
-      { tag: 'All meals', text: 'Casual in-park dining' }
+    timeline:[
+      { time:'Early Park', icon:'⭐', text:'<strong>Early Park Admission (1 hr)</strong> — Super Nintendo World FIRST', map:null, warn:null },
+      { time:'EPA', icon:'🎮', text:'Mario Kart: Bowser\'s Challenge + Donkey Kong Country', map:null, warn:null },
+      { time:'Day', icon:'🎢', text:'Epic Universe — Express required (pre-purchased, not hotel-included)', map:null, warn:null },
+      { time:'Transport', icon:'🚌', text:'Dedicated shuttle bus to Epic Universe (~10–20 min) — NOT walk/water taxi', map:null, warn:'Epic Universe is NOT walk/water-taxi distance from Royal Pacific' },
+      { time:'Evening', icon:'🏨', text:'Checkout Royal Pacific → UberXL to Beach Club (~20–30 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Loews+Royal+Pacific+Resort,Universal+Orlando&destination=Disney+Beach+Club+Resort,Orlando,FL&travelmode=driving', warn:null }
     ],
-    note: 'Epic Universe Express is a separate purchase — not covered by Royal Pacific stay.'
+    meals:[{ tag:'All meals', text:'Casual in-park dining' }]
   },
   {
-    id: 'dec21', date: '2026-12-21', label: '21 Dec', day: 'Monday',
-    city: 'Orlando — Hollywood Studios', theme: 'disney',
-    lodging: { name: "Disney's Beach Club Resort", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: '07:00 ⚠️', icon: '📱', text: 'BUY Rise of the Resistance Single Pass the moment the window opens — sells out fast', map: null },
-      { time: 'Morning', icon: '🚀', text: 'Rise of the Resistance (Single Pass)', map: null },
-      { time: 'Day', icon: '🎢', text: 'Slinky Dog Dash, Smugglers Run, Tower of Terror — Multi Pass', map: null },
-      { time: 'Transport', icon: '🚶', text: 'Walk from Beach Club — no transfer needed', map: null }
+    id:'dec21', date:'2026-12-21', label:'21 Dec', day:'Monday',
+    city:'Orlando — Hollywood Studios', theme:'disney',
+    summary:'Hollywood Studios · Rise of the Resistance at 07:00',
+    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[
+      { label:'Disney 2-Day Base Ticket', doc:null },
+      { label:'Lightning Lane — Hollywood Studios', doc:null }
     ],
-    meals: [
-      { tag: 'All meals', text: 'Casual in-park dining' }
+    timeline:[
+      { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Rise of the Resistance Single Pass NOW</strong> — sells out in minutes', map:null, warn:'Set alarm for 7:00am. This is Disney\'s most in-demand ride. Buy the moment window opens.' },
+      { time:'Morning', icon:'🚀', text:'Rise of the Resistance (Single Pass)', map:null, warn:null },
+      { time:'Day', icon:'🎢', text:'Slinky Dog Dash + Smugglers Run + Tower of Terror (Multi Pass)', map:null, warn:null },
+      { time:'Transport', icon:'🚶', text:'Walk from Beach Club — no transfer needed', map:null, warn:null }
     ],
-    note: 'Lightning Lane reminder set: 14 Dec 2026 (7 days ahead for resort guests).'
+    meals:[{ tag:'All meals', text:'Casual in-park dining' }]
   },
   {
-    id: 'dec22', date: '2026-12-22', label: '22 Dec', day: 'Tuesday',
-    city: 'Orlando — EPCOT + MVMCP', theme: 'disney',
-    lodging: { name: "Disney's Beach Club Resort", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'Open ⚠️', icon: '📱', text: 'BUY Guardians of the Galaxy: Cosmic Rewind Single Pass first thing', map: null },
-      { time: 'Day', icon: '🌍', text: 'EPCOT — Frozen Ever After, Remy\'s, Test Track, Soarin\' (Multi Pass)', map: null },
-      { time: '~15:30', icon: '🚂', text: 'Head to Beach Club, prep for MVMCP', map: null },
-      { time: '16:00', icon: '🎄', text: 'Magic Kingdom MVMCP entry (bonus park time before the party)', map: null },
-      { time: '19:00', icon: '🎅', text: 'Mickey\'s Very Merry Christmas Party begins', map: null },
-      { time: 'Transport', icon: '🛶', text: 'Walk/Friendship Boat Beach Club → EPCOT; direct bus Beach Club → Magic Kingdom', map: null }
+    id:'dec22', date:'2026-12-22', label:'22 Dec', day:'Tuesday',
+    city:'Orlando — EPCOT + MVMCP', theme:'disney',
+    summary:'EPCOT · Mickey\'s Very Merry Christmas Party (7pm)',
+    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[
+      { label:'Mickey\'s Very Merry Christmas Party', doc:null },
+      { label:'Lightning Lane — EPCOT', doc:null }
     ],
-    meals: [
-      { tag: 'Day', text: 'Casual in-park dining at EPCOT' },
-      { tag: 'Evening', text: 'MVMCP — complimentary cookies + hot cocoa included in party ticket' }
+    timeline:[
+      { time:'Open ⚠️', icon:'📱', text:'<strong>Buy Guardians: Cosmic Rewind Single Pass</strong> first thing', map:null, warn:'Buy immediately when park opens — very high demand.' },
+      { time:'Day', icon:'🌍', text:'EPCOT — Frozen Ever After + Remy\'s + Test Track + Soarin\' (Multi Pass)', map:null, warn:null },
+      { time:'16:00', icon:'🎄', text:'Magic Kingdom MVMCP entry (bonus time before party)', map:null, warn:null },
+      { time:'19:00', icon:'🎅', text:'Mickey\'s Very Merry Christmas Party begins', map:null, warn:null },
+      { time:'Transport', icon:'🛶', text:'Walk/Friendship Boat → EPCOT; direct bus → Magic Kingdom', map:null, warn:'Build in slack for return bus after party — waits build up' }
     ],
-    note: 'Keep EPCOT relaxed — don\'t rush the 4pm MVMCP bonus window. Build in slack for return bus after the party.'
+    meals:[
+      { tag:'Day', text:'Casual in-park dining at EPCOT' },
+      { tag:'Evening', text:'MVMCP — complimentary cookies + hot cocoa included' }
+    ]
   },
   {
-    id: 'dec23', date: '2026-12-23', label: '23 Dec', day: 'Wednesday',
-    city: 'Orlando — Shopping', theme: 'disney',
-    lodging: { name: "Disney's Beach Club Resort", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: '~10:00', icon: '🚗', text: 'Rideshare Beach Club → Orlando Vineland Premium Outlets (~10 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Disney+Beach+Club+Resort,Orlando&destination=Orlando+Vineland+Premium+Outlets,Orlando,FL&travelmode=driving' },
-      { time: '~12:00', icon: '🚗', text: 'Rideshare → Mall at Millenia (~13 min, 9.7 miles)', map: 'https://www.google.com/maps/dir/?api=1&origin=Orlando+Vineland+Premium+Outlets,Orlando&destination=Mall+at+Millenia,Orlando,FL&travelmode=driving' },
-      { time: '~14:00', icon: '🛍️', text: 'Mall at Millenia — wider full-price retail mix', map: null },
-      { time: '~16:00', icon: '🚗', text: 'Rideshare back to Beach Club (~20–25 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Mall+at+Millenia,Orlando&destination=Disney+Beach+Club+Resort,Orlando,FL&travelmode=driving' }
+    id:'dec23', date:'2026-12-23', label:'23 Dec', day:'Wednesday',
+    city:'Orlando — Shopping', theme:'disney',
+    summary:'Vineland Premium Outlets → Mall at Millenia',
+    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[],
+    timeline:[
+      { time:'~10:00', icon:'🚗', text:'Rideshare Beach Club → Vineland Premium Outlets (~10 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Disney+Beach+Club+Resort,Orlando&destination=Orlando+Vineland+Premium+Outlets,Orlando,FL&travelmode=driving', warn:null },
+      { time:'~12:00', icon:'🚗', text:'Rideshare → Mall at Millenia (9.7 mi / ~13 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Orlando+Vineland+Premium+Outlets&destination=Mall+at+Millenia,Orlando,FL&travelmode=driving', warn:null },
+      { time:'~16:00', icon:'🚗', text:'Rideshare back to Beach Club (~20–25 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Mall+at+Millenia,Orlando&destination=Disney+Beach+Club+Resort,Orlando,FL&travelmode=driving', warn:null }
     ],
-    meals: [
-      { tag: 'Lunch', text: 'Food court/quick service at either mall' },
-      { tag: 'Dinner', text: 'Casual near the resort — light ahead of the 24th travel day' }
-    ],
-    note: 'No park obligation today. Keep pace relaxed.'
+    meals:[
+      { tag:'Lunch', text:'Food court at either mall' },
+      { tag:'Dinner', text:'Casual near resort — keep it light ahead of 24th travel day' }
+    ]
   },
   {
-    id: 'dec24', date: '2026-12-24', label: '24 Dec', day: 'Thursday',
-    city: 'Orlando → Vermont', theme: 'vermont',
-    lodging: { name: "Smugglers' Notch Resort", status: 'booked', checkIn: true, checkOut: false, doc: null },
-    flights: [
-      {
-        num: 'AA (MCO–EWR)', airline: 'American Airlines', from: 'MCO', to: 'EWR',
-        dep: '08:00 MCO', arr: '10:40 EWR',
-        cabin: 'Economy', status: 'booked', doc: null
-      },
-      {
-        num: 'AA (EWR–BTV)', airline: 'American Airlines', from: 'EWR', to: 'BTV',
-        dep: '12:22 EWR', arr: '13:43 BTV',
-        cabin: 'Economy', status: 'booked', doc: null
-      }
+    id:'dec24', date:'2026-12-24', label:'24 Dec', day:'Thursday',
+    city:'Orlando → Vermont', theme:'vermont',
+    summary:'MCO→EWR→BTV · SUV pickup · Smugglers\' Notch check-in',
+    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:true, co:false, doc:null },
+    flights:[
+      { num:'AA (MCO–EWR)', airline:'American Airlines', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:null },
+      { num:'AA (EWR–BTV)', airline:'American Airlines', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:null }
     ],
-    timeline: [
-      { time: '~05:30', icon: '🚗', text: 'UberXL Beach Club → MCO (~20–25 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Disney+Beach+Club+Resort,Orlando&destination=Orlando+International+Airport&travelmode=driving' },
-      { time: '08:00', icon: '✈️', text: 'MCO → EWR (arrive 10:40)', map: null },
-      { time: '10:40', icon: '🕐', text: '~1h42m layover at Newark', map: null },
-      { time: '12:22', icon: '✈️', text: 'EWR → BTV (arrive 13:43)', map: null },
-      { time: '~14:00', icon: '🚗', text: 'Hertz 4WD SUV pickup at BTV (7-day rental, BTV→JFK)', map: null },
-      { time: '~14:30', icon: '🛒', text: 'Hannaford grocery stop, Burlington (~5 min off route) — stock condo for Vermont stay', map: 'https://www.google.com/maps/dir/?api=1&origin=Burlington+International+Airport,Vermont&destination=Hannaford+North+Avenue,Burlington,Vermont&travelmode=driving' },
-      { time: '~15:30', icon: '🏔️', text: "Arrive Smugglers' Notch Resort, Jeffersonville (~35–40 min from Burlington)", map: 'https://www.google.com/maps/dir/?api=1&origin=Hannaford+North+Avenue,Burlington,Vermont&destination=Smugglers+Notch+Resort,Jeffersonville,Vermont&travelmode=driving' }
+    docs:[
+      { label:'Hertz 4WD SUV — BTV pickup', doc:null }
     ],
-    meals: [
-      { tag: 'All day', text: 'Travel day — snacks en route. Stock condo at Hannaford for next 4 nights.' }
+    timeline:[
+      { time:'~05:30', icon:'🚗', text:'UberXL Beach Club → MCO (~20–25 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Disney+Beach+Club+Resort,Orlando&destination=Orlando+International+Airport&travelmode=driving', warn:null },
+      { time:'08:00', icon:'✈️', text:'MCO → EWR (arrive 10:40)', map:null, warn:null },
+      { time:'10:40', icon:'🕐', text:'~1h42m layover at Newark', map:null, warn:null },
+      { time:'12:22', icon:'✈️', text:'EWR → BTV (arrive 13:43)', map:null, warn:null },
+      { time:'~14:00', icon:'🚗', text:'Hertz 4WD SUV pickup at BTV (7-day, BTV→JFK one-way)', map:null, warn:null },
+      { time:'~14:30', icon:'🛒', text:'Hannaford grocery stop, Burlington (~5 min off route)', map:'https://www.google.com/maps/dir/?api=1&origin=Burlington+International+Airport,Vermont&destination=Hannaford+North+Avenue,Burlington,Vermont&travelmode=driving', warn:null },
+      { time:'~15:30', icon:'🏔️', text:"Arrive Smugglers' Notch Resort, Jeffersonville", map:'https://www.google.com/maps/dir/?api=1&origin=Hannaford+North+Avenue,Burlington,Vermont&destination=Smugglers+Notch+Resort,Jeffersonville,Vermont&travelmode=driving', warn:'Use VT-15 — do NOT use VT-108 (Smugglers\' Notch Pass), closed for winter' }
     ],
-    note: 'Route: VT-15 → resort. Do NOT use VT-108 (Smugglers\' Notch Pass) — officially closed for winter.'
+    meals:[{ tag:'All day', text:'Travel day — snacks en route. Stock condo at Hannaford for 4 Vermont nights.' }]
   },
   {
-    id: 'dec25', date: '2026-12-25', label: '25 Dec', day: 'Friday',
-    city: 'Vermont — Christmas Day', theme: 'vermont',
-    lodging: { name: "Smugglers' Notch Resort", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'Morning', icon: '⛷️', text: 'Ski camp check-in — Evan & Elena (book Nov 2026)', map: null },
-      { time: 'Day', icon: '🎿', text: 'Parents alternate: one on slopes, one with baby', map: null },
-      { time: 'Evening', icon: '🎄', text: 'Christmas dinner — TBD: home-cooked at condo or Morse Mountain Grille on-site', map: null }
+    id:'dec25', date:'2026-12-25', label:'25 Dec', day:'Friday',
+    city:'Vermont — Christmas Day', theme:'vermont',
+    summary:'Christmas Day · Ski camp — Evan & Elena · Slopes',
+    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[
+      { label:"Kids' Ski Camp — Evan & Elena", doc:null }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Condo (stocked from Hannaford)' },
-      { tag: "Kids' lunch", text: 'Ski camp lunch (confirm if included in camp fee when booking Nov)' },
-      { tag: 'Christmas dinner', text: 'OPEN: home-cooked condo or Morse Mountain Grille on-site' }
+    timeline:[
+      { time:'Morning', icon:'⛷️', text:'<strong>Ski camp check-in</strong> — Evan & Elena', map:null, warn:null },
+      { time:'Day', icon:'🎿', text:'Parents alternate: one on slopes, one with baby', map:null, warn:null },
+      { time:'Evening', icon:'🎄', text:'Christmas dinner — home-cooked at condo or Morse Mountain Grille on-site', map:null, warn:null }
     ],
-    note: "Ski camp + gear rental booking window opens Nov 2026 — reminder set for 1 Nov."
+    meals:[
+      { tag:'Breakfast', text:'Condo (stocked from Hannaford)' },
+      { tag:'Kids\' lunch', text:'Ski camp — confirm if included in camp fee when booking' },
+      { tag:'Christmas dinner', text:'OPEN: home-cooked or Morse Mountain Grille on-site' }
+    ]
   },
   {
-    id: 'dec26', date: '2026-12-26', label: '26 Dec', day: 'Saturday',
-    city: 'Vermont', theme: 'vermont',
-    lodging: { name: "Smugglers' Notch Resort", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'Day', icon: '⛷️', text: 'Ski camp continues — Evan & Elena', map: null },
-      { time: '~16:00', icon: '🍕', text: 'Dinner: The Family Table, Jeffersonville (~5 min drive, reserve ahead)', map: 'https://www.google.com/maps/dir/?api=1&origin=Smugglers+Notch+Resort,Jeffersonville,Vermont&destination=The+Family+Table+Restaurant,Jeffersonville,Vermont&travelmode=driving' }
+    id:'dec26', date:'2026-12-26', label:'26 Dec', day:'Saturday',
+    city:'Vermont', theme:'vermont',
+    summary:'Ski Day 2 · The Family Table dinner',
+    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[],
+    timeline:[
+      { time:'Day', icon:'⛷️', text:'Ski camp continues — Evan & Elena', map:null, warn:null },
+      { time:'~16:00', icon:'🍕', text:'<strong>The Family Table</strong>, Jeffersonville (~5 min drive)', map:'https://www.google.com/maps/dir/?api=1&origin=Smugglers+Notch+Resort,Jeffersonville,Vermont&destination=The+Family+Table+Restaurant,Jeffersonville,Vermont&travelmode=driving', warn:'Reservations recommended — Thu–Mon from 4pm' }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Condo' },
-      { tag: "Kids' lunch", text: 'Ski camp (same caveat on inclusion)' },
-      { tag: 'Dinner', text: 'The Family Table, Jeffersonville — chef-owned Italian/wood-fired pizza, Thu–Mon from 4pm. Reservations recommended.' }
-    ],
-    note: null
+    meals:[
+      { tag:'Breakfast', text:'Condo' },
+      { tag:'Kids\' lunch', text:'Ski camp (confirm inclusion)' },
+      { tag:'Dinner', text:'The Family Table — chef-owned Italian/wood-fired pizza, ~5 min drive' }
+    ]
   },
   {
-    id: 'dec27', date: '2026-12-27', label: '27 Dec', day: 'Sunday',
-    city: 'Vermont', theme: 'vermont',
-    lodging: { name: "Smugglers' Notch Resort", status: 'booked', checkIn: false, checkOut: true, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'Day', icon: '⛷️', text: 'Ski camp continues — last ski day', map: null },
-      { time: 'Evening', icon: '🍷', text: "Hearth & Candle dinner — on-site in Smugglers' Village (walk)", map: null }
+    id:'dec27', date:'2026-12-27', label:'27 Dec', day:'Sunday',
+    city:'Vermont', theme:'vermont',
+    summary:'Ski Day 3 (last) · Hearth & Candle dinner on-site',
+    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:false, co:true, doc:null },
+    flights:[], docs:[],
+    timeline:[
+      { time:'Day', icon:'⛷️', text:'Last ski day — Evan & Elena', map:null, warn:null },
+      { time:'Evening', icon:'🍷', text:'<strong>Hearth & Candle</strong> — on-site, walk, full bar', map:null, warn:null }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Condo — last morning' },
-      { tag: "Kids' lunch", text: 'Ski camp' },
-      { tag: 'Dinner', text: "Hearth & Candle (on-site) — upscale, full bar/wine list. On-property deliberately for easy evening before the drive day." }
-    ],
-    note: 'Last night at Smugglers\' Notch. Pack tonight — early departure tomorrow.'
+    meals:[
+      { tag:'Breakfast', text:'Condo — last morning, pack tonight' },
+      { tag:'Kids\' lunch', text:'Ski camp' },
+      { tag:'Dinner', text:"Hearth & Candle (on-site) — kept on-property for easy last evening" }
+    ]
   },
   {
-    id: 'dec28', date: '2026-12-28', label: '28 Dec', day: 'Monday',
-    city: 'Vermont → Boston', theme: 'boston',
-    lodging: { name: "Boston Marriott Long Wharf", status: 'booked', checkIn: true, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: '~08:30', icon: '🌅', text: 'Wake, feed baby, final pack', map: null },
-      { time: '~09:30', icon: '🚗', text: "Depart Smugglers' Notch — VT-15 → I-89 S (NOT via VT-108)", map: null },
-      { time: '~10:05', icon: '🍦', text: "STOP 1: Ben & Jerry's Factory Tour, Waterbury (~45–60 min)", map: 'https://www.google.com/maps/dir/?api=1&origin=Smugglers+Notch+Resort,Jeffersonville,Vermont&destination=Ben+and+Jerrys+Factory,Waterbury,Vermont&travelmode=driving' },
-      { time: '~10:05', icon: '🍩', text: 'Cold Hollow Cider Mill — cider donuts (same Waterbury stop)', map: 'https://www.google.com/maps/dir/?api=1&origin=Ben+and+Jerrys+Factory,Waterbury,Vermont&destination=Cold+Hollow+Cider+Mill,Waterbury,Vermont&travelmode=driving' },
-      { time: '~12:50', icon: '🍔', text: 'STOP 2: Concord, NH — lunch + mandatory 2-hr car-seat break (~45–60 min)', map: 'https://www.google.com/maps/dir/?api=1&origin=Waterbury,Vermont&destination=Concord,New+Hampshire&travelmode=driving' },
-      { time: '~13:50', icon: '🚗', text: 'I-93 S → Boston', map: null },
-      { time: '~15:00', icon: '🏨', text: 'Check in Boston Marriott Long Wharf (~3pm standard check-in)', map: 'https://www.google.com/maps/dir/?api=1&origin=Concord,New+Hampshire&destination=Boston+Marriott+Long+Wharf,Boston,MA&travelmode=driving' }
+    id:'dec28', date:'2026-12-28', label:'28 Dec', day:'Monday',
+    city:'Vermont → Boston', theme:'boston',
+    summary:'Drive: Ben & Jerry\'s · Concord lunch · Boston Long Wharf',
+    lodging:{ name:'Boston Marriott Long Wharf', status:'booked', ci:true, co:false, doc:null },
+    flights:[], docs:[],
+    timeline:[
+      { time:'~08:30', icon:'🌅', text:'Wake, feed baby, final pack', map:null, warn:null },
+      { time:'~09:30', icon:'🚗', text:'Depart — VT-15 → I-89 S (NOT VT-108)', map:null, warn:null },
+      { time:'~10:05', icon:'🍦', text:'<strong>Ben & Jerry\'s Factory Tour</strong>, Waterbury (~45–60 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Smugglers+Notch+Resort,Jeffersonville,Vermont&destination=Ben+and+Jerrys+Factory,Waterbury,Vermont&travelmode=driving', warn:null },
+      { time:'~10:05', icon:'🍩', text:'Cold Hollow Cider Mill — cider donuts (same stop)', map:'https://www.google.com/maps/dir/?api=1&origin=Ben+and+Jerrys+Factory,Waterbury,Vermont&destination=Cold+Hollow+Cider+Mill,Waterbury,Vermont&travelmode=driving', warn:null },
+      { time:'~12:50', icon:'🍔', text:'Concord, NH — lunch + mandatory 2-hr car-seat break (~45–60 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Waterbury,Vermont&destination=Concord,New+Hampshire&travelmode=driving', warn:null },
+      { time:'~15:00', icon:'🏨', text:'Check in Boston Marriott Long Wharf', map:'https://www.google.com/maps/dir/?api=1&origin=Concord,New+Hampshire&destination=Boston+Marriott+Long+Wharf,Boston,MA&travelmode=driving', warn:null }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Condo before departure' },
-      { tag: 'Lunch', text: 'Concord, NH stop — casual, not a food destination, just food + rest' },
-      { tag: 'Dinner', text: 'Light/easy near the hotel on arrival — bigger Boston stops saved for the 29th' }
-    ],
-    note: "Total drive ~3h30–3h50m with two stops. Confirm live routing/winter conditions closer to the date."
+    meals:[
+      { tag:'Breakfast', text:'Condo before departure' },
+      { tag:'Lunch', text:'Concord, NH rest stop — casual, not a food destination' },
+      { tag:'Dinner', text:'Light/easy near Long Wharf — save bigger Boston food for tomorrow' }
+    ]
   },
   {
-    id: 'dec29', date: '2026-12-29', label: '29 Dec', day: 'Tuesday',
-    city: 'Boston', theme: 'boston',
-    lodging: { name: "Boston Marriott Long Wharf", status: 'booked', checkIn: false, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: 'AM', icon: '🐟', text: 'New England Aquarium — walk from hotel', map: 'https://www.google.com/maps/dir/?api=1&origin=Boston+Marriott+Long+Wharf,Boston&destination=New+England+Aquarium,Boston,MA&travelmode=walking' },
-      { time: 'Midday', icon: '🦞', text: 'Faneuil Hall / Quincy Market — chowder + lobster roll via food-hall vendors', map: 'https://www.google.com/maps/dir/?api=1&origin=New+England+Aquarium,Boston&destination=Faneuil+Hall+Marketplace,Boston,MA&travelmode=walking' },
-      { time: 'Early PM', icon: '🚗', text: "Drive: Boston Children's Museum (~10 min)", map: 'https://www.google.com/maps/dir/?api=1&origin=Faneuil+Hall+Marketplace,Boston&destination=Boston+Childrens+Museum,Boston,MA&travelmode=driving' },
-      { time: 'Evening', icon: '🍮', text: "North End cannoli — Mike's or Modern Pastry (walk back from Children's Museum area)", map: 'https://www.google.com/maps/dir/?api=1&origin=Boston+Childrens+Museum,Boston&destination=Modern+Pastry,Boston,MA&travelmode=walking' },
-      { time: 'Optional', icon: '⛸️', text: 'Frog Pond ice skating (Boston Common) + Boston cream pie at Omni Parker House — bonus only if energy allows', map: 'https://www.google.com/maps/dir/?api=1&origin=Modern+Pastry,Boston&destination=Frog+Pond,Boston+Common,Boston,MA&travelmode=walking' }
+    id:'dec29', date:'2026-12-29', label:'29 Dec', day:'Tuesday',
+    city:'Boston', theme:'boston',
+    summary:'Aquarium · Quincy Market · Children\'s Museum · North End cannoli',
+    lodging:{ name:'Boston Marriott Long Wharf', status:'booked', ci:false, co:false, doc:null },
+    flights:[], docs:[
+      { label:'New England Aquarium tickets', doc:null },
+      { label:'Boston Children\'s Museum tickets', doc:null }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Hotel (Marriott Gold: breakfast perk — confirm with hotel)' },
-      { tag: 'Lunch', text: 'Quincy Market — clam chowder + lobster roll (two Boston essentials, no wait, no reservation)' },
-      { tag: 'Evening snack', text: 'North End cannoli (Mike\'s or Modern Pastry)' }
+    timeline:[
+      { time:'AM', icon:'🐟', text:'<strong>New England Aquarium</strong> — walk from hotel', map:'https://www.google.com/maps/dir/?api=1&origin=Boston+Marriott+Long+Wharf,Boston&destination=New+England+Aquarium,Boston,MA&travelmode=walking', warn:null },
+      { time:'Midday', icon:'🦞', text:'<strong>Faneuil Hall / Quincy Market</strong> — chowder + lobster roll', map:'https://www.google.com/maps/dir/?api=1&origin=New+England+Aquarium,Boston&destination=Faneuil+Hall+Marketplace,Boston,MA&travelmode=walking', warn:null },
+      { time:'Early PM', icon:'🚗', text:'Drive to Boston Children\'s Museum (~10 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Faneuil+Hall+Marketplace,Boston&destination=Boston+Childrens+Museum,Boston,MA&travelmode=driving', warn:null },
+      { time:'Evening', icon:'🍮', text:'<strong>North End cannoli</strong> — Mike\'s or Modern Pastry', map:'https://www.google.com/maps/dir/?api=1&origin=Boston+Childrens+Museum,Boston&destination=Modern+Pastry,Boston,MA&travelmode=walking', warn:null },
+      { time:'Optional', icon:'⛸️', text:'Frog Pond skating + Parker House cream pie — bonus only if energy allows', map:null, warn:null }
     ],
-    note: null
+    meals:[
+      { tag:'Breakfast', text:'Hotel (Marriott Gold — confirm breakfast perk with property)' },
+      { tag:'Lunch', text:'Quincy Market — clam chowder + lobster roll' },
+      { tag:'Snack', text:'North End cannoli (Mike\'s or Modern Pastry)' }
+    ]
   },
   {
-    id: 'dec30', date: '2026-12-30', label: '30 Dec', day: 'Wednesday',
-    city: 'Boston → NYC', theme: 'nyc',
-    lodging: { name: "Conrad New York Downtown", status: 'booked', checkIn: true, checkOut: false, doc: null },
-    flights: [],
-    timeline: [
-      { time: '~09:30', icon: '🍳', text: 'Breakfast at Long Wharf before checkout', map: null },
-      { time: '~10:00', icon: '🚗', text: 'Checkout + depart Boston (I-95 S via Providence → New Haven → Manhattan)', map: null },
-      { time: '~11:00', icon: '👶', text: "STOP 1: Providence Children's Museum, RI (~75 min — 1hr car-seat break + actual activity)", map: 'https://www.google.com/maps/dir/?api=1&origin=Boston+Marriott+Long+Wharf,Boston&destination=Providence+Childrens+Museum,Providence,Rhode+Island&travelmode=driving' },
-      { time: '~13:00', icon: '🍕', text: "STOP 2: New Haven apizza — Frank Pepe's or Sally's (pick whichever has shorter queue, ~60 min)", map: 'https://www.google.com/maps/dir/?api=1&origin=Providence,Rhode+Island&destination=Frank+Pepe+Pizzeria,New+Haven,Connecticut&travelmode=driving' },
-      { time: '~14:30', icon: '🚗', text: 'Final leg: I-95 → Manhattan (~1h30–2h)', map: null },
-      { time: '~17:00', icon: '🏨', text: 'Check in Conrad New York Downtown', map: 'https://www.google.com/maps/dir/?api=1&origin=New+Haven,Connecticut&destination=Conrad+New+York+Downtown,New+York,NY&travelmode=driving' }
+    id:'dec30', date:'2026-12-30', label:'30 Dec', day:'Wednesday',
+    city:'Boston → NYC', theme:'nyc',
+    summary:'Drive: Providence Children\'s Museum · New Haven apizza · Conrad check-in',
+    lodging:{ name:'Conrad New York Downtown', status:'booked', ci:true, co:false, doc:null },
+    flights:[], docs:[],
+    timeline:[
+      { time:'~09:30', icon:'🍳', text:'Breakfast at Long Wharf before checkout', map:null, warn:null },
+      { time:'~10:00', icon:'🚗', text:'Checkout + depart Boston (I-95 S via Providence → New Haven → Manhattan)', map:null, warn:null },
+      { time:'~11:00', icon:'👶', text:'<strong>Providence Children\'s Museum</strong>, RI (~75 min — car-seat break + real activity)', map:'https://www.google.com/maps/dir/?api=1&origin=Boston+Marriott+Long+Wharf,Boston&destination=Providence+Childrens+Museum,Providence,Rhode+Island&travelmode=driving', warn:null },
+      { time:'~13:00', icon:'🍕', text:'<strong>New Haven apizza</strong> — Frank Pepe\'s or Sally\'s (~60 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Providence,Rhode+Island&destination=Frank+Pepe+Pizzeria,New+Haven,Connecticut&travelmode=driving', warn:'Both can have long waits — pick shorter queue on arrival or call ahead' },
+      { time:'~17:00', icon:'🏨', text:'Check in Conrad New York Downtown', map:'https://www.google.com/maps/dir/?api=1&origin=New+Haven,Connecticut&destination=Conrad+New+York+Downtown,New+York,NY&travelmode=driving', warn:null }
     ],
-    meals: [
-      { tag: 'Breakfast', text: 'Long Wharf before checkout' },
-      { tag: 'Lunch', text: "New Haven apizza (Pepe's or Sally's) — a real food destination. Can have real waits — call ahead or pick shorter queue." },
-      { tag: 'Dinner', text: 'Casual near Conrad or delivery — long day, keep it easy' }
-    ],
-    note: "Total ~6.5–7 hours door-to-door with both stops. Each leg under 2-hr car-seat limit. SUV stays with family — not dropped in NYC."
+    meals:[
+      { tag:'Breakfast', text:'Long Wharf before checkout' },
+      { tag:'Lunch', text:'New Haven apizza — Pepe\'s or Sally\'s (a real food destination)' },
+      { tag:'Dinner', text:'Casual near Conrad or delivery — long day' }
+    ]
   },
   {
-    id: 'dec31', date: '2026-12-31', label: '31 Dec', day: 'Thursday',
-    city: 'New York City — Departure', theme: 'nyc',
-    lodging: { name: "Conrad New York Downtown", status: 'booked', checkIn: false, checkOut: true, doc: null },
-    flights: [{
-      num: 'SQ23', airline: 'Singapore Airlines', from: 'JFK', to: 'SIN',
-      dep: '22:15 JFK', arr: '05:30+2 SIN (2 Jan)',
-      cabin: 'Premium Economy', status: 'booked', doc: null
-    }],
-    timeline: [
-      { time: 'AM', icon: '🗽', text: 'Statue of Liberty ferry — Liberty Island only (skip Ellis Island to protect afternoon). Book earliest slot ~9:00–9:30am', map: 'https://www.google.com/maps/dir/?api=1&origin=Conrad+New+York+Downtown,New+York&destination=Battery+Park+City+Ferry+Landing,New+York,NY&travelmode=walking' },
-      { time: '~12:00', icon: '🥪', text: 'Lunch + farewell cheesecake — Stage Door Deli, 26 Vesey St (steps from Conrad + One World)', map: 'https://www.google.com/maps/dir/?api=1&origin=Battery+Park+City,New+York&destination=26+Vesey+St,New+York,NY&travelmode=walking' },
-      { time: '~13:30', icon: '🕊️', text: '9/11 Memorial reflecting pools — brief walk-through (same WTC complex)', map: null },
-      { time: '~15:30', icon: '🌆', text: 'One World Observatory — book ~3:30–3:45pm slot for golden-hour skyline (sunset 4:35pm)', map: 'https://www.oneworldobservatory.com/' },
-      { time: '~16:30', icon: '🏨', text: 'Return to Conrad — pack, Hilton Gold late checkout (up to 4pm) or bell-desk luggage hold', map: null },
-      { time: '~17:00', icon: '🚗', text: 'Self-drive Hertz SUV → JFK Federal Circle (15.6 mi — budget 45min–1h15m for NYE traffic)', map: 'https://www.google.com/maps/dir/?api=1&origin=Conrad+New+York+Downtown,New+York&destination=Hertz+Car+Rental,Federal+Circle,JFK+Airport,New+York&travelmode=driving' },
-      { time: '~18:00', icon: '🚇', text: 'Return SUV → free AirTrain to T4 (~4 min, every ~5 min, no fare)', map: null },
-      { time: '22:15', icon: '✈️', text: 'SQ23 departs JFK T4 → Singapore', map: null }
+    id:'dec31', date:'2026-12-31', label:'31 Dec', day:'Thursday',
+    city:'New York City — Departure', theme:'nyc',
+    summary:'Statue of Liberty · 9/11 Memorial · OWO · SQ23 22:15',
+    lodging:{ name:'Conrad New York Downtown', status:'booked', ci:false, co:true, doc:null },
+    flights:[{ num:'SQ23', airline:'Singapore Airlines', from:'JFK', to:'SIN', dep:'22:15 JFK', arr:'05:30+2 SIN', cabin:'Premium Economy', doc:null }],
+    docs:[
+      { label:'Statue of Liberty ferry — timed entry', doc:null },
+      { label:'One World Observatory — timed entry', doc:null }
     ],
-    meals: [
-      { tag: 'Lunch', text: 'Stage Door Deli, 26 Vesey St — pastrami/Reuben + NY cheesecake dessert. No separate Junior\'s stop needed.' }
+    timeline:[
+      { time:'AM', icon:'🗽', text:'<strong>Statue of Liberty ferry</strong> — Liberty Island only (book earliest ~9:00–9:30am slot)', map:'https://www.google.com/maps/dir/?api=1&origin=Conrad+New+York+Downtown,New+York&destination=Battery+Park+City+Ferry+Landing,New+York,NY&travelmode=walking', warn:null },
+      { time:'~12:00', icon:'🥪', text:'Lunch + farewell cheesecake — <strong>Stage Door Deli</strong>, 26 Vesey St (steps from Conrad)', map:'https://www.google.com/maps/dir/?api=1&origin=Battery+Park+City,New+York&destination=26+Vesey+St,New+York,NY&travelmode=walking', warn:null },
+      { time:'~13:30', icon:'🕊️', text:'9/11 Memorial reflecting pools — brief walk (same WTC complex, no transit)', map:null, warn:null },
+      { time:'~15:30', icon:'🌆', text:'<strong>One World Observatory</strong> — book ~3:30–3:45pm for golden-hour skyline (sunset 4:35pm)', map:'https://www.oneworldobservatory.com/', warn:null },
+      { time:'~17:00', icon:'🚗', text:'Self-drive Hertz SUV → JFK Federal Circle (15.6 mi — budget 45min–1h15m for NYE traffic)', map:'https://www.google.com/maps/dir/?api=1&origin=Conrad+New+York+Downtown,New+York&destination=Hertz+Car+Rental,Federal+Circle,JFK+Airport&travelmode=driving', warn:null },
+      { time:'~18:00', icon:'🚇', text:'Return SUV → free AirTrain to T4 (~4 min, every 5 min, no fare)', map:null, warn:null },
+      { time:'22:15', icon:'✈️', text:'<strong>SQ23 departs JFK T4</strong> → Singapore', map:null, warn:null }
     ],
-    note: 'All four afternoon stops (ferry departure, deli, 9/11 Memorial, Observatory) are in the same WTC/Battery Park complex — zero extra transit.'
+    meals:[{ tag:'Lunch', text:'Stage Door Deli, 26 Vesey St — pastrami/Reuben + NY cheesecake. All four afternoon stops in the same WTC complex.' }]
   },
   {
-    id: 'jan01', date: '2027-01-01', label: '1 Jan', day: 'Friday',
-    city: 'Singapore — Home', theme: 'nyc',
-    lodging: null, flights: [],
-    timeline: [
-      { time: '05:30', icon: '✈️', text: 'Arrive Singapore Changi (SQ23, +2 days from JFK departure)', map: null }
+    id:'jan01', date:'2027-01-01', label:'1 Jan', day:'Friday',
+    city:'Singapore — Home', theme:'nyc',
+    summary:'Arrive Changi · Welcome home 🏠',
+    lodging:null, flights:[], docs:[],
+    timeline:[
+      { time:'05:30', icon:'✈️', text:'Arrive Singapore Changi (SQ23, +2 days from JFK)', map:null, warn:null }
     ],
-    meals: [], note: 'Happy New Year. Welcome home. 🏠'
+    meals:[]
   }
 ];
 
-// ─────────────────────────────────────────────
-//  EXPENSE LOG  (localStorage)
-// ─────────────────────────────────────────────
-const STORAGE_KEY = 'holiday2026_expenses';
-
-function loadExpenses() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-  catch { return {}; }
-}
-function saveExpenses(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-function getExpensesForDay(dateStr) {
-  return loadExpenses()[dateStr] || [];
-}
-function addExpenseToDay(dateStr, item) {
-  const data = loadExpenses();
-  if (!data[dateStr]) data[dateStr] = [];
-  data[dateStr].push({ ...item, id: Date.now() });
-  saveExpenses(data);
-}
-function deleteExpense(dateStr, id) {
-  const data = loadExpenses();
-  if (data[dateStr]) data[dateStr] = data[dateStr].filter(e => e.id !== id);
-  saveExpenses(data);
-}
-function getAllExpenses() {
-  return loadExpenses();
-}
-
-const CAT_META = {
-  food:       { label: 'Food & Drink', dot: 'cat-food',       badge: 'method-food'       },
-  transport:  { label: 'Transport',    dot: 'cat-transport',  badge: 'method-transport'  },
-  activities: { label: 'Activities',   dot: 'cat-activities', badge: 'method-activities' },
-  shopping:   { label: 'Shopping',     dot: 'cat-shopping',   badge: 'method-shopping'   },
-  other:      { label: 'Other',        dot: 'cat-other',      badge: 'method-other'      }
+/* ─────────────────────────────────────────
+   EXPENSE LOG
+───────────────────────────────────────── */
+const SK = 'holiday2026_exp';
+const CAT = {
+  food:       { label:'Food & Drink',  dot:'d-food',       pm:'pm-food'       },
+  transport:  { label:'Transport',     dot:'d-transport',  pm:'pm-transport'  },
+  activities: { label:'Activities',    dot:'d-activities', pm:'pm-activities' },
+  shopping:   { label:'Shopping',      dot:'d-shopping',   pm:'pm-shopping'   },
+  other:      { label:'Other',         dot:'d-other',      pm:'pm-other'      }
 };
+const loadExp  = () => { try { return JSON.parse(localStorage.getItem(SK)||'{}'); } catch { return {}; } };
+const saveExp  = d  => localStorage.setItem(SK, JSON.stringify(d));
+const getDayExp = dt => loadExp()[dt] || [];
+const addExp = (dt, item) => { const d=loadExp(); if(!d[dt])d[dt]=[]; d[dt].push({...item, id:Date.now()}); saveExp(d); };
+const delExp = (dt, id) => { const d=loadExp(); if(d[dt])d[dt]=d[dt].filter(e=>e.id!==id); saveExp(d); };
+const fmt = n => (+n).toFixed(2);
 
-// ─────────────────────────────────────────────
-//  RENDER HELPERS
-// ─────────────────────────────────────────────
-function fmt(n) { return n.toFixed(2); }
-
-function renderExpenseList(dateStr) {
-  const items = getExpensesForDay(dateStr);
-  if (!items.length) return '<div class="expense-empty">No expenses logged yet</div>';
+function expListHTML(dt) {
+  const items = getDayExp(dt);
+  if(!items.length) return '<div class="exp-empty">No expenses logged yet</div>';
   return items.map(e => {
-    const meta = CAT_META[e.cat] || CAT_META.other;
-    return `<div class="expense-item" id="exp-${e.id}">
-      <div class="exp-cat ${meta.dot}"></div>
+    const m = CAT[e.cat]||CAT.other;
+    return `<div class="exp-item" id="ei-${e.id}">
+      <div class="exp-dot ${m.dot}"></div>
       <div class="exp-desc">${e.desc}</div>
-      <span class="exp-method ${`pm-${e.method}`}">${e.method.toUpperCase()}</span>
+      <span class="exp-pm pm-${e.method}">${e.method.toUpperCase()}</span>
       <div class="exp-amt">$${fmt(e.amt)}</div>
-      <button class="exp-del" onclick="deleteExp('${dateStr}',${e.id})">×</button>
+      <button class="exp-del" onclick="onDelExp('${dt}',${e.id})">×</button>
     </div>`;
   }).join('');
 }
 
-function renderDayCard(day, isToday, isPast) {
-  const today = isToday ? `<span class="today-tag">Today</span>` : '';
-  const heroClass = `hero-${day.theme}`;
-  const heroImg = CITY_IMAGES[day.theme]
-    ? `style="background-image:url('${CITY_IMAGES[day.theme]}')"` : '';
+/* ─────────────────────────────────────────
+   RENDER
+───────────────────────────────────────── */
+function renderDay(day) {
+  const isToday = day.date === TODAY;
+  const todayPill = isToday ? '<span class="today-pill">Today</span>' : '';
+  const img = IMG[day.theme] ? `url('${IMG[day.theme]}')` : '';
 
-  // Lodging block
-  let lodgingHtml = '';
-  if (day.lodging) {
-    const ci = day.lodging.checkIn ? '<span class="checkin-tag">Check-in</span>' : '';
-    const co = day.lodging.checkOut ? '<span class="checkin-tag">Check-out</span>' : '';
-    const chip = day.lodging.status === 'booked'
-      ? '<span class="status-chip chip-booked">✓ Booked</span>'
-      : '<span class="status-chip chip-tbc">⚠ Cost TBC</span>';
+  // Lodging
+  let lodging = '';
+  if(day.lodging) {
+    const chip = day.lodging.status==='booked'
+      ? '<span class="chip chip-ok">✓ Booked</span>'
+      : '<span class="chip chip-tbc">⚠ Cost TBC</span>';
+    const ci = day.lodging.ci ? '<span class="chip-ci">Check-in</span>' : '';
+    const co = day.lodging.co ? '<span class="chip-ci">Check-out</span>' : '';
     const docBtn = day.lodging.doc
-      ? `<a class="doc-link" href="${day.lodging.doc}" target="_blank">📄 Receipt</a>` : '';
-    lodgingHtml = `<div class="card-section">
-      <div class="section-label">Lodging</div>
+      ? `<a class="doc-btn doc-linked" href="${day.lodging.doc}" target="_blank">📄 Receipt</a>`
+      : '<button class="doc-btn doc-unlinked">📄 Receipt — not linked</button>';
+    lodging = `<div class="sec"><div class="sec-lbl">Lodging</div>
       <div class="lodging-row">
         <span class="lodging-name">${day.lodging.name}</span>
-        ${chip} ${ci} ${co} ${docBtn}
+        ${chip}${ci}${co}${docBtn}
       </div>
     </div>`;
   }
 
-  // Flights block
-  let flightsHtml = '';
-  if (day.flights && day.flights.length) {
-    const fCards = day.flights.map(f => {
-      const docBtn = f.doc ? `<a class="doc-link" href="${f.doc}" target="_blank">🎫 Boarding pass</a>` : '';
+  // Flights
+  let flights = '';
+  if(day.flights && day.flights.length) {
+    const cards = day.flights.map(f => {
+      const docBtn = f.doc
+        ? `<a class="doc-btn doc-linked" href="${f.doc}" target="_blank">🎫 Boarding pass</a>`
+        : '<button class="doc-btn doc-unlinked">🎫 Boarding pass — not linked</button>';
       return `<div class="flight-card">
         <div class="flight-top">
           <span class="flight-num">${f.num} · ${f.airline}</span>
-          <span class="flight-status-chip">✓ Booked</span>
+          <span class="flight-ok-chip">✓ Booked</span>
         </div>
         <div class="flight-route">
           <span class="flight-iata">${f.from}</span>
-          <div class="flight-mid">
-            <span class="flight-arrow">──────✈──────</span>
-          </div>
+          <div class="flight-mid"><span class="flight-arrow">───────✈───────</span></div>
           <span class="flight-iata">${f.to}</span>
         </div>
         <div class="flight-times"><span>${f.dep}</span><span>${f.arr}</span></div>
-        <div class="flight-cabin">${f.cabin} ${docBtn}</div>
+        <div class="flight-meta"><span class="flight-cabin">${f.cabin}</span>${docBtn}</div>
       </div>`;
     }).join('');
-    flightsHtml = `<div class="card-section">${fCards}</div>`;
+    flights = `<div class="sec">${cards}</div>`;
   }
 
   // Timeline
-  const tlItems = day.timeline.map(t => {
+  const tl = day.timeline.map(t => {
     const mapLink = t.map ? `<a class="tl-map" href="${t.map}" target="_blank">📍 Maps</a>` : '';
-    return `<div class="timeline-item">
+    const warn = t.warn ? `<div class="tl-warn">⚠️ ${t.warn}</div>` : '';
+    return `<div class="tl-item">
       <div class="tl-time">${t.time}</div>
       <div class="tl-icon">${t.icon}</div>
       <div class="tl-body">
         <div class="tl-text">${t.text}</div>
-        ${mapLink}
+        ${mapLink}${warn}
       </div>
     </div>`;
   }).join('');
 
   // Meals
-  let mealsHtml = '';
-  if (day.meals && day.meals.length) {
-    const mItems = day.meals.map(m =>
-      `<div class="meal-item"><span class="meal-tag">${m.tag}:</span>${m.text}</div>`
-    ).join('');
-    mealsHtml = `<div class="card-section">
-      <div class="section-label">Meals</div>
-      ${mItems}
-    </div>`;
+  let meals = '';
+  if(day.meals && day.meals.length) {
+    const rows = day.meals.map(m => `<div class="meal-row"><span class="meal-tag">${m.tag}</span>${m.text}</div>`).join('');
+    meals = `<div class="sec"><div class="sec-lbl">Meals</div>${rows}</div>`;
   }
 
-  // Expense log
-  const dayTotal = getExpensesForDay(day.date).reduce((s, e) => s + Number(e.amt), 0);
-  const totalLabel = dayTotal > 0 ? `$${fmt(dayTotal)} logged` : 'No expenses logged';
-  const expenseHtml = `<div class="card-section expense-section">
-    <div class="section-label">Expense Log</div>
-    <div class="expense-header-row">
-      <span class="expense-day-total">${totalLabel}</span>
-      <button class="add-btn" onclick="openModal('${day.date}','${day.label}')">+ Add</button>
+  // Documents
+  let docs = '';
+  if(day.docs && day.docs.length) {
+    const rows = day.docs.map(d => {
+      const btn = d.doc
+        ? `<a class="doc-btn doc-linked" href="${d.doc}" target="_blank">📄 Open</a>`
+        : '<button class="doc-btn doc-unlinked">📄 Not linked</button>';
+      return `<div class="doc-row"><span class="doc-label">${d.label}</span>${btn}</div>`;
+    }).join('');
+    docs = `<div class="sec"><div class="sec-lbl">Documents</div>${rows}</div>`;
+  }
+
+  // Expenses
+  const dayTotal = getDayExp(day.date).reduce((s,e)=>s+Number(e.amt),0);
+  const totalLabel = dayTotal>0 ? `$${fmt(dayTotal)} logged` : 'No expenses logged';
+  const expSec = `<div class="sec">
+    <div class="sec-lbl">Expense Log</div>
+    <div class="exp-hdr">
+      <span class="exp-total" id="et-${day.date}">${totalLabel}</span>
+      <button class="add-exp-btn" onclick="openModal('${day.date}','${day.label}')">+ Add</button>
     </div>
-    <div class="expense-list" id="explist-${day.date}">${renderExpenseList(day.date)}</div>
+    <div id="el-${day.date}">${expListHTML(day.date)}</div>
   </div>`;
 
-  return `<div class="day-card ${isPast ? 'past-card' : ''}" id="card-${day.id}">
-    <div class="day-hero ${heroClass}" ${heroImg}>
-      <div class="day-hero-text">
-        <div class="day-date-label">${day.label} — ${day.day}${today}</div>
-        <div class="day-location-label">${day.city}</div>
+  return `<div class="page-inner">
+    <div class="hero">
+      <div class="hero-grad g-${day.theme}"></div>
+      ${img ? `<div class="hero-img" style="background-image:${img}"></div>` : ''}
+      <div class="hero-fade"></div>
+      <div class="hero-text">
+        <div class="hero-date">${day.label} — ${day.day}${todayPill}</div>
+        <div class="hero-city">${day.city}</div>
       </div>
     </div>
-    ${lodgingHtml}
-    ${flightsHtml}
-    <div class="card-section">
-      <div class="section-label">Plan</div>
-      ${tlItems}
-    </div>
-    ${mealsHtml}
-    ${expenseHtml}
+    ${lodging}${flights}
+    <div class="sec"><div class="sec-lbl">Plan</div>${tl}</div>
+    ${meals}${docs}${expSec}
   </div>`;
 }
 
-// ─────────────────────────────────────────────
-//  APP INIT
-// ─────────────────────────────────────────────
-let currentModalDate = null;
+/* ─────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────── */
+const TODAY = new Date().toISOString().slice(0,10);
+let currentPage = 0;
 
-function init() {
-  const today = new Date().toISOString().slice(0, 10);
-  const nav = document.getElementById('day-nav');
-  const container = document.getElementById('days-container');
-
-  // Build nav pills
-  nav.innerHTML = DAYS.map(d => {
-    const cls = d.date === today ? 'day-pill today' : d.date < today ? 'day-pill past' : 'day-pill future';
-    return `<button class="${cls}" onclick="scrollToDay('${d.id}')">${d.label}</button>`;
+function buildNav() {
+  const strip = document.getElementById('nav-strip');
+  strip.innerHTML = DAYS.map((d,i) => {
+    let cls = 'nav-pill';
+    if(d.date === TODAY) cls += ' today';
+    else if(d.date < TODAY) cls += ' past';
+    return `<button class="${cls}" id="pill-${i}" onclick="goTo(${i})">${d.label}</button>`;
   }).join('');
+}
 
-  // Build day cards
-  container.innerHTML = DAYS.map(d =>
-    renderDayCard(d, d.date === today, d.date < today)
-  ).join('');
+function buildPages() {
+  const container = document.getElementById('pages');
+  container.innerHTML = DAYS.map(d => `<div class="day-page" id="page-${d.id}">${renderDay(d)}</div>`).join('');
+}
 
-  // Scroll to today
-  const todayDay = DAYS.find(d => d.date === today);
-  if (todayDay) {
-    setTimeout(() => scrollToDay(todayDay.id), 100);
+function goTo(i) {
+  const container = document.getElementById('pages');
+  container.scrollTo({ left: i * container.offsetWidth, behavior: 'smooth' });
+}
+
+function setContainerHeight() {
+  const hdr = document.getElementById('hdr').offsetHeight;
+  const pages = document.getElementById('pages');
+  pages.style.top = hdr + 'px';
+  pages.style.height = `calc(100dvh - ${hdr}px)`;
+  // fallback for browsers without dvh
+  pages.style.height = `calc(${window.innerHeight}px - ${hdr}px)`;
+}
+
+function updateHeader(i) {
+  currentPage = i;
+  const day = DAYS[i];
+
+  // Countdown
+  const el = document.getElementById('countdown');
+  const today = new Date(TODAY);
+  const tripStart = new Date('2026-12-14');
+  const tripEnd   = new Date('2027-01-01');
+  if(today < tripStart) {
+    const diff = Math.ceil((tripStart - today) / 86400000);
+    el.textContent = `${diff} day${diff!==1?'s':''} to go ✈️`;
+  } else if(today <= tripEnd) {
+    const dayNum = Math.floor((today - tripStart) / 86400000) + 1;
+    el.textContent = `Day ${dayNum} of 18 🌍`;
+  } else {
+    el.textContent = 'Trip complete 🏠';
   }
 
-  // Scroll active pill into view
-  const activePill = nav.querySelector('.today');
-  if (activePill) activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  // Summary
+  document.getElementById('day-summary').textContent = day.summary;
+
+  // Pills
+  document.querySelectorAll('.nav-pill').forEach((p,idx) => {
+    p.classList.toggle('active', idx === i);
+  });
+  const activePill = document.getElementById(`pill-${i}`);
+  if(activePill) activePill.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
 }
 
-function scrollToDay(id) {
-  const el = document.getElementById('card-' + id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function debounce(fn, ms) {
+  let t; return (...a) => { clearTimeout(t); t = setTimeout(()=>fn(...a), ms); };
 }
 
-// ─────────────────────────────────────────────
-//  MODAL
-// ─────────────────────────────────────────────
-function openModal(dateStr, label) {
-  currentModalDate = dateStr;
-  document.getElementById('modal-day-label').textContent = label;
-  document.getElementById('exp-desc').value = '';
-  document.getElementById('exp-amt').value = '';
-  document.getElementById('exp-cat').value = 'food';
-  document.getElementById('exp-method').value = 'uob';
-  document.getElementById('modal-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('exp-desc').focus(), 300);
+/* ─────────────────────────────────────────
+   TOOLS PANEL
+───────────────────────────────────────── */
+let fxRate = null;
+
+async function openTools() {
+  document.getElementById('tools-ov').classList.add('open');
+  const day = DAYS[currentPage];
+  const city = WEATHER_CITY[day.theme] || 'New York City';
+  document.getElementById('wx-city-label').textContent = city;
+
+  // Weather
+  document.getElementById('wx-loading').style.display = 'block';
+  document.getElementById('wx-result').style.display = 'none';
+  document.getElementById('wx-desc').style.display = 'none';
+  try {
+    const r = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
+    const data = await r.json();
+    const c = data.current_condition[0];
+    document.getElementById('wx-result').textContent = `${c.temp_C}°C`;
+    document.getElementById('wx-desc').textContent = c.weatherDesc[0].value;
+    document.getElementById('wx-loading').style.display = 'none';
+    document.getElementById('wx-result').style.display = 'block';
+    document.getElementById('wx-desc').style.display = 'block';
+  } catch {
+    document.getElementById('wx-loading').textContent = 'Weather unavailable — check connection';
+  }
+
+  // FX rate
+  if(!fxRate) {
+    try {
+      const r = await fetch('https://api.frankfurter.app/latest?from=USD&to=SGD');
+      const data = await r.json();
+      fxRate = data.rates.SGD;
+    } catch { fxRate = null; }
+  }
+  const rateEl = document.getElementById('fx-rate');
+  rateEl.innerHTML = fxRate
+    ? `1 USD = <span>SGD ${fxRate.toFixed(4)}</span> · live rate`
+    : 'Rate unavailable — check connection';
+}
+function closeTools(e) {
+  if(!e || e.target===document.getElementById('tools-ov'))
+    document.getElementById('tools-ov').classList.remove('open');
+}
+
+function calcFx(from) {
+  if(!fxRate) return;
+  if(from==='usd') {
+    const v = parseFloat(document.getElementById('fx-usd').value);
+    document.getElementById('fx-sgd').value = isNaN(v)?'': (v*fxRate).toFixed(2);
+  } else {
+    const v = parseFloat(document.getElementById('fx-sgd').value);
+    document.getElementById('fx-usd').value = isNaN(v)?'': (v/fxRate).toFixed(2);
+  }
+}
+function calcHeight(dir) {
+  if(dir==='imp') {
+    const ft=parseFloat(document.getElementById('h-ft').value)||0;
+    const inc=parseFloat(document.getElementById('h-in').value)||0;
+    document.getElementById('h-cm').value = ((ft*12+inc)*2.54).toFixed(1);
+  } else {
+    const cm=parseFloat(document.getElementById('h-cm').value);
+    if(isNaN(cm))return;
+    const totalIn=cm/2.54;
+    document.getElementById('h-ft').value=Math.floor(totalIn/12);
+    document.getElementById('h-in').value=(totalIn%12).toFixed(1);
+  }
+}
+function calcWeight(dir) {
+  if(dir==='imp') {
+    const lbs=parseFloat(document.getElementById('w-lbs').value);
+    document.getElementById('w-kg').value=isNaN(lbs)?'':(lbs/2.2046).toFixed(2);
+  } else {
+    const kg=parseFloat(document.getElementById('w-kg').value);
+    document.getElementById('w-lbs').value=isNaN(kg)?'':(kg*2.2046).toFixed(2);
+  }
+}
+
+/* ─────────────────────────────────────────
+   SPEND PANEL
+───────────────────────────────────────── */
+function openSpend() {
+  const all = loadExp();
+  const catT={}, methodT={}, dayT=[];
+  let grand=0;
+  Object.entries(all).forEach(([dt,items])=>{
+    if(!items.length)return;
+    const s=items.reduce((a,e)=>a+Number(e.amt),0);
+    grand+=s;
+    const d=DAYS.find(x=>x.date===dt);
+    if(d) dayT.push({label:d.label,total:s});
+    items.forEach(e=>{
+      catT[e.cat]=(catT[e.cat]||0)+Number(e.amt);
+      methodT[e.method]=(methodT[e.method]||0)+Number(e.amt);
+    });
+  });
+  let html='';
+  if(!grand){
+    html='<div style="color:var(--t3);font-size:13px;text-align:center;padding:20px 0">No expenses logged yet</div>';
+  } else {
+    html+='<div class="sum-sec-title">By Category</div>';
+    Object.entries(catT).sort((a,b)=>b[1]-a[1]).forEach(([c,t])=>{
+      const m=CAT[c]||CAT.other;
+      html+=`<div class="sum-row"><span class="sum-lbl"><span class="exp-dot ${m.dot}" style="width:8px;height:8px;border-radius:50%;display:inline-block"></span>&nbsp;${m.label}</span><span class="sum-amt">$${fmt(t)}</span></div>`;
+    });
+    html+='<div class="sum-sec-title">By Payment Method</div>';
+    Object.entries(methodT).sort((a,b)=>b[1]-a[1]).forEach(([m,t])=>{
+      html+=`<div class="sum-row"><span class="sum-lbl"><span class="exp-pm pm-${m}" style="padding:2px 7px;border-radius:12px;font-size:10px;font-weight:800">${m.toUpperCase()}</span></span><span class="sum-amt">$${fmt(t)}</span></div>`;
+    });
+    if(dayT.length>1){
+      html+='<div class="sum-sec-title">By Day</div>';
+      dayT.forEach(d=>{ html+=`<div class="sum-row"><span class="sum-lbl">${d.label}</span><span class="sum-amt">$${fmt(d.total)}</span></div>`; });
+    }
+    html+=`<div class="sum-total"><span>Total</span><span>$${fmt(grand)}</span></div>`;
+  }
+  document.getElementById('spend-content').innerHTML=html;
+  document.getElementById('spend-ov').classList.add('open');
+}
+function closeSpend(e) {
+  if(!e || e.target===document.getElementById('spend-ov'))
+    document.getElementById('spend-ov').classList.remove('open');
+}
+
+/* ─────────────────────────────────────────
+   EXPENSE MODAL
+───────────────────────────────────────── */
+let modalDate=null;
+function openModal(dt,label) {
+  modalDate=dt;
+  document.getElementById('modal-day').textContent=label;
+  document.getElementById('e-desc').value='';
+  document.getElementById('e-amt').value='';
+  document.getElementById('e-cat').value='food';
+  document.getElementById('e-method').value='uob';
+  document.getElementById('modal-wrap').classList.add('open');
+  setTimeout(()=>document.getElementById('e-desc').focus(),300);
 }
 function closeModal(e) {
-  if (!e || e.target === document.getElementById('modal-overlay')) {
-    document.getElementById('modal-overlay').classList.remove('open');
-    currentModalDate = null;
-  }
+  if(!e || e.target===document.getElementById('modal-wrap'))
+    document.getElementById('modal-wrap').classList.remove('open');
+  modalDate=null;
 }
 function saveExpense() {
-  if (!currentModalDate) return;
-  const desc = document.getElementById('exp-desc').value.trim();
-  const amt  = parseFloat(document.getElementById('exp-amt').value);
-  if (!desc || isNaN(amt) || amt <= 0) {
-    alert('Please enter a description and a valid amount.');
-    return;
-  }
-  addExpenseToDay(currentModalDate, {
-    desc,
-    amt,
-    cat: document.getElementById('exp-cat').value,
-    method: document.getElementById('exp-method').value
-  });
-  // Refresh the expense list in the card
-  const listEl = document.getElementById('explist-' + currentModalDate);
-  if (listEl) listEl.innerHTML = renderExpenseList(currentModalDate);
-  // Update day total label
-  const total = getExpensesForDay(currentModalDate).reduce((s,e) => s + Number(e.amt), 0);
-  const card = document.getElementById('card-' + DAYS.find(d => d.date === currentModalDate)?.id);
-  if (card) {
-    const totalEl = card.querySelector('.expense-day-total');
-    if (totalEl) totalEl.textContent = total > 0 ? `$${fmt(total)} logged` : 'No expenses logged';
-  }
+  if(!modalDate) return;
+  const desc=document.getElementById('e-desc').value.trim();
+  const amt=parseFloat(document.getElementById('e-amt').value);
+  if(!desc||isNaN(amt)||amt<=0){alert('Enter a description and a valid amount.');return;}
+  addExp(modalDate,{desc,amt,cat:document.getElementById('e-cat').value,method:document.getElementById('e-method').value});
+  refreshExpSection(modalDate);
   closeModal();
 }
-function deleteExp(dateStr, id) {
-  deleteExpense(dateStr, id);
-  const listEl = document.getElementById('explist-' + dateStr);
-  if (listEl) listEl.innerHTML = renderExpenseList(dateStr);
-  const total = getExpensesForDay(dateStr).reduce((s,e) => s + Number(e.amt), 0);
-  const card = document.getElementById('card-' + DAYS.find(d => d.date === dateStr)?.id);
-  if (card) {
-    const totalEl = card.querySelector('.expense-day-total');
-    if (totalEl) totalEl.textContent = total > 0 ? `$${fmt(total)} logged` : 'No expenses logged';
+function onDelExp(dt,id) {
+  delExp(dt,id);
+  refreshExpSection(dt);
+}
+function refreshExpSection(dt) {
+  const el=document.getElementById(`el-${dt}`);
+  if(el) el.innerHTML=expListHTML(dt);
+  const tot=getDayExp(dt).reduce((s,e)=>s+Number(e.amt),0);
+  const te=document.getElementById(`et-${dt}`);
+  if(te) te.textContent=tot>0?`$${fmt(tot)} logged`:'No expenses logged';
+}
+
+/* ─────────────────────────────────────────
+   INIT
+───────────────────────────────────────── */
+function init() {
+  buildNav();
+  buildPages();
+  setContainerHeight();
+  window.addEventListener('resize', setContainerHeight);
+
+  const container = document.getElementById('pages');
+  container.addEventListener('scroll', debounce(() => {
+    const i = Math.round(container.scrollLeft / container.offsetWidth);
+    if(i !== currentPage) updateHeader(i);
+  }, 80), { passive: true });
+
+  // Jump to today (or first day if pre-trip)
+  let startIdx = DAYS.findIndex(d => d.date === TODAY);
+  if(startIdx < 0) {
+    startIdx = TODAY < DAYS[0].date ? 0 : DAYS.length - 1;
+  }
+  updateHeader(startIdx);
+  if(startIdx > 0) {
+    setTimeout(() => {
+      const container = document.getElementById('pages');
+      container.scrollLeft = startIdx * container.offsetWidth;
+    }, 50);
   }
 }
 
-// ─────────────────────────────────────────────
-//  SUMMARY PANEL
-// ─────────────────────────────────────────────
-function openSummary() {
-  const all = getAllExpenses();
-  const catTotals = {};
-  const methodTotals = {};
-  const dayTotals = [];
-  let grandTotal = 0;
-
-  Object.entries(all).forEach(([dateStr, items]) => {
-    if (!items.length) return;
-    const daySum = items.reduce((s, e) => s + Number(e.amt), 0);
-    grandTotal += daySum;
-    const dayObj = DAYS.find(d => d.date === dateStr);
-    if (dayObj) dayTotals.push({ label: dayObj.label, total: daySum });
-    items.forEach(e => {
-      catTotals[e.cat] = (catTotals[e.cat] || 0) + Number(e.amt);
-      methodTotals[e.method] = (methodTotals[e.method] || 0) + Number(e.amt);
-    });
-  });
-
-  let html = '';
-  if (grandTotal === 0) {
-    html = '<div style="color:#aaa;font-size:14px;text-align:center;padding:24px 0">No expenses logged yet</div>';
-  } else {
-    // By category
-    html += '<div class="sum-section-title">By Category</div>';
-    Object.entries(catTotals).sort((a,b) => b[1]-a[1]).forEach(([cat, total]) => {
-      const meta = CAT_META[cat] || CAT_META.other;
-      html += `<div class="sum-row"><span class="sum-label"><span class="exp-cat ${meta.dot}" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>&nbsp;${meta.label}</span><span class="sum-amt">$${fmt(total)}</span></div>`;
-    });
-
-    // By payment method
-    html += '<div class="sum-section-title">By Payment Method</div>';
-    Object.entries(methodTotals).sort((a,b) => b[1]-a[1]).forEach(([method, total]) => {
-      html += `<div class="sum-row"><span class="sum-label"><span class="exp-method pm-${method}" style="padding:2px 6px;border-radius:10px;font-size:11px;font-weight:700;">${method.toUpperCase()}</span></span><span class="sum-amt">$${fmt(total)}</span></div>`;
-    });
-
-    // By day
-    if (dayTotals.length > 1) {
-      html += '<div class="sum-section-title">By Day</div>';
-      dayTotals.forEach(d => {
-        html += `<div class="sum-row"><span class="sum-label">${d.label}</span><span class="sum-amt">$${fmt(d.total)}</span></div>`;
-      });
-    }
-
-    html += `<div class="sum-total-row"><span>Total Logged</span><span>$${fmt(grandTotal)}</span></div>`;
-  }
-
-  document.getElementById('summary-content').innerHTML = html;
-  document.getElementById('summary-overlay').classList.add('open');
-}
-function closeSummary(e) {
-  if (!e || e.target === document.getElementById('summary-overlay')) {
-    document.getElementById('summary-overlay').classList.remove('open');
-  }
-}
-
-// ─────────────────────────────────────────────
-init();
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
