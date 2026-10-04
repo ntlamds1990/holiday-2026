@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup — Colour & Hero Options</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; background: #f0f2f5; padding: 16px; }
+h1 { font-size: 15px; font-weight: 800; color: #111; margin: 20px 0 6px; }
+h2 { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .8px; margin: 28px 0 10px; border-top: 1px solid #ddd; padding-top: 16px; }
+.note { font-size: 12px; color: #888; margin-bottom: 16px; }
+
+/* ── HERO STRIP ── */
+.hero {
+  border-radius: 14px 14px 0 0;
+  position: relative; overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 20%, rgba(255,255,255,.95) 100%);
+}
+.hero-text {
+  position: relative; z-index: 1;
+  padding: 10px 16px 10px;
+}
+.hero-date { font-size: 20px; font-weight: 900; color: #111; }
+.hero-city { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .8px; margin-top: 1px; }
+.hero-today { display: inline-block; background: #e53e3e; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; letter-spacing: .5px; margin-left: 6px; vertical-align: middle; }
+
+/* Card stub below hero */
+.card-stub {
+  background: #fff; border-radius: 0 0 14px 14px;
+  padding: 10px 16px 12px;
+  font-size: 12px; color: #bbb;
+  box-shadow: 0 3px 14px rgba(0,0,0,.08);
+  margin-bottom: 12px;
+}
+
+/* HEIGHT OPTIONS */
+.h-slim  { height: 80px;  }
+.h-mid   { height: 120px; }
+.h-tall  { height: 170px; }
+
+/* ── COLOUR PALETTES ── */
+
+/* NYC — Option A: Yankees navy/gold */
+.nyc-a { background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 50%, #2a5298 100%); }
+/* NYC — Option B: Night lights — deep charcoal + amber glow */
+.nyc-b { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 40%, #8b6914 100%); }
+/* NYC — Option C: Brick & steel — rust red + grey */
+.nyc-c { background: linear-gradient(135deg, #2c1810 0%, #6b2d1e 50%, #b04a2e 100%); }
+
+/* Fort Worth — Option A: Cowboy rust/tan */
+.dfw-a { background: linear-gradient(135deg, #2d1500 0%, #7a3500 50%, #c4682a 100%); }
+/* Fort Worth — Option B: Texas sky — burnt orange + sky blue */
+.dfw-b { background: linear-gradient(135deg, #1a3a5c 0%, #bf5700 60%, #e07b39 100%); }
+/* Fort Worth — Option C: Desert dusk — sand + deep plum */
+.dfw-c { background: linear-gradient(135deg, #3d2255 0%, #8b4513 50%, #d4956a 100%); }
+
+/* Orlando Universal — Option A: Neon energy — hot coral/orange */
+.orl-a { background: linear-gradient(135deg, #7a0e1a 0%, #c0392b 40%, #e8553e 100%); }
+/* Orlando Universal — Option B: Theme park energy — electric blue + yellow */
+.orl-b { background: linear-gradient(135deg, #002868 0%, #0050d0 50%, #f7b731 100%); }
+/* Orlando Universal — Option C: Sunset thrill — deep magenta + orange */
+.orl-c { background: linear-gradient(135deg, #4a0030 0%, #c0166a 50%, #f5752b 100%); }
+
+/* Disney — Option A: Midnight castle — deep blue + gold */
+.dis-a { background: linear-gradient(135deg, #030b1a 0%, #0d2259 50%, #c9a227 100%); }
+/* Disney — Option B: Cinderella — royal blue + silver mist */
+.dis-b { background: linear-gradient(135deg, #0a1f4e 0%, #1a4fa8 55%, #7ab3e0 100%); }
+/* Disney — Option C: Christmas magic — deep red + gold star */
+.dis-c { background: linear-gradient(135deg, #1a0a2e 0%, #8b0000 45%, #d4af37 100%); }
+
+/* Vermont Ski — Option A: Fresh powder — ice blue + white */
+.vt-a { background: linear-gradient(135deg, #0d2137 0%, #1a5276 45%, #aed6f1 100%); }
+/* Vermont Ski — Option B: Slope dusk — grey-blue + snow white */
+.vt-b { background: linear-gradient(135deg, #1c2833 0%, #4a6076 50%, #d6eaf8 100%); }
+/* Vermont Ski — Option C: Alpine dawn — deep navy + pale sunrise orange */
+.vt-c { background: linear-gradient(135deg, #0d1b2a 0%, #1f4e79 50%, #e8c99a 100%); }
+
+/* Boston — Option A: Red Sox — deep navy + red */
+.bos-a { background: linear-gradient(135deg, #0a1628 0%, #0d2b5c 45%, #bd2333 100%); }
+/* Boston — Option B: Fall foliage — deep brown + burnt orange */
+.bos-b { background: linear-gradient(135deg, #1a0f00 0%, #6b3600 45%, #d4720e 100%); }
+/* Boston — Option C: Cobblestone — charcoal + brick red + cream */
+.bos-c { background: linear-gradient(135deg, #1a1a1a 0%, #5c2020 45%, #c87941 100%); }
+
+/* ── LAYOUT ── */
+.row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.option-label { font-size: 11px; font-weight: 700; color: #666; margin-bottom: 5px; }
+.opt-a { color: #0066cc; }
+.opt-b { color: #16a34a; }
+.opt-c { color: #9333ea; }
+
+@media (max-width: 500px) {
+  .row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<h1>Mockup — Colour Palettes & Hero Heights</h1>
+<p class="note">Three colour options (A/B/C) per city, three hero heights. Tell me which combination works for each.</p>
+
+<!-- ═══════════════════════════════════ -->
+<h2>Part 1 — Hero Height Options (using NYC-A as the example)</h2>
+<p class="note" style="margin-bottom:12px">Same card, three heights. Which feels right on mobile?</p>
+
+<div class="row">
+  <div>
+    <div class="option-label">Slim — 80px</div>
+    <div class="hero h-slim nyc-a">
+      <div class="hero-text">
+        <div class="hero-date">15 Dec — Tuesday <span class="hero-today">Today</span></div>
+        <div class="hero-city">New York City</div>
+      </div>
+    </div>
+    <div class="card-stub">Plan / Lodging / Meals…</div>
+  </div>
+  <div>
+    <div class="option-label">Medium — 120px</div>
+    <div class="hero h-mid nyc-a">
+      <div class="hero-text">
+        <div class="hero-date">15 Dec — Tuesday <span class="hero-today">Today</span></div>
+        <div class="hero-city">New York City</div>
+      </div>
+    </div>
+    <div class="card-stub">Plan / Lodging / Meals…</div>
+  </div>
+  <div>
+    <div class="option-label">Tall — 170px</div>
+    <div class="hero h-tall nyc-a">
+      <div class="hero-text">
+        <div class="hero-date">15 Dec — Tuesday <span class="hero-today">Today</span></div>
+        <div class="hero-city">New York City</div>
+      </div>
+    </div>
+    <div class="card-stub">Plan / Lodging / Meals…</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<h2>Part 2 — New York City (14–15 Dec, 30–31 Dec)</h2>
+<p class="note">A = Yankees navy/gold &nbsp;·&nbsp; B = Night lights charcoal/amber &nbsp;·&nbsp; C = Brick &amp; steel rust/grey</p>
+<div class="row">
+  <div>
+    <div class="option-label opt-a">A — Yankees navy</div>
+    <div class="hero h-mid nyc-a"><div class="hero-text"><div class="hero-date">14 Dec — Monday</div><div class="hero-city">New York City</div></div></div>
+    <div class="card-stub">Arrive JFK · Residence Inn Times Square</div>
+  </div>
+  <div>
+    <div class="option-label opt-b">B — Night lights</div>
+    <div class="hero h-mid nyc-b"><div class="hero-text"><div class="hero-date">14 Dec — Monday</div><div class="hero-city">New York City</div></div></div>
+    <div class="card-stub">Arrive JFK · Residence Inn Times Square</div>
+  </div>
+  <div>
+    <div class="option-label opt-c">C — Brick &amp; steel</div>
+    <div class="hero h-mid nyc-c"><div class="hero-text"><div class="hero-date">14 Dec — Monday</div><div class="hero-city">New York City</div></div></div>
+    <div class="card-stub">Arrive JFK · Residence Inn Times Square</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<h2>Part 3 — Fort Worth / Dallas (16–18 Dec)</h2>
+<p class="note">A = Cowboy rust/tan &nbsp;·&nbsp; B = Texas burnt orange + sky blue &nbsp;·&nbsp; C = Desert dusk sand/plum</p>
+<div class="row">
+  <div>
+    <div class="option-label opt-a">A — Cowboy rust</div>
+    <div class="hero h-mid dfw-a"><div class="hero-text"><div class="hero-date">17 Dec — Thursday</div><div class="hero-city">Fort Worth</div></div></div>
+    <div class="card-stub">Stockyards · Nicholas working</div>
+  </div>
+  <div>
+    <div class="option-label opt-b">B — Texas sky</div>
+    <div class="hero h-mid dfw-b"><div class="hero-text"><div class="hero-date">17 Dec — Thursday</div><div class="hero-city">Fort Worth</div></div></div>
+    <div class="card-stub">Stockyards · Nicholas working</div>
+  </div>
+  <div>
+    <div class="option-label opt-c">C — Desert dusk</div>
+    <div class="hero h-mid dfw-c"><div class="hero-text"><div class="hero-date">17 Dec — Thursday</div><div class="hero-city">Fort Worth</div></div></div>
+    <div class="card-stub">Stockyards · Nicholas working</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<h2>Part 4 — Orlando: Universal (18–20 Dec)</h2>
+<p class="note">A = Hot coral/orange energy &nbsp;·&nbsp; B = Electric blue + yellow (Universal's actual brand) &nbsp;·&nbsp; C = Sunset thrill magenta/orange</p>
+<div class="row">
+  <div>
+    <div class="option-label opt-a">A — Hot coral</div>
+    <div class="hero h-mid orl-a"><div class="hero-text"><div class="hero-date">19 Dec — Saturday</div><div class="hero-city">Orlando — Universal</div></div></div>
+    <div class="card-stub">USF + IOA · Royal Pacific</div>
+  </div>
+  <div>
+    <div class="option-label opt-b">B — Universal brand</div>
+    <div class="hero h-mid orl-b"><div class="hero-text"><div class="hero-date">19 Dec — Saturday</div><div class="hero-city">Orlando — Universal</div></div></div>
+    <div class="card-stub">USF + IOA · Royal Pacific</div>
+  </div>
+  <div>
+    <div class="option-label opt-c">C — Sunset thrill</div>
+    <div class="hero h-mid orl-c"><div class="hero-text"><div class="hero-date">19 Dec — Saturday</div><div class="hero-city">Orlando — Universal</div></div></div>
+    <div class="card-stub">USF + IOA · Royal Pacific</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<h2>Part 5 — Orlando: Disney (20–24 Dec)</h2>
+<p class="note">A = Midnight castle deep blue/gold &nbsp;·&nbsp; B = Cinderella royal blue/silver &nbsp;·&nbsp; C = Christmas magic deep red/gold</p>
+<div class="row">
+  <div>
+    <div class="option-label opt-a">A — Midnight castle</div>
+    <div class="hero h-mid dis-a"><div class="hero-text"><div class="hero-date">21 Dec — Monday</div><div class="hero-city">Orlando — Disney</div></div></div>
+    <div class="card-stub">Hollywood Studios · Beach Club</div>
+  </div>
+  <div>
+    <div class="option-label opt-b">B — Cinderella blue</div>
+    <div class="hero h-mid dis-b"><div class="hero-text"><div class="hero-date">21 Dec — Monday</div><div class="hero-city">Orlando — Disney</div></div></div>
+    <div class="card-stub">Hollywood Studios · Beach Club</div>
+  </div>
+  <div>
+    <div class="option-label opt-c">C — Christmas magic</div>
+    <div class="hero h-mid dis-c"><div class="hero-text"><div class="hero-date">21 Dec — Monday</div><div class="hero-city">Orlando — Disney</div></div></div>
+    <div class="card-stub">Hollywood Studios · Beach Club</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<h2>Part 6 — Vermont Ski (24–28 Dec)</h2>
+<p class="note">A = Fresh powder ice blue/white &nbsp;·&nbsp; B = Slope dusk grey-blue/snow &nbsp;·&nbsp; C = Alpine dawn navy/pale sunrise</p>
+<div class="row">
+  <div>
+    <div class="option-label opt-a">A — Fresh powder</div>
+    <div class="hero h-mid vt-a"><div class="hero-text"><div class="hero-date">25 Dec — Friday</div><div class="hero-city">Vermont — Ski</div></div></div>
+    <div class="card-stub">Smugglers' Notch · Christmas Day</div>
+  </div>
+  <div>
+    <div class="option-label opt-b">B — Slope dusk</div>
+    <div class="hero h-mid vt-b"><div class="hero-text"><div class="hero-date">25 Dec — Friday</div><div class="hero-city">Vermont — Ski</div></div></div>
+    <div class="card-stub">Smugglers' Notch · Christmas Day</div>
+  </div>
+  <div>
+    <div class="option-label opt-c">C — Alpine dawn</div>
+    <div class="hero h-mid vt-c"><div class="hero-text"><div class="hero-date">25 Dec — Friday</div><div class="hero-city">Vermont — Ski</div></div></div>
+    <div class="card-stub">Smugglers' Notch · Christmas Day</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<h2>Part 7 — Boston (28–30 Dec)</h2>
+<p class="note">A = Red Sox navy/red &nbsp;·&nbsp; B = Fall foliage brown/orange &nbsp;·&nbsp; C = Cobblestone charcoal/brick/cream</p>
+<div class="row">
+  <div>
+    <div class="option-label opt-a">A — Red Sox</div>
+    <div class="hero h-mid bos-a"><div class="hero-text"><div class="hero-date">29 Dec — Tuesday</div><div class="hero-city">Boston</div></div></div>
+    <div class="card-stub">Aquarium · Quincy Market · Children's Museum</div>
+  </div>
+  <div>
+    <div class="option-label opt-b">B — Fall foliage</div>
+    <div class="hero h-mid bos-b"><div class="hero-text"><div class="hero-date">29 Dec — Tuesday</div><div class="hero-city">Boston</div></div></div>
+    <div class="card-stub">Aquarium · Quincy Market · Children's Museum</div>
+  </div>
+  <div>
+    <div class="option-label opt-c">C — Cobblestone</div>
+    <div class="hero h-mid bos-c"><div class="hero-text"><div class="hero-date">29 Dec — Tuesday</div><div class="hero-city">Boston</div></div></div>
+    <div class="card-stub">Aquarium · Quincy Market · Children's Museum</div>
+  </div>
+</div>
+
+</body>
+</html>
