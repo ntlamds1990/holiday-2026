@@ -1,5 +1,5 @@
 # Holiday Planner — Session Handoff
-**Last updated: 4 Oct 2026**
+**Last updated: 11 Oct 2026**
 **Live at: https://ntlamds1990.github.io/holiday-2026/**
 
 ---
@@ -82,13 +82,14 @@ Three park days still need the same treatment Dec 22 got. For each: fix timeline
 - LLMP stack: Slinky Dog, Smugglers Run, Tower of Terror
 - Timeline is decent but could be tightened
 
-### 2. Link booking documents
-All `doc:null` placeholders need real URLs once confirmations are to hand. This is content, not code — paste Google Drive or booking confirmation links into the relevant `doc:` fields in `index.html`.
-
-Priority order:
-- Hotel receipts (`lodging.doc` on each check-in day)
-- Flight boarding passes (`flights[].doc` on each flight day)
-- Activity ticket confirmations (`docs[]` on activity days)
+### 2. Link booking documents ✓ DONE (11 Oct)
+All confirmed booking PDFs are now linked via Google Drive. Open items remaining (not yet purchasable/bookable):
+- `flights[].doc` on Dec 14/16/18/24/31 — boarding passes (available closer to travel)
+- `Lightning Lane — Hollywood Studios` (Dec 21) — 7-day window, opens Dec 14 at 7am ET
+- `Lightning Lane — EPCOT` (Dec 22) — 7-day window, opens Dec 15 at 7am ET
+- `Top of the Rock`, `Statue of Liberty ferry`, `One World Observatory` — bookable now (no-brainer; do this soon)
+- `Tavern on the Green reservation` (Dec 15) — opens 15 Oct
+- `Kids' Ski Camp` (Dec 25–27) — booking window opens 1 Nov
 
 ---
 
@@ -113,7 +114,7 @@ Priority order:
 
 - **File**: `C:\Users\ntlam\OneDrive\Documents\04_Work & Projects\Active Projects\holiday-planning\index.html`
 - **Branch**: `master` — push directly to deploy to GitHub Pages
-- **Budget spreadsheet**: lives on Google Drive, accessible via MCP. Latest version: `Family_Trip_Budget_11.xlsx` (file ID: `1rezhrjBe-jB9mkeWA_KKZwlJrV76tbgQ`)
+- **Budget spreadsheet**: lives on Google Drive, accessible via MCP. Latest version: `Family_Trip_Budget.xlsx` (file ID: `1PNXzDCUXijQQpte__yl3JdxP6iUCp0d7`)
 - **LOCKED_COSTS total**: ~$32,734 USD committed. Worthington excluded (TBC).
 - **Currency API**: `open.er-api.com/v6/latest/USD`, 5-min cache, shared between Tools and Spend panels
 - **Expense storage**: `localStorage` key `holiday2026_exp`
@@ -122,6 +123,6 @@ Priority order:
 ---
 
 ## 3-line session close
-- Built and pushed 9 section reviews, UX batch, Budget_10/11 data sync, pre-paid day sections, and full EPCOT strategy
-- Next: theme park strategies for Dec 19 (Universal), Dec 20 (Epic Universe), Dec 21 (Hollywood Studios), then document linking
-- No blockers — Worthington cost is the only open financial item (reminder 7 Oct)
+- Budget_12 sync: corrected SQ24 arrival (17:25), AA865 fare/times/cabin, Universal upgrade ($1,706), hotel actuals, airline change to United for MCO→BTV, SUV→minivan throughout; linked 20 booking PDFs across all hotel, flight, and activity doc slots
+- Next: theme park strategies for Dec 19 (Universal), Dec 20 (Epic Universe), Dec 21 (Hollywood Studios); book Top of Rock / Statue of Liberty / OWO ASAP; Tavern on the Green opens 15 Oct
+- Marriott Long Wharf occupancy fix (1 adult only — Nicholas to call Marriott) is the only open action item before the 15 Oct reservation window
