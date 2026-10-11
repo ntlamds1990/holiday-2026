@@ -446,14 +446,14 @@ const DAYS = [
     id:'dec14', date:'2026-12-14', label:'14 Dec', day:'Monday',
     city:'New York City', theme:'nyc',
     summary:'Arrive JFK · Check in Times Square',
-    lodging:{ name:'Residence Inn Times Square', status:'booked', ci:true, co:false, doc:null, addr:'1033 6th Ave, New York, NY 10018', map:'https://www.google.com/maps/dir/?api=1&destination=Residence+Inn+Times+Square,1033+6th+Ave,New+York,NY+10018' },
-    flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'18:50 JFK', cabin:'Premium Economy', doc:null, depTerm:'SIN T3', arrTerm:'JFK T4', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/', track:'https://www.flightradar24.com/SQ24' }],
-    docs:[],
+    lodging:{ name:'Residence Inn Times Square', status:'booked', ci:true, co:false, doc:'https://drive.google.com/file/d/1japPeJM6lcCdYj8dVzGPTxMtMs7puOy1/view', addr:'1033 6th Ave, New York, NY 10018', map:'https://www.google.com/maps/dir/?api=1&destination=Residence+Inn+Times+Square,1033+6th+Ave,New+York,NY+10018' },
+    flights:[{ num:'SQ24', airline:'Singapore Airlines', from:'SIN', to:'JFK', dep:'12:10 SIN (13 Dec)', arr:'17:25 JFK', cabin:'Premium Economy', doc:'https://drive.google.com/file/d/1g0Yehd9flAxbTYYMdxfLYS2K8B_WGXON/view', depTerm:'SIN T3', arrTerm:'JFK T4', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/', track:'https://www.flightradar24.com/SQ24' }],
+    docs:[{ label:'SQ Business Award Waitlist (Cheryl + kids)', doc:'https://drive.google.com/file/d/1iuAuRPRgxgkiqyB5agokeG8RDkaQUr-5/view' }],
     timeline:[
       { time:'07:00 ⚠️', icon:'📱', text:'<strong>Buy Rise of the Resistance LLSP</strong> — 7-day window opens today (HS visit is Dec 21)', map:null, warn:'Disney Lightning Lane Single Pass window opens 7 days out for resort guests. Buy Rise of the Resistance ($~100 for 4) on My Disney Experience app at 7am ET — you\'ll be in-flight; use in-flight WiFi or buy immediately on landing.' },
-      { time:'18:50', icon:'✈️', text:'Arrive JFK — immigration, baggage, customs (~1.5–2 hrs)', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
-      { time:'~20:30', icon:'🚗', text:'UberXL → Residence Inn Times Square', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
-      { time:'~21:00', icon:'🏨', text:'Check in. Recovery evening — formula/grocery delivery pre-arranged', map:null, warn:null }
+      { time:'17:25', icon:'✈️', text:'Arrive JFK — immigration, baggage, customs (~1.5–2 hrs)', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
+      { time:'~19:15', icon:'🚗', text:'UberXL → Residence Inn Times Square', map:'https://www.google.com/maps/dir/?api=1&origin=JFK+International+Airport&destination=Residence+Inn+Times+Square,New+York&travelmode=driving', warn:null },
+      { time:'~20:15', icon:'🏨', text:'Check in. Recovery evening — formula/grocery delivery pre-arranged', map:null, warn:null }
     ],
     meals:[{ tag:'Dinner', text:'Room delivery — keep it easy after 18+ hr journey' }]
   },
@@ -486,16 +486,16 @@ const DAYS = [
   {
     id:'dec16', date:'2026-12-16', label:'16 Dec', day:'Wednesday',
     city:'NYC → Fort Worth', theme:'dfw',
-    summary:'Checkout · AA865 JFK→DFW 12:00 · Worthington check-in',
+    summary:'Checkout · AA865 JFK→DFW 12:06 · Worthington check-in',
     lodging:{ name:'Worthington Renaissance Fort Worth', status:'tbc', ci:true, co:false, doc:null, addr:'200 Main St, Fort Worth, TX 76102', map:'https://www.google.com/maps/dir/?api=1&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth,TX+76102' },
-    flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:00 JFK', arr:'15:10 DFW', cabin:'Domestic First', doc:null, depTerm:'JFK T8', arrTerm:'DFW C', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:'https://www.flightradar24.com/AA865' }],
+    flights:[{ num:'AA865', airline:'American Airlines', from:'JFK', to:'DFW', dep:'12:06 JFK', arr:'15:22 DFW', cabin:'Economy', doc:'https://drive.google.com/file/d/19AthULv_hU1dIM0hs44cidvP1J3ZRjLJ/view', depTerm:'JFK T8', arrTerm:'DFW C', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:'https://www.flightradar24.com/AA865' }],
     docs:[],
     timeline:[
       { time:'~08:30', icon:'🏨', text:'Hotel checkout', map:null, warn:null },
       { time:'~08:30', icon:'🚗', text:'UberXL → JFK (~45–60 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Residence+Inn+Times+Square,New+York&destination=JFK+International+Airport&travelmode=driving', warn:null },
-      { time:'12:00', icon:'✈️', text:'AA865 departs JFK', map:null, warn:null },
-      { time:'15:10', icon:'✈️', text:'Arrive DFW', map:null, warn:null },
-      { time:'~15:45', icon:'🚗', text:'Rideshare DFW → Worthington Renaissance (~25 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Dallas+Fort+Worth+International+Airport&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth&travelmode=driving', warn:null },
+      { time:'12:06', icon:'✈️', text:'AA865 departs JFK', map:null, warn:null },
+      { time:'15:22', icon:'✈️', text:'Arrive DFW', map:null, warn:null },
+      { time:'~16:00', icon:'🚗', text:'Rideshare DFW → Worthington Renaissance (~25 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Dallas+Fort+Worth+International+Airport&destination=Worthington+Renaissance+Fort+Worth+Hotel,200+Main+St,Fort+Worth&travelmode=driving', warn:null },
       { time:'~17:30', icon:'🌆', text:'Sundance Square — walkable from hotel', map:'https://www.google.com/maps/dir/?api=1&origin=Worthington+Renaissance+Fort+Worth+Hotel&destination=Sundance+Square,Fort+Worth,TX&travelmode=walking', warn:null }
     ],
     meals:[
@@ -529,8 +529,8 @@ const DAYS = [
     id:'dec18', date:'2026-12-18', label:'18 Dec', day:'Friday',
     city:'Fort Worth → Orlando', theme:'orlando',
     summary:'Fort Worth Zoo · AA2186 DFW→MCO · Royal Pacific check-in',
-    lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:true, co:false, doc:null, addr:'6300 Hollywood Way, Orlando, FL 32819', map:'https://www.google.com/maps/dir/?api=1&destination=Loews+Royal+Pacific+Resort,6300+Hollywood+Way,Orlando,FL+32819' },
-    flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Domestic First', doc:null, depTerm:'DFW C', arrTerm:'MCO B', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:'https://www.flightradar24.com/AA2186' }],
+    lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:true, co:false, doc:'https://drive.google.com/file/d/19YiowcSX28ifQHXbDfXzPjCG93SaoPpQ/view', addr:'6300 Hollywood Way, Orlando, FL 32819', map:'https://www.google.com/maps/dir/?api=1&destination=Loews+Royal+Pacific+Resort,6300+Hollywood+Way,Orlando,FL+32819' },
+    flights:[{ num:'AA2186', airline:'American Airlines', from:'DFW', to:'MCO', dep:'~18:45 DFW', arr:'~22:00 MCO', cabin:'Economy', doc:'https://drive.google.com/file/d/19AthULv_hU1dIM0hs44cidvP1J3ZRjLJ/view', depTerm:'DFW C', arrTerm:'MCO B', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:'https://www.flightradar24.com/AA2186' }],
     docs:[],
     timeline:[
       { time:'~09:00', icon:'💼', text:'<strong>Nicholas working</strong>', map:null, warn:null },
@@ -552,7 +552,7 @@ const DAYS = [
     summary:'USF + Islands of Adventure · Express Unlimited included',
     lodging:{ name:'Loews Royal Pacific Resort', status:'booked', ci:false, co:false, doc:null },
     flights:[], docs:[
-      { label:'Universal 2-Day Ticket', doc:null }
+      { label:'Universal 2-Day Ticket', doc:'https://drive.google.com/file/d/1ebUUHPydU1IiJM23N_VRSPpa42AgrPEk/view' }
     ],
     timeline:[
       { time:'~08:00', icon:'🎢', text:'<strong>IOA — Hagrid\'s Motorbikes FIRST</strong> (Express won\'t cover — go early)', map:null, warn:null },
@@ -567,9 +567,9 @@ const DAYS = [
     id:'dec20', date:'2026-12-20', label:'20 Dec', day:'Sunday',
     city:'Orlando — Epic Universe', theme:'orlando',
     summary:'Epic Universe · Royal Pacific → Beach Club (evening)',
-    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:true, co:false, doc:null, addr:'1800 Epcot Resorts Blvd, Orlando, FL 32830', map:'https://www.google.com/maps/dir/?api=1&destination=Disney+Beach+Club+Resort,1800+Epcot+Resorts+Blvd,Orlando,FL+32830' },
+    lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:true, co:false, doc:'https://drive.google.com/file/d/1UNDuQJKweeVbO31gWX-fd04lNWxVJtbo/view', addr:'1800 Epcot Resorts Blvd, Orlando, FL 32830', map:'https://www.google.com/maps/dir/?api=1&destination=Disney+Beach+Club+Resort,1800+Epcot+Resorts+Blvd,Orlando,FL+32830' },
     flights:[], docs:[
-      { label:'Epic Universe Express Passes', doc:null }
+      { label:'Epic Universe Express Passes', doc:'https://drive.google.com/file/d/1B9DAnWSjmwspeqqKmCRl2Bxbp6bsVWH4/view' }
     ],
     timeline:[
       { time:'~08:00', icon:'⭐', text:'<strong>Early Park Admission (1 hr)</strong> — Super Nintendo World FIRST', map:null, warn:null },
@@ -586,7 +586,7 @@ const DAYS = [
     summary:'Hollywood Studios · Rise of the Resistance at 07:00',
     lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:false, co:false, doc:null },
     flights:[], docs:[
-      { label:'Disney 2-Day Base Ticket', doc:null },
+      { label:'Disney 2-Day Base Ticket', doc:'https://drive.google.com/file/d/1dfGBi6gohMlrTJ0GiMtAMUOrrWfSQyRm/view' },
       { label:'Lightning Lane — Hollywood Studios', doc:null }
     ],
     timeline:[
@@ -603,7 +603,7 @@ const DAYS = [
     summary:'EPCOT · Mickey\'s Very Merry Christmas Party (7pm)',
     lodging:{ name:"Disney's Beach Club Resort", status:'booked', ci:false, co:false, doc:null },
     flights:[], docs:[
-      { label:'Mickey\'s Very Merry Christmas Party', doc:null },
+      { label:'Mickey\'s Very Merry Christmas Party', doc:'https://drive.google.com/file/d/1e0O5s1lB1sMtCVkk6ZYkQe7upVqXqRI1/view' },
       { label:'Lightning Lane — EPCOT', doc:null }
     ],
     timeline:[
@@ -640,21 +640,21 @@ const DAYS = [
   {
     id:'dec24', date:'2026-12-24', label:'24 Dec', day:'Thursday',
     city:'Orlando → Vermont', theme:'vermont',
-    summary:'MCO→EWR→BTV · SUV pickup · Smugglers\' Notch check-in',
-    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:true, co:false, doc:null, addr:'4323 VT-108 S, Jeffersonville, VT 05464', map:'https://www.google.com/maps/dir/?api=1&destination=Smugglers+Notch+Resort,Jeffersonville,VT+05464' },
+    summary:'MCO→EWR→BTV · Minivan pickup · Smugglers\' Notch check-in',
+    lodging:{ name:"Smugglers' Notch Resort", status:'booked', ci:true, co:false, doc:'https://drive.google.com/file/d/1PXX7WSkPb1H7N4AE2_I-2Kjn-LiZR_KC/view', addr:'4323 VT-108 S, Jeffersonville, VT 05464', map:'https://www.google.com/maps/dir/?api=1&destination=Smugglers+Resort,Jeffersonville,VT+05464' },
     flights:[
-      { num:'AA (MCO–EWR)', airline:'American Airlines', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:null, depTerm:'MCO B', arrTerm:'EWR C', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:null },
-      { num:'AA (EWR–BTV)', airline:'American Airlines', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:null, depTerm:'EWR C', arrTerm:'BTV', checkin:'https://www.aa.com/reservation/view/find-your-reservation', track:null }
+      { num:'UA1718', airline:'United', from:'MCO', to:'EWR', dep:'08:00 MCO', arr:'10:40 EWR', cabin:'Economy', doc:'https://drive.google.com/file/d/14p6brlf8G8rUPJRHZmrq2-Se_xLCBIjD/view', depTerm:'MCO B', arrTerm:'EWR C', checkin:'https://www.united.com/en/us/checkin', track:'https://www.flightradar24.com/UAL1718' },
+      { num:'UA4454', airline:'United', from:'EWR', to:'BTV', dep:'12:22 EWR', arr:'13:43 BTV', cabin:'Economy', doc:'https://drive.google.com/file/d/1R5fC8yrTLBhOdLMCgo1m4v-0GovjKOVy/view', depTerm:'EWR C', arrTerm:'BTV', checkin:'https://www.united.com/en/us/checkin', track:'https://www.flightradar24.com/UAL4454' }
     ],
     docs:[
-      { label:'Hertz 4WD SUV — BTV pickup', doc:null }
+      { label:'Hertz Minivan — BTV pickup', doc:'https://drive.google.com/file/d/1bYMdycwhutGnXYwFPl9MaC0AK31CbFuy/view' }
     ],
     timeline:[
       { time:'~05:30', icon:'🚗', text:'UberXL Beach Club → MCO (~20–25 min)', map:'https://www.google.com/maps/dir/?api=1&origin=Disney+Beach+Club+Resort,Orlando&destination=Orlando+International+Airport&travelmode=driving', warn:null },
       { time:'08:00', icon:'✈️', text:'MCO → EWR (arrive 10:40)', map:null, warn:null },
       { time:'10:40', icon:'🕐', text:'~1h42m layover at Newark', map:null, warn:null },
       { time:'12:22', icon:'✈️', text:'EWR → BTV (arrive 13:43)', map:null, warn:null },
-      { time:'~14:00', icon:'🚗', text:'Hertz 4WD SUV pickup at BTV (7-day, BTV→JFK one-way)', map:null, warn:null },
+      { time:'~14:00', icon:'🚗', text:'Hertz minivan pickup at BTV (7-day, BTV→JFK one-way)', map:null, warn:null },
       { time:'~14:30', icon:'🛒', text:'Hannaford grocery stop, Burlington (~5 min off route)', map:'https://www.google.com/maps/dir/?api=1&origin=Burlington+International+Airport,Vermont&destination=Hannaford+North+Avenue,Burlington,Vermont&travelmode=driving', warn:null },
       { time:'~15:30', icon:'🏔️', text:"Arrive Smugglers' Notch Resort, Jeffersonville", map:'https://www.google.com/maps/dir/?api=1&origin=Hannaford+North+Avenue,Burlington,Vermont&destination=Smugglers+Notch+Resort,Jeffersonville,Vermont&travelmode=driving', warn:'Use VT-15 — do NOT use VT-108 (Smugglers\' Notch Pass), closed for winter' }
     ],
@@ -717,7 +717,7 @@ const DAYS = [
     id:'dec28', date:'2026-12-28', label:'28 Dec', day:'Monday',
     city:'Vermont → Boston', theme:'boston',
     summary:'Drive: Ben & Jerry\'s · Concord lunch · Boston Long Wharf',
-    lodging:{ name:'Boston Marriott Long Wharf', status:'booked', ci:true, co:false, doc:null, addr:'296 State St, Boston, MA 02109', map:'https://www.google.com/maps/dir/?api=1&destination=Boston+Marriott+Long+Wharf,296+State+St,Boston,MA+02109' },
+    lodging:{ name:'Boston Marriott Long Wharf', status:'booked', ci:true, co:false, doc:'https://drive.google.com/file/d/1xHZpnCDvR9ttpUUwNrCBxDVh-RlsIz6N/view', addr:'296 State St, Boston, MA 02109', map:'https://www.google.com/maps/dir/?api=1&destination=Boston+Marriott+Long+Wharf,296+State+St,Boston,MA+02109' },
     flights:[], docs:[],
     timeline:[
       { time:'~08:30', icon:'🌅', text:'Wake, feed baby, final pack', map:null, warn:null },
@@ -760,8 +760,8 @@ const DAYS = [
     id:'dec30', date:'2026-12-30', label:'30 Dec', day:'Wednesday',
     city:'Boston → NYC', theme:'nyc',
     summary:'Drive: Providence Children\'s Museum · New Haven apizza · Conrad check-in',
-    lodging:{ name:'Conrad New York Downtown', status:'booked', ci:true, co:false, doc:null, addr:'102 North End Ave, New York, NY 10282', map:'https://www.google.com/maps/dir/?api=1&destination=Conrad+New+York+Downtown,102+North+End+Ave,New+York,NY+10282' },
-    flights:[], docs:[],
+    lodging:{ name:'Conrad New York Downtown', status:'booked', ci:true, co:false, doc:'https://drive.google.com/file/d/1T6pjP6zKbm3z4q48FjOcYbxjwbpP0aXn/view', addr:'102 North End Ave, New York, NY 10282', map:'https://www.google.com/maps/dir/?api=1&destination=Conrad+New+York+Downtown,102+North+End+Ave,New+York,NY+10282' },
+    flights:[], docs:[{ label:'SpotHero Parking — Conrad (30–31 Dec)', doc:'https://drive.google.com/file/d/1F2zWu3fDLHIczTfcgsNYM97eT2KdgYeF/view' }],
     timeline:[
       { time:'~09:30', icon:'🍳', text:'Breakfast at Long Wharf before checkout', map:null, warn:null },
       { time:'~10:00', icon:'🚗', text:'Checkout + depart Boston (I-95 S via Providence → New Haven → Manhattan)', map:null, warn:null },
@@ -778,9 +778,9 @@ const DAYS = [
   {
     id:'dec31', date:'2026-12-31', label:'31 Dec', day:'Thursday',
     city:'New York City — Departure', theme:'nyc',
-    summary:'Statue of Liberty · 9/11 Memorial · OWO · SQ23 22:15',
+    summary:'Statue of Liberty · 9/11 Memorial · OWO · SQ23 22:05',
     lodging:{ name:'Conrad New York Downtown', status:'booked', ci:false, co:true, doc:null },
-    flights:[{ num:'SQ23', airline:'Singapore Airlines', from:'JFK', to:'SIN', dep:'22:15 JFK', arr:'05:30+2 SIN', cabin:'Premium Economy', doc:null, depTerm:'JFK T4', arrTerm:'SIN T3', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/', track:'https://www.flightradar24.com/SQ23' }],
+    flights:[{ num:'SQ23', airline:'Singapore Airlines', from:'JFK', to:'SIN', dep:'22:05 JFK', arr:'06:00+2 SIN', cabin:'Premium Economy', doc:'https://drive.google.com/file/d/1g0Yehd9flAxbTYYMdxfLYS2K8B_WGXON/view', depTerm:'JFK T4', arrTerm:'SIN T3', checkin:'https://www.singaporeair.com/en_UK/flight-management/check-in/', track:'https://www.flightradar24.com/SQ23' }],
     docs:[
       { label:'Statue of Liberty ferry — timed entry', doc:null },
       { label:'One World Observatory — timed entry', doc:null }
@@ -790,9 +790,9 @@ const DAYS = [
       { time:'~12:00', icon:'🥪', text:'Lunch + farewell cheesecake — <strong>Stage Door Deli</strong>, 26 Vesey St (steps from Conrad)', map:'https://www.google.com/maps/dir/?api=1&origin=Battery+Park+City,New+York&destination=26+Vesey+St,New+York,NY&travelmode=walking', warn:null },
       { time:'~13:30', icon:'🕊️', text:'9/11 Memorial reflecting pools — brief walk (same WTC complex, no transit)', map:null, warn:null },
       { time:'~15:30', icon:'🌆', text:'<strong>One World Observatory</strong> — book ~3:30–3:45pm for golden-hour skyline (sunset 4:35pm)', map:'https://www.google.com/maps/dir/?api=1&origin=9%2F11+Memorial+%26+Museum,New+York,NY&destination=One+World+Observatory,285+Fulton+St,New+York,NY&travelmode=walking', warn:null },
-      { time:'~17:00', icon:'🚗', text:'Self-drive Hertz SUV → JFK Federal Circle (15.6 mi — budget 45min–1h15m for NYE traffic)', map:'https://www.google.com/maps/dir/?api=1&origin=Conrad+New+York+Downtown,New+York&destination=Hertz+Car+Rental,Federal+Circle,JFK+Airport&travelmode=driving', warn:null },
-      { time:'~18:00', icon:'🚇', text:'Return SUV → free AirTrain to T4 (~4 min, every 5 min, no fare)', map:null, warn:null },
-      { time:'22:15', icon:'✈️', text:'<strong>SQ23 departs JFK T4</strong> → Singapore', map:null, warn:null }
+      { time:'~17:00', icon:'🚗', text:'Self-drive Hertz minivan → JFK Federal Circle (15.6 mi — budget 45min–1h15m for NYE traffic)', map:'https://www.google.com/maps/dir/?api=1&origin=Conrad+New+York+Downtown,New+York&destination=Hertz+Car+Rental,Federal+Circle,JFK+Airport&travelmode=driving', warn:null },
+      { time:'~18:00', icon:'🚇', text:'Return minivan → free AirTrain to T4 (~4 min, every 5 min, no fare)', map:null, warn:null },
+      { time:'22:05', icon:'✈️', text:'<strong>SQ23 departs JFK T4</strong> → Singapore', map:null, warn:null }
     ],
     meals:[
       { tag:'Breakfast', text:'ATRIO at the Conrad — in-hotel, zero transit before the ferry' },
@@ -805,7 +805,7 @@ const DAYS = [
     summary:'Arrive Changi · Welcome home 🏠',
     lodging:null, flights:[], docs:[],
     timeline:[
-      { time:'05:30', icon:'✈️', text:'Arrive Singapore Changi (SQ23, +2 days from JFK)', map:null, warn:null }
+      { time:'06:00', icon:'✈️', text:'Arrive Singapore Changi (SQ23, +2 days from JFK)', map:null, warn:null }
     ],
     meals:[]
   }
@@ -816,19 +816,19 @@ const DAYS = [
 ───────────────────────────────────────── */
 const LOCKED_COSTS = [
   { label:'SQ24/SQ23 — SIN↔JFK (Premium Economy, 5 pax)', cat:'flights',    amt:9403.31, date:'2026-12-14' },
-  { label:'AA865 — JFK→DFW (Domestic First, 5 pax)',       cat:'flights',    amt:1988.37, date:'2026-12-16' },
-  { label:'AA — MCO→EWR→BTV (Economy, 5 pax)',             cat:'flights',    amt:1380.91, date:'2026-12-24' },
-  { label:'Residence Inn Times Square (2 nts)',             cat:'hotels',     amt:1252.56, date:'2026-12-14' },
-  { label:'Loews Royal Pacific Resort (2 nts)',             cat:'hotels',     amt:1934.46, date:'2026-12-18' },
+  { label:'AA865 — JFK→DFW (Economy, 5 pax)',              cat:'flights',    amt:1865.37, date:'2026-12-16' },
+  { label:'United UA1718/UA4454 — MCO→EWR→BTV (Economy, 5 pax)', cat:'flights', amt:1380.91, date:'2026-12-24' },
+  { label:'Residence Inn Times Square (2 nts)',             cat:'hotels',     amt:1275.90, date:'2026-12-14' },
+  { label:'Loews Royal Pacific Resort (2 nts)',             cat:'hotels',     amt:1970.51, date:'2026-12-18' },
   { label:"Disney's Beach Club Resort (4 nts)",             cat:'hotels',     amt:3364.56, date:'2026-12-20' },
   { label:"Smugglers' Notch Resort (4 nts)",                cat:'hotels',     amt:5315.98, date:'2026-12-24' },
   { label:'Boston Marriott Long Wharf (2 nts)',             cat:'hotels',     amt:1017.46, date:'2026-12-28' },
   { label:'Conrad New York Downtown (1 nt)',                cat:'hotels',     amt:759.48,  date:'2026-12-30' },
-  { label:'Universal 2-Day Tickets (4 pax)',                cat:'activities', amt:1474.77, date:'2026-12-19' },
+  { label:'Universal Park-to-Park + Epic Universe Tickets (4 pax)', cat:'activities', amt:1706.40, date:'2026-12-19' },
   { label:'Epic Universe Express Passes (4 pax)',           cat:'activities', amt:1277.96, date:'2026-12-20' },
   { label:"Disney 2-Day Base Tickets (4 pax)",              cat:'activities', amt:1621.86, date:'2026-12-21' },
   { label:"Mickey's Very Merry Christmas Party (4 pax)",   cat:'activities', amt:954.26,  date:'2026-12-22' },
-  { label:'Hertz 4WD SUV (7 days, BTV→JFK one-way)',       cat:'transport',  amt:988.45,  date:'2026-12-24' },
+  { label:'Hertz Minivan (7 days, BTV→JFK one-way)',        cat:'transport',  amt:988.45,  date:'2026-12-24' },
 ];
 // Note: Worthington Renaissance Fort Worth (2 nts) excluded — cost TBC, work/self split pending
 
